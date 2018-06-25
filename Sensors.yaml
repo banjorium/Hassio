@@ -1,0 +1,164 @@
+- platform: yr
+- platform: ring
+  monitored_conditions:
+    - battery
+    - last_motion
+    - last_activity
+    - volume
+    - last_ding
+    - wifi_signal_strength
+    - wifi_signal_category
+      
+- platform: template
+  sensors:
+# If either "device" reports as home, this sensor returns 'on' #
+      jor_home:
+        entity_id:
+          - device_tracker.galaxy_note8
+          - device_tracker.jphone
+          - device_tracker.galaxynote8
+        value_template: >-
+          {{ is_state('device_tracker.galaxy_note8', 'home')
+             or is_state('device_tracker.jphone', 'home')
+             or is_state('device_tracker.galaxynote8', 'home') }}
+      cella_home:
+        entity_id:
+          - device_tracker.cella_gpslogger
+          - device_tracker.mossella
+          - device_tracker.mossella_2
+          
+        value_template: >-
+          {{ is_state('device_tracker.cella_gpslogger', 'home')
+             or is_state('device_tracker.mossella', 'home')
+             or is_state('device_tracker.mossella_2', 'home')}}
+      everyone_home:
+        entity_id:
+          - device_tracker.galaxy_note8
+          - device_tracker.galaxynote8
+          - device_tracker.cella_gpslogger
+          - device_tracker.jphone
+          - device_tracker.mossella
+          - device_tracker.mossella_2
+        value_template: >-
+           {{ is_state('device_tracker.galaxy_note8', 'home')
+             or is_state('device_tracker.jphone', 'home')
+             or is_state('device_tracker.galaxynote8', 'home')
+             or is_state('device_tracker.mossella', 'home')
+             or is_state('device_tracker.cellas_gpslogger', 'home')
+             or is_state('device_tracker.mossella_2', 'home')
+             or is_state('device_tracker.jphone', 'home')
+           }}
+      jor_not_home:
+        entity_id:
+          - device_tracker.galaxy_note8
+          - device_tracker.galaxynote8
+        value_template: >-
+          {{ is_state('device_tracker.galaxy_note8', 'not_home')
+             or is_state('device_tracker.galaxynote8', 'not_home') }}
+             
+      moss_not_home:
+        entity_id:
+          - device_tracker.cella_gpslogger
+          - device_tracker.mossella
+          - device_tracker.mossella_2
+        value_template: >-
+          {{ is_state('device_tracker.cella_gpslogger', 'not_home')
+             or is_state('device_tracker.mossella', 'not_home')
+             or is_state('device_tracker.mossella_2', 'not_home')}}
+             
+      center_map_on:
+        value_template: >-
+          {% set center = states.input_select.center_map_on.state %}
+          {% if center == "Jor"%}
+            {% set lat = states.device_tracker.jphone.attributes.latitude %}
+            {% set long = states.device_tracker.jphone.attributes.longitude %}
+          {% elif center == "Cella"%}
+            {% set lat = states.device_tracker.cella_gpslogger.attributes.latitude %}
+            {% set long = states.device_tracker.cella_gpslogger.attributes.longitude %}
+          {% else %}
+            {% set lat = states.device_tracker.jphone.attributes.latitude %}
+            {% set long = states.device_tracker.jphone.attributes.longitude %}
+          {% endif %}
+          {{ [lat,long]|join(',') }}
+      
+- platform: google_travel_time
+  api_key: YOUR_GOOGLE_API_KEY
+  name: google_travel_time_anja_to_jeremy
+  origin: device_tracker.anjas_iphone
+  destination: device_tracker.jeremys_iphone
+  
+- platform: google_travel_time
+  api_key: YOUR_GOOGLE_API_KEY
+  name: google_travel_time_jeremy_to_anja
+  origin: device_tracker.jeremys_iphone
+  destination: device_tracker.anjas_iphone
+             
+- platform: etherscan
+  address: !secret etherscan_add
+  token: APPC
+  token_address: !secret etherscan_token
+  
+- platform: haveibeenpwned
+  email:
+      - jordanielafontaine@gmail.com
+      - marcellalafontaine@gmail.com
+      - j.lafontaine@snhu.edu
+      - m.lafontaine@snhu.edu
+      - jlafontaine.it@gmail.com
+      - mmuscate@gmail.com
+      - banjordium@gmail.com
+      - jordan.lafontaine@gmail.com
+      - jordanielafontaine@hotmail.com
+      - jordan.lafontaine@hotmail.com
+    
+  
+- platform: systemmonitor
+  resources:
+    - type: disk_use_percent
+      arg: /
+    - type: disk_use_percent
+      arg: /var/log
+    - type: memory_use_percent
+    - type: memory_use
+    - type: memory_free
+    - type: processor_use
+    - type: swap_use_percent
+    - type: swap_use
+    - type: swap_free
+    - type: last_boot
+    - type: since_last_boot
+    - type: network_in
+      arg: wlan0
+    - type: network_out
+      arg: wlan0
+    - type: packets_in
+      arg: wlan0
+    - type: packets_out
+      arg: wlan0
+    - type: ipv4_address
+      arg: wlan0
+    - type: ipv6_address
+      arg: wlan0
+      
+- platform: steam_online
+  api_key: !secret steamapi
+  accounts: 
+    - 76561198020748567
+    - 76561198028167709
+    - 76561198116371201
+    - 76561198055768726
+    - 76561198014880362
+    - 76561197960457718
+    - 76561197980544086
+    - 76561197976189854
+    - 76561198054144074
+    - 76561198030775146
+    - 76561198297273260
+    
+    
+- platform: command_line
+  name: CPU Temperature
+  command: "cat /sys/class/thermal/thermal_zone0/temp"
+  # If errors occur, remove degree symbol below
+  unit_of_measurement: "°C"
+  value_template: '{{ value | multiply(0.001) }}'
