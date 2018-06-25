@@ -1,0 +1,92 @@
+  - name: Home
+    latitude: 43.21198380000001
+    longitude: -71.20487989999998
+    radius: 150
+    icon: mdi:home
+  
+  - name: Gym
+    latitude: 43.19877020000001
+    longitude: -71.1574991
+    radius: 75
+
+  - name: "1230 Elm St"
+    latitude: 42.995769
+    longitude: -71.46375799999998
+    radius: 120
+    icon: mdi:worker
+    
+  - name: Brookside
+    latitude: 43.009251
+    longitude: -71.465345
+    radius: 60
+  
+  - name: "Millyard"
+    latitude: 42.9845
+    longitude: -71.46816619999998
+    radius: 160
+    icon: mdi:worker
+    
+  - name: "StrangeBrew"
+    latitude: 42.9906127
+    longitude: -71.46526899999998
+    radius: 65
+    
+  - name: Hannaford
+    latitude: 43.1958619
+    longitude: -71.15163339999998
+    radius: 300
+    
+  - name: MB_Lee
+    latitude: 43.153565
+    longitude: -71.00714099999999
+    radius: 125
+
+  - name: MB_Concord
+    latitude: 43.21526859999999
+    longitude: -71.52991380000003
+    radius: 300
+    
+  - name: MB_Manchester
+    latitude: 42.9839709
+    longitude: -71.46458319999999
+    radius: 100
+    
+  - name: Therapist
+    latitude: 43.2020562
+    longitude: -71.54547170000001
+    radius: 100
+    
+  - name: Doctor
+    latitude: 43.2191645
+    longitude: -71.5349895
+    radius: 180
+    
+  - name: Dentist
+    latitude: 43.200917
+    longitude: -71.54478799999998
+    radius: 150  
+  
+  - name: Vet
+    latitude: 43.208878
+    longitude: -71.182157
+    radius: 150
+    
+  - name: Murphys
+    latitude: 42.9851432
+    longitude: -71.46337670000003 
+    radius: 45
+    
+  - name: Stadium
+    latitude: 42.9820164
+    longitude: -71.46660299999996
+    radius: 170
+    
+  - name: 'Friendly Pets'
+    latitude: 43.148648
+    longitude: -71.009057
+    radius: 80
+    
+  - name: 'Boards and Brews'
+    latitude: 42.991574
+    longitude: -71.462859 
+    radius: 40
