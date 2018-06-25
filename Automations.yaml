@@ -1,0 +1,412 @@
+# Text JOR when Update Available for Hassio
+- alias: "Update_Update"
+  trigger:
+    platform: state
+    entity_id: updater.updater
+  action:
+    service: notify.notify
+    data:
+      message: "There is a new HASS update available"
+      title: "HA Update Alert"
+      
+- alias: Entry Light on with Motion
+  id: 'EntryLightMotionPM'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.front_door_motion
+  condition: 
+    - condition: sun
+      after: sunset
+      before_offset: '1:00:00'
+    - condition: state
+      entity_id: light.entry
+      state: 'off'
+  action:
+    - service: light.turn_on
+      entity_id: light.entry
+    - delay: '00:05:00'
+    - service: light.turn_off
+      entity_id: light.entry
+      
+      
+#Another Solution:
+#- alias: Turn on kitchen light when movement
+  #trigger:
+   # platform: state
+    #entity_id: binary_sensor.pir_hall
+    #to: 'on'
+  #condition:
+  #- condition: state
+  #  entity_id: light.kitchen
+  #  state: 'off'
+  #- condition: or
+  #  conditions:
+  #  - condition: sun
+  #    after: sunset
+#      after_offset: "-1:00:00"
+#    - condition: sun
+#      before: sunrise
+#      before_offset: "1:00:00"
+#  action:
+#  - service: light.turn_on
+#    data:
+#      entity_id: light.kitchen
+
+- alias: Garage_Open_Alert
+  trigger:
+    - platform: state
+      entity_id: cover.garage_left
+      to: open
+      for:
+        minutes: '10'
+  action:
+    service: notify.notify
+    data:
+      message: "The left garage door has been open for 15 minutes"
+      title: "Garage Open Alert"
+
+#Close the Garage after 3 minutes of being open
+- alias: Garage_Open_Close
+  trigger:
+    - platform: state
+      entity_id: cover.garage_left
+      to: open
+      for:
+        minutes: '2'
+  action:
+    service: cover.close_cover
+    entity_id: cover.garage_left
+    
+#TEXT CELLA when JORDAN is LEAVING ELM
+- id: jor_leaving_elm_st
+  trigger:
+    platform: zone
+    entity_id: device_tracker.jphone
+    event: leave
+    zone: zone.elm_st
+  action:
+    service: ifttt.trigger
+    data: {"event": "Jor_Leaving_Elm_St", "value1": "Hello World"}
+    
+#TEXT CELLA when JORDAN ARRIVES MILLYARD
+- id: jor_arriving_millyard
+  trigger:
+    platform: zone
+    entity_id: device_tracker.jphone
+    event: enter
+    zone: zone.millyard
+  action:
+    service: ifttt.trigger
+    data: {"event":"jor_arriving_millyard", "value1": "Hello World"}
+    
+#TEXT JORDAN when CELLA is LEAVING MILLYARD
+- id: cella_leaving_millyard
+  trigger:
+    platform: zone
+    entity_id: device_tracker.cella_gpslogger
+    event: leave
+    zone: zone.millyard
+  action:
+    service: ifttt.trigger
+    data: {"event":"cella_leaving_millyard", "value1": "Hello World"}
+
+#TEXT CELLA When CELLA ARRIVES HOME
+#- id: cella_arriving_home
+#  trigger:
+#    platform: zone
+#    entity_id: device_tracker.cella_gpslogger
+#    event: enter
+#    zone: zone.home
+#  action:
+#    service: ifttt.trigger
+#    data: {"event":"cella_arriving_home", "value1": "Hello World"}
+    
+#Trigger VDay Stuff
+#- id: trigger_vday
+#  trigger:
+#    platform: zone
+#    entity_id: device_tracker.cellaphone_cellaphone
+#    event: enter
+#    zone: zone.home
+#  action:
+#    service: homeassistant.turn_on
+#    entity_id: scene.valentinesday
+    
+#- id: testing
+#  trigger:
+#    platform: time
+#    # Matches every hour at 5 minutes past whole
+#    minutes: /5
+#    seconds: 00
+#  action:
+#    service: notify.notify
+#    data:
+#      message: "5 Minutes have passed since the last message!"
+#      title: "It Lives!!!"
+
+#TURN ON LIGHTS when Anyone ARRIVE HOME
+- id: Anyone_Arrive_HOME_TURNONIMHOME
+  trigger:
+    platform: state
+    entity_id: sensor.everyone_home
+    to: 'True'
+  action:
+    service: homeassistant.turn_on
+    entity_id: group.imhome
+
+#Open GARAGE When Jor Arrive Home
+- id: JOR_Arrive_Home_Open_Garage
+  trigger:
+    - platform: state
+      entity_id: sensor.jor_home
+      to: 'True'
+  action:
+    service: cover.open_cover
+    entity_id: cover.garage_left
+    
+#Close GARAGE When Jor Leaves Home
+#- id: JOR_Leave_Home_ Close_Garage
+#  trigger:
+#    - platform: state
+#      entity_id: sensor.jor_not_home
+#      from: 'off'
+#      to: 'on'
+#  action:
+#    service: cover.close_cover
+#    entity_id: cover.garage_left
+    
+    
+# Close Garage if it has been open for more than an hour after dark.
+#- id: CLOSE_Garage_AfterDark
+#  trigger: 
+#    - platform: state
+#      entity_id: cover.garage_left
+#      state: 'On'
+#      for:
+#        minutes: '60'
+#  condition:
+#    condition: sun
+#    after: sunset
+#    after_offset: "-0:15:00"
+#  action:
+#    service: cover.close_cover
+#    entity_id: cover.garage_left
+        
+    
+#UNLOCK FRONT DOOR when JORDAN ARRIVE HOME
+#- id: JOR_Arrive_HOME_UNLOCKFRONTDOOR
+#  trigger:
+#    platform: state
+#    entity_id: device_tracker.jphone
+#    state: 'home'
+#  action:
+#    service: homeassistant.turn_off
+#    entity_id: switch.front_door_lock
+    
+
+    
+#Unlock front door when CELLA ARRIVE HOME
+#- id: CELLA_Arrive_HOME_UNLOCKFRONTDOOR
+#  trigger:
+#    platform: zone
+#    entity_id: device_tracker.jphone
+#    event: enter
+#    zone: zone.home
+#  action:
+#    service: homeassistant.turn_off
+#    entity_id: switch.front_door_lock
+    
+
+#TURN ON VDAY LIGHTS when CELLA ARRIVE HOME
+#- id: CELLA_Arrive_HOME_TURNONVDAY
+#  trigger:
+#    platform: state
+#    entity_id: sensor.cella_home
+#    to: 'on'
+#  action:
+#    service: homeassistant.turn_on
+#    entity_id:  
+
+#TEST - Turn on AWAY MODE
+- id: Lights_Out
+  trigger:
+    platform: state
+    entity_id: sensor.everyone_home
+    to: 'False'
+  action:
+    service: homeassistant.turn_off
+    entity_id: group.everything
+    
+#Turn OFF office lights after no motion detected for 5 minutes
+
+- alias: Office_NoMotion_TurnOff
+  trigger:
+    platform: state
+    entity_id: binary_sensor.office_occupancy
+    to: 'off'
+    for:
+      minutes: 60
+  action:
+    service: homeassistant.turn_off
+    entity_id: light.office_top
+    
+    
+#Turn OFF reading room lights after no motion detected for 5 minutes (allow up to 45 minutes for polling window, part of Ecobee API limitation)
+- alias: Den_NoMotion_TurnOff
+  trigger:
+    platform: state
+    entity_id: binary_sensor.reading_room_occupancy
+    to: 'off'
+    for:
+      minutes: 5
+  action:
+    service: homeassistant.turn_off
+    entity_id: light.reading_room
+
+
+- alias: 'Push Travel Time From Jor to Cella'
+  initial_state: on
+  trigger:
+    - platform: time
+      minutes: '/5'
+      seconds: '0'
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ is_state("input_boolean.push_notification_distance_jor_to_cella", "on") }}'
+      - condition: numeric_state
+        entity_id: sensor.google_travel_time_jor_to_cella
+        above: 1
+  action:
+    - service: notify.notify
+      data:
+        title: "Jordan is {{states.sensor.google_travel_time_jor_to_cella.state}} minutes away"
+        message: "Approximate ETA based on current traffic conditions and last known location"
+        data:
+          push:
+            badge: 1
+            category: camera
+            entity_id: camera.street_view_jor_gps
+
+- alias: 'Push Travel Time From Cella to Jor'
+  initial_state: on
+  trigger:
+    - platform: time
+      minutes: '/5'
+      seconds: '0'
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ is_state("input_boolean.push_notification_distance_cella_to_jor", "on") }}'
+      - condition: numeric_state
+        entity_id: sensor.google_travel_time_cella_to_jor
+        above: 1
+  action:
+    - service: notify.notify
+      data:
+        title: "Cella is {{states.sensor.google_travel_time_cella_to_jor.state}} minutes away"
+        message: "Approximate ETA based on current traffic conditions and last known location"
+        data:
+          push:
+            badge: 1
+            category: camera
+            entity_id: camera.street_view_cella_gps
+
+- alias: 'Jor Has Arrived'
+  initial_state: on
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.google_travel_time_jor_to_cella
+      below: 2
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ is_state("input_boolean.push_notification_distance_jor_to_cella", "on") }}'
+  action:
+    - service: notify.all_cella
+      data:
+        title: "Jordan has arrived!"
+        message: "Jordan is here."
+        data:
+          push:
+            badge: 1
+            category: camera
+            entity_id: camera.street_view_jor_gps
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.push_notification_distance_jor_to_cella
+
+- alias: 'Cella Has Arrived'
+  initial_state: on
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.google_travel_time_cella_to_jor
+      below: 2
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ is_state("input_boolean.push_notification_distance_cella_to_jor", "on") }}'
+  action:
+    - service: notify.notify
+      data:
+        title: "Cella has arrived"
+        message: "Cella is here."
+        data:
+          push:
+            badge: 1
+            category: camera
+            entity_id: camera.street_view_cella_gps
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.push_notification_distance_cella_to_jor
+      
+###Turn on AC when Humidity above 60%
+#- alias: Turn Living Room Air conditioner Upon High Humidity
+#   value_template: >-
+ #       {% if states.sensor.main_floor_humidity %}
+  #          {% if states.sensor.main_floor_humidity.state | int > 40 %}
+   #           true
+    #        {% endif %}
+     #   {% endif %}
+  #action:
+  #- service: climate.set_temperature
+  #  data:
+  #    entity_id: climate.air_conditioner
+# # - delay: '00:15:00'
+  #- service: climate.set_temperature
+  #  data:
+  #    entity_id: climate.air_conditioner
+  #    temperature: 68
+  #    operation_mode: Cool
+  #    fan_mode: 'On High'
+      
+      
+      
+- id: "2345566435"
+  alias: "stop harmony activity with sleep time"
+  initial_state: on
+  trigger: 
+    - platform: state
+      entity_id: remote.harmonyhub2
+      to: 'on'
+      for:
+        minutes: 65
+  action: 
+    - service: remote.turn_off
+      entity_id: remote.harmonyhub2
+      data:
+        activity: "34237743"
+        
+- id: "Turn off Bedroom Lights at Night"
+  initial_state: on
+  trigger: 
+    - platform: state
+      entity_id: remote.harmonyhub2
+      to: 'on'
+      for:
+        minutes: 45
+  action: 
+    - service: homeassistant.turn_off
+      entity_id: group.master_bedroom
