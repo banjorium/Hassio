@@ -1,0 +1,305 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 43.5389
+  longitude: -71.3864
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 354
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/New_York
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend: !include frontend.yaml
+  
+
+# Enables configuration UI
+config:
+
+http:
+  base_url: https://kangabros.duckdns.org:8123
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+  api_password: !secret kangabros
+  cors_allowed_origins:
+    - https://kangabros.duckdns.org:7080
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+cover:
+  - platform: myq
+    username: jordanielafontaine@gmail.com
+    password: !secret MYQ
+    type: chamberlain
+    
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+  exclude:
+    entities:
+      - sensor.cpu_use
+      - sensor.disk_use_
+      - sensor.disk_use_varlog
+      - sensor.ram_use
+      - sensor.ram_free
+      - sensor.swap_use
+      - sensor.swap_free
+      - sensor.last_boot
+      - sensor.since_last_boot
+      - sensor.received_wlan0
+      - sensor.sent_wlan0
+      - sensor.packets_received_wlan0
+      - sensor.packets_sent_wlan0
+
+# Enables a map showing the location of tracked devices
+map:
+
+joaoapps_join:
+  - name: 'Galaxy Note8'
+    device_id: group.android
+    api_key: !secret join_api_key
+
+# Track the sun
+sun:
+
+# Weather prediction
+sensor: !include sensors.yaml
+  
+    
+# Text to speech
+tts:
+  - platform: google
+  
+camera:
+  - platform: ring
+  
+  - platform: generic
+    name: street_view_jor_gps
+    still_image_url: https://maps.googleapis.com/maps/api/streetview?size=600x300&location={{states.device_tracker.jphone.attributes.latitude}},{{states.device_tracker.jphone.attributes.longitude}}&key=AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
+    limit_refetch_to_url_change: true
+    
+  - platform: generic
+    name: street_view_cella_gps
+    still_image_url: https://maps.googleapis.com/maps/api/streetview?size=600x300&location={{states.device_tracker.cella_gpslogger.attributes.latitude}},{{states.device_tracker.cella_gpslogger.attributes.longitude}}&key=AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
+
+    limit_refetch_to_url_change: true
+    
+  - platform: generic
+    name: location_map
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{states.sensor.center_map_on.state}}&zoom={{states.input_number.map_zoom.state|int}}&size=600x300&maptype=roadmap&markers=icon:https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/560976_10152133368280245_380104743_n.jpg?oh=5bd015a3cfd72e762e1a81f8d0c21b9e&oe=5B19DB18|{{states.device_tracker.cella_gpslogger.attributes.latitude}},{{states.device_tracker.cella_gpslogger.attributes.longitude}}&markers=icon:https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/32086679_1772210016159060_5434641162960896_n.jpg?_nc_cat=0&oh=35bacf9e04973da9dc158297e4dc6236&oe=5B9206B7|{{states.device_tracker.jphone.attributes.latitude}},{{states.device_tracker.jphone.attributes.longitude}}&key=AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
+    limit_refetch_to_url_change: true
+
+#usps:
+ #   username: !secret uspsusername
+  #  password: !secret uspspassword
+  
+
+#coinbase:
+ # api_key: !secret coinbase_key
+  #api_secret: !secret coinbase_secret
+  #exchange_rate_currencies:
+  #  - BTC
+  #  - ETH
+  #  - LTC
+  #  - BCH
+
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: https://kangabros.duckdns.org:3218
+    
+  nodered:
+    title: Node-Red
+    icon: mdi:shuffle-variant
+    url: "https://kangabros.duckdns.org:1880/"
+    
+  terminal:
+    title: Terminal
+    icon: mdi:console-line
+    url: https://kangabros.duckdns.org:7681
+    
+    
+  happybubbles:
+    title: Happy Bubbles
+    icon: mdi:bluetooth
+    url: https://kangabros.duckdns.org:5555
+    
+# Cloud
+cloud:
+
+mqtt:
+  broker: m13.cloudmqtt.com
+  port: 26720
+  username: hassio
+  password: !secret cloudmqtt
+  discovery: true
+  
+  #port: 1883
+  #client_id: home-assistant-1
+  #keepalive: 60
+  #username: admin
+  #password: !secret mqtt_hapassword
+  
+device_tracker:
+  - platform: gpslogger
+    password: !secret gpsloggerpassword
+    
+  - platform: linksys_smart
+    host: 192.168.1.1
+    interval_seconds: '00:00:05'
+    consider_home: 5
+    track_new_devices: no
+    
+  - platform: bluetooth_tracker
+    consider_home: 5
+    interval_seconds: 5
+    track_new_devices: no
+    
+  - platform: nmap_tracker
+    hosts:
+    - 192.168.1.2/255
+    track_new_devices: yes
+    interval_seconds: 5
+    consider_home: 5
+    
+notify:
+  - platform: pushbullet
+    api_key: !secret pushbulletkey
+    
+  - platform: joaoapps_join
+    device_id: !secret join_api_key
+    name: join_all
+    api_key: !secret join_device_ID
+    
+light:
+  platform: mqtt_json
+  name: 'AiLight Living Room'
+  command_topic: 'AiLight-3E2B09/set'
+  status_topic: 'AiLight-3E2B09/status'
+  state_topic: 'AiLight-3E2B09'
+  color_temp: true
+  brightness: true
+  rgb: true
+  white_value: true
+  effect: false
+  optimistic: false
+  retain: true
+  
+#calendar:
+#  - platform: todoist
+#    token: !secret todoist_key
+    
+ecobee:
+  api_key: !secret ecobee_api
+  
+ring:
+  username: !secret ring_user
+  password: !secret ring_password
+  
+  
+switch:
+  - platform: tplink
+    host: !secret craft_ip
+    name: Craft
+  - platform: tplink
+    host: !secret filter_ip
+    name: Filter
+  - platform: tplink
+    host: !secret sexylights_ip
+    name: Sexy Lights
+    
+
+media_player:
+  - platform: spotify
+    client_id: !secret spotify_client_id
+    client_secret: !secret spotify_client_secret
+
+  - platform: firetv
+    host: 0.0.0.0
+    port: 5556
+    device: "FireTV"
+    name: "Fire TV"
+    
+#  - platform: firetv
+#    host: 192.168.1.105
+ #   port: 5555
+  #  device: "LivingRoomFireTV"
+   # name: "Living Room Fire TV"
+    
+    
+wink:
+    
+remote:
+  - platform: harmony
+    name: HarmonyHub
+    activity: TV
+    host: !secret harmony_ip
+    
+  - platform: harmony
+    name: HarmonyHub2
+    activity: 'Watch TV'
+    host: !secret harmony2_ip
+
+zone: !include zones.yaml
+  
+    
+ffmpeg:
+  
+python_script:
+
+ifttt:
+  key: !secret ifttt_key
+  
+input_boolean:
+  push_notification_distance_cella_to_jor:
+    name: Send Notifications - To Jor
+    icon: mdi:message-alert
+  push_notification_distance_jor_to_cella:
+    name: Send Notifications - To Cella
+    icon: mdi:message-alert
+
+input_select:
+  center_map_on:
+      name: Center Map On
+      icon: mdi:account-multiple
+      options:
+        - Jor
+        - Cella
+input_number:
+  map_zoom:
+    name: Zoom Map
+    icon: mdi:magnify
+    min: 1
+    max: 21
+    step: 1
+scene: !include scenes.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
