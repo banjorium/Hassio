@@ -1,0 +1,415 @@
+  - name: ValentinesDay
+    entities:
+      light.counter_right:
+        state: on
+        rgb_color: [255, 0, 0]
+        brightness: 254
+      light.bar:
+        state: on
+        rgb_color: [255, 165, 0]
+        brightness: 254
+      light.living_room_left_side:
+        state: on
+        rgb_color: [0, 0, 255]
+        brightness: 254
+      light.living_room_right_side:
+        state: on
+        rgb_color: [255, 255, 0]
+        brightness: 254
+      light.living_room_ambiance:
+        state: on
+        rgb_color: [0, 255, 0]
+        brightness: 254
+      light.bathroom:
+        state: on
+        rgb_color: [0, 28, 200]
+        brightness: 254
+      light.hue_color_lamp_1:
+        state: on
+        rgb_color: [255, 0, 255]
+        brightness: 254
+      light.kitchen_lights:
+        state: off
+      light.bedroom_lights:
+        state: off
+      light.office_lights:
+        state: off
+   
+  #BEDROOM - Relax
+  - name: 'Relax - Bedroom'
+    entities:
+      light.cellas_side:
+        state: on
+        profile: relax
+      light.jors_side:
+        state: on
+        profile: relax
+        
+ #Bedroom - Energize
+  - name: 'Energize - Bedroom'
+    entities:
+      switch.sexy_lights:
+        state: off
+      light.cellas_side:
+        state: on
+        profile: energize
+      light.jors_side:
+        state: on
+        profile: energize
+        
+#Bedroom - Reading
+  - name: 'Reading - Bedroom'
+    entities:
+      light.cellas_side:
+        state: on
+        profile: reading
+      light.jors_side:
+        state: on
+        profile: reading
+      switch.sexy_lights:
+        state: off
+
+#Computer Area - ColorLoop
+  - name: 'Color Loop - Computer Area'
+    entities:
+      light.bar:
+        state: on
+        effect: colorloop
+        brightness: 254
+        
+ 
+#Computer Area - Concentrate
+  - name: 'Concentrate - Computer Area'
+    entities:
+      light.bar:
+        state: on
+        profile: concentrate
+        
+#Computer Area - Energize
+  - name: 'Energize - Computer Area'
+    entities:
+      light.bar:
+        state: on
+        profile: energize
+        
+#Computer Area - Reading
+  - name: 'reading - Computer Area'
+    entities:
+      light.bar:
+        state: on
+        profile: reading
+        
+#Computer Area - Relax
+  - name: 'Relax - Computer Area'
+    entities:
+      light.bar:
+        state: on
+        profile: relax
+        
+#Guest Bathroom - Color Loop
+  - name: 'Color Loop - Guest Bath'
+    entities:
+      light.bathroom:
+        state: on
+        effect: colorloop
+        brightness: 254
+        
+
+#Kitchen - ColorLoop
+  - name: 'Color Loop - Kitchen'
+    entities:
+      light.counter_right:
+        state: on
+        effect: colorloop
+        brightness: 254
+        
+        
+#Kitchen - Concentrate
+  - name: 'Concentrate - Kitchen'
+    entities:
+      light.sink:
+        state: on
+        profile: concentrate
+      switch.kitchen_lights:
+        state: on
+      light.counter_right:
+        state: on
+        profile: concentrate
+
+#Kitchen - Energize
+  - name: 'Energize - Kitchen'
+    entities:
+      light.sink:
+        state: on
+        profile: Energize
+      switch.kitchen_lights:
+        state: on
+      light.counter_right:
+        state: on
+        profile: Energize
+        
+#Kitchen - Reading
+  - name: 'Reading - Kitchen'
+    entities:
+      light.sink:
+        state: on
+        profile: Reading
+      switch.kitchen_lights:
+        state: on
+      light.counter_right:
+        state: on
+        profile: Reading
+        
+#Kitchen - Relax
+  - name: 'Relax - Kitchen'
+    entities:
+      light.sink:
+        state: on
+        profile: Relax
+      switch.kitchen_lights:
+        state: off
+      light.counter_right:
+        state: on
+        profile: Relax
+      
+#LIVINGROOM - Colorloop
+  - name: 'Color Loop - Living Room'
+    entities:
+      light.living_room_ambiance:
+        state: on
+        effect: colorloop
+        brightness: 254
+      light.living_room_left_side:
+        state: on
+        effect: colorloop
+        brightness: 254
+      light.living_room_right_side:
+        state: on
+        effect: colorloop
+        brightness: 254
+      light.bar:
+        state: on
+        effect: colorloop
+        brightness: 254
+        
+  #LIVINGROOM - Relax
+  - name: 'Relax - Living Room'
+    entities:
+      light.living_room_ambiance:
+        state: on
+        profile: relax
+      light.living_room_left_side:
+        state: on
+        profile: relax
+      light.living_room_right_side:
+        state: on
+        profile: relax
+      light.bar:
+        state: on
+        profile: relax
+        
+    #LR - Energize
+  - name: 'Energize - Living Room'
+    entities:
+      light.living_room_ambiance:
+        state: on
+        profile: energize
+      light.living_room_left_side:
+        state: on
+        profile: energize
+      light.living_room_right_side:
+        state: on
+        profile: energize
+      light.bar:
+        state: on
+        profile: energize
+        
+  #LIVINGROOM - Concentrate
+  - name: 'Concentrate - Living Room'
+    entities:
+      light.living_room_ambiance:
+        state: on
+        profile: concentrate
+      light.living_room_left_side:
+        state: on
+        profile: concentrate
+      light.living_room_right_side:
+        state: on
+        profile: concentrate
+      light.bar:
+        state: on
+        profile: concentrate
+        
+  #LIVINGROOM - Reading
+  - name: 'Reading - Living Room'
+    entities:
+      light.living_room_ambiance:
+        state: on
+        profile: reading
+      light.living_room_left_side:
+        state: on
+        profile: reading
+      light.living_room_right_side:
+        state: on
+        profile: reading
+      light.bar:
+        state: on
+        profile: reading
+        
+
+#Office - Concentrate
+  - name: 'Concentrate - Office'
+    entities:
+      light.office_top:
+        state: on
+        profile: concentrate
+      
+#Office - Energize
+  - name: 'Energize - Office'
+    entities:
+      light.office_top:
+        state: on
+        profile: energize
+        
+#Office - Reading
+  - name: 'Reading - Office'
+    entities:
+      light.office_top:
+        state: on
+        profile: reading
+        
+#Office - Relax
+  - name: 'Relax - Office'
+    entities:
+      light.office_top:
+        state: on
+        profile: relax
+
+#Reading Room - Concentrate
+  - name: 'Concentrate - Den'
+    entities:
+      light.reading_room_light:
+        state: on
+        profile: concentrate
+      light.hue_color_lamp1:
+        state: on
+        profile: concentrate
+        
+#Reading Room - Energize
+  - name: 'Energize - Den'
+    entities:
+      light.reading_room_light:
+        state: on
+        profile: energize
+      light.hue_color_lamp1:
+        state: on
+        profile: energize
+
+#Reading Room - Reading
+  - name: 'Reading - Den'
+    entities:
+      light.reading_room_light:
+        state: on
+        profile: reading
+      light.hue_color_lamp1:
+        state: on
+        profile: reading
+        
+#Reading Room - Relax
+  - name: 'Relax - Den'
+    entities:
+      light.reading_room_light:
+        state: on
+        profile: relax
+      light.hue_color_lamp1:
+        state: on
+        profile: relax
+
+#Reading Room - Color Loop
+  - name: 'Color Loop - Den'
+    entities:
+      light.reading_room:
+        state: on
+        effect: colorloop
+        brightness: 254
+      light.hue_color_lamp_1:
+        state: on
+        effect: colorloop
+        brightness: 254
+
+        
+# Sexy Time!!!!
+  - name: 'Sexy Time'
+    entities:
+      light.counter_right:
+        state: on
+        effect: random
+        brightness: 150
+      light.bar:
+        state: on
+        effect: random
+        brightness: 150
+      light.living_room_left_side:
+        state: on
+        effect: random
+        brightness: 254
+      light.living_room_right_side:
+        state: on
+        effect: colorloop
+        brightness: 254
+      light.living_room_ambiance:
+        state: on
+        effect: colorloop
+        brightness: 254
+      light.bathroom:
+        state: on
+        effect: colorloop
+        brightness: 254
+      light.hue_color_lamp_1:
+        state: on
+        effect: colorloop
+        brightness: 254
+      switch.kitchen_lights:
+        state: off
+      light.bedroom_lights:
+        state: on
+        white_value: 30
+      light.office_lights:
+        state: off
+      light.reading_room:
+        state: off
+      switch.sexylights:
+        state: on
+        
+  - name: 'Wind Down'
+    entities:
+      group.all_upstairs_lights:
+        state: on
+        profile: relax
+      switch.kitchen_lights:
+        state: off
+      
+        
+        
+  - name: "Turn Off Everything"
+    entities:
+      switch.kitchen_lights:
+        state: off
+      switch.filter:
+        state: off
+      switch.craft:
+        state: off
+      group.all_lights:
+        state: off
+      
+      
+#Whole house Color Loop
+  - name: 'Color Loop - Whole House'
+    entities:
+      group.all_color_lights:
+        state: on
+        effect: colorloop
+        brightness: 254
+
+
+      
