@@ -1,0 +1,428 @@
+##############################
+#                            #
+# Default View Configuration #
+#                            #
+##############################
+
+default_view:
+  view: yes
+  icon: mdi:home
+  entities:
+    - group.whole_house_scenes
+    - group.sensors
+    - group.have_i_been_pwned
+    - device_tracker.cella_gpslogger
+    - device_tracker.jphone
+    
+#Whole House Scenes
+whole_house_scenes:
+  name: Whole House Scenes
+  entities:
+    - scene.color_loop__whole_house
+#   - scene.sexy_time
+    - scene.turn_off_everything
+    - scene.wind_down
+
+#All Color Lights
+all_color_lights:
+  name: 'All Color Lights'
+  entities:
+    - light.counter_right
+    - light.bar
+    - light.living_room_front
+    - light.living_room_main
+    - light.living_room_ambiance
+    - light.living_room_table
+    - light.bathroom
+    - light.hue_color_lamp1
+    - light.reading_room_light
+    
+    
+#HaveIBeenPwned Sensors
+have_i_been_pwned:
+  name: Breach Detection
+  entities:
+    - sensor.breaches_banjordiumgmailcom
+    - sensor.breaches_jlafontainesnhuedu
+    - sensor.breaches_jordanielafontainegmailcom
+    - sensor.breaches_jlafontaineitgmailcom
+    - sensor.breaches_jordanlafontainegmailcom
+    - sensor.breaches_mlafontainesnhuedu
+    - sensor.breaches_marcellalafontainegmailcom
+    - sensor.breaches_mmuscategmailcom
+    
+##############################
+#                            #
+#    Upstairs Rooms/Groups   #
+#                            #
+##############################
+
+#Upstairs Primary View
+Upstairs:
+  view: yes
+  name: "Upstairs"
+  entities:
+    - group.entire_upstairs_scenes
+    - sensor.main_floor_temperature
+    - group.master_bedroom
+    - group.master_bath
+    - group.den
+    - group.office
+    - group.guest_bath
+    - group.entryway
+    - group.living_room
+    - group.sunroom
+    - group.kitchen
+    - group.mudroom
+    - group.computer_area
+
+#Entire Upstairs Scenes Only
+Entire_Upstairs_Scenes:
+  name: Entire Upstairs Scenes
+  entities:
+    - scene.color_loop__whole_house
+#   - scene.sexy_time
+    - scene.wind_down
+
+#Upstairs Lights
+All_Upstairs_Lights:
+  name: "all upstairs lights"
+  entities:
+    - light.sink
+    - light.counter_right
+    - light.bar
+    - light.living_room_table
+    - light.living_room_front
+    - light.living_room_main
+    - light.living_room_ambiance
+    - light.bathroom
+    - light.office_top
+    - light.hue_color_lamp1
+    - light.jors_side
+    - light.cellas_side
+
+#Master Bedroom
+Master_Bedroom:
+  name: Master Bedroom
+  entities:
+    - remote.harmonyhub2
+    - sensor.master_temperature
+    - light.jors_side
+    - light.cellas_side
+#   - switch.sexy_lights
+    - scene.concentrate__bedroom
+    - scene.energize__bedroom
+    - scene.reading__bedroom
+    - scene.relax__bedroom
+    - climate.master_2
+   
+   
+
+#Master Bath
+Master_Bath:
+  name: Master Bath
+
+#Den
+Den:
+  name: Den
+  entities:
+    - sensor.reading_room_temperature
+    - scene.color_loop__den
+   #- scene.concentrate__den
+    - scene.energize__den
+    - scene.reading__den
+    - scene.relax__den
+
+#Office
+Office:
+  name: Office
+  entities:
+    - sensor.office_temperature
+    - light.office_top
+    - scene.concentrate__office
+    - scene.energize__office
+    - scene.reading__office
+    - scene.relax__office
+    
+
+#Guest Bathroom
+Guest_Bath:
+  name: Guest Bath
+  entities:
+    - light.bathroom
+    - scene.color_loop__guest_bath
+    - scene.concentrate__guest_bath
+    - scene.energize__guest_bath
+    - scene.reading__guest_bath
+    - scene.relax__guest_bath
+    
+#Entryway
+Entryway:
+  name: Entryway
+  entities:
+    - light.entry
+    - lock.front_door
+    - sensor.ring_front_door_last_motion
+    - sensor.ring_front_door_last_activity
+    - sensor.ring_front_door_wifi_signal_category
+    - sensor.ring_front_door_battery
+    
+#Living Room
+Living_Room:
+  name: Living Room
+  entities:
+    - sensor.main_floor_temperature
+    - light.living_room_table
+    - light.living_room_main
+    - light.living_room_front
+    - light.living_room_ambiance
+    - light.bar
+    - remote.harmonyhub
+    - scene.color_loop__living_room
+    - scene.concentrate__living_room
+    - scene.energize__living_room
+    - scene.reading__living_room
+    - scene.relax__living_room
+    - light.ailight_living_room
+    - climate.air_conditioner
+    
+#Sunroom
+Sunroom:
+  name: Sunroom
+  
+#Kitchen  
+Kitchen:
+  name: Kitchen
+  entities:
+    - switch.kitchen_lights
+    - light.counter_right
+    - light.sink
+    - light.bar
+    - scene.color_loop__kitchen
+    - scene.concentrate__kitchen
+    - scene.energize__kitchen
+    - scene.reading__kitchen
+    - scene.relax__kitchen
+    
+#Mudroom
+Mudroom:
+  name: Mudroom
+  
+
+#ComputerArea
+Computer_Area:
+  name: Computer Area
+  entities:
+    - light.bar
+    - scene.color_loop__computer_area
+    - scene.concentrate__computer_area
+    - scene.energize__computer_area
+    - scene.reading__comptuer_area
+    - scene.relax__computer_area
+
+
+###########################
+#                         #
+# Downstairs Rooms/Groups #
+#                         #
+###########################
+
+#Downstairs Primary View
+Downstairs:
+  view: yes
+  name: Downstairs
+  entities:
+    - group.Craft
+    - group.Hydroponics
+    - group.Workshop
+    - group.gym
+    - group.drums
+    - group.stairwell
+     
+#Craft
+Craft:
+  name: Craft Area
+  entities:
+    - switch.craft
+    
+#Hydro
+Hydroponics:
+  name: Hydroponics Area
+
+#Workshop
+Workshop:
+  name: Workshop Area
+  entities:
+    - light.workshop
+  
+#Gym
+Gym:
+  name: Gym Area
+  entities:
+    - light.gym
+    - switch.filter
+    
+
+#Drums
+Drums:
+  name: Drum Area
+  entities:
+    - light.drums
+  
+#Stairwell
+Stairwell:
+  name: Stairwell
+
+#Downstairs_Scenes
+
+###########################
+#                         #
+#       Garage Groups     #
+#                         #
+###########################  
+
+#Garage Primary View
+Garage:
+  view: yes
+  name: 'Garage'
+  entities:
+    - cover.garage_left
+
+
+Scenes:
+  name: Home Scenes
+  entities:
+    - scene.living_room_relax
+    - scene.valentinesday
+    - scene.wind_down
+#   - scene.sexy_time
+    
+
+LivingRoomScenes:
+  entities:
+    - scene.living_room_relax
+    - scene.living_room_energize
+    - scene.living_room_concentrate
+    - scene.living_room_reading
+  
+ 
+all_lights:
+ name: "All Philips Hue Lights"
+ entities:
+ - group.livingroom_lights
+ - group.bathroom_lights
+ - group.kitchen
+ - light.jors_side
+ - light.cellas_side
+ 
+imhome:
+  name: "I am Home"
+  entities:
+    - light.bathroom
+    - light.counter_right
+    - light.bar
+    - light.sink
+    - light.cellas_side
+    - light.jors_side
+    - switch.kitchen_lights
+    - light.living_room_front
+    - light.living_room_main
+    - light.living_room_table
+    - light.living_room_ambiance
+    
+sensors:
+  name: "System Sensors"
+  entities:
+    - sensor.cpu_temperature
+    - sensor.disk_use_percent_
+    - sensor.disk_use_percent_varlog
+    - sensor.memory_use_percent
+    - sensor.memory_free
+    - sensor.memory_use
+    - sensor.last_boot
+    - sensor.processor_use
+    - sensor.since_last_boot
+
+dash_sensors:
+  name: Sensors Overview
+  entities:
+    - sensor.ring_front_door_last_activity
+    
+
+#GROUPS FOR AUTOMOATIONS
+#Turn On/Off Bedroom Lights
+
+Bedroom_Lights_Pure:
+  name: BedroomLightsPure
+  entities:
+    - light.jors_side
+    - light.cellas_side
+
+    
+#Everything
+Everything:
+  name: Everything
+  entities:
+    - light.cellas_side
+    - light.jors_side
+    - light.reading_room
+    - light.hue_color_lamp_1
+    - switch.kitchen_lights
+    - light.office_top
+    - light.bathroom
+    - light.counter_right
+    - light.living_room_front
+    - light.living_room_main
+    - light.living_room_table
+    - light.living_room_ambiance
+    - light.bar
+    - light.sink
+    - switch.sexy_lights
+    - light.gym
+    - switch.filter
+    - switch.craft
+    - light.drums
+    - light.workshop
+    - remote.harmonyhub
+    
+    
+#################################################################################################
+#                           MAPS                                                                #
+#################################################################################################
+
+map_view:
+  view: yes
+  name: Location
+  entities:
+    - group.map
+    - group.location_map
+    - group.device_tracker_street_view
+    - group.send_push_updates
+map:
+  view: no
+  entities:
+    - camera.location_map
+
+device_tracker_street_view:
+  view: no
+  name: "Street Views"
+  entities:
+    - camera.street_view_jor_gps
+    - camera.street_view_cella_gps
+
+send_push_updates:
+  view: no
+  name: "Travel Updates"
+  entities:
+    - input_boolean.push_notification_distance_jor_to_cella
+    - input_boolean.push_notification_distance_cella_to_jor
+
+location_map:
+  view: no
+  name: "Map Controls"
+  entities:
+    - sensor.google_travel_time_jor_to_cella
+    - sensor.google_travel_time_cella_to_jor
+    - input_number.map_zoom
+    - input_select.center_map_on
+    
