@@ -1,0 +1,52 @@
+device_tracker.jphone:
+  entity_picture: https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/32086679_1772210016159060_5434641162960896_n.jpg?_nc_cat=0&oh=35bacf9e04973da9dc158297e4dc6236&oe=5B9206B7
+  friendlyname: Jor
+device_tracker.cella_gpslogger:
+  entity_picture: https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/560976_10152133368280245_380104743_n.jpg?oh=5bd015a3cfd72e762e1a81f8d0c21b9e&oe=5B19DB18
+device_tracker.galaxynote8:
+  entity_picture: https://rocketdock.com/images/screenshots/Galaxy.png
+  
+#Naming Customizations
+light.jors_side:
+  friendlyname: Jor's Side
+  icon: mdi.lamp
+
+light.office_top:
+  friendlyname: Office Light
+  
+climate.reading_room_temperature:
+  friendlyname: Current Temperature
+  
+climate.main_floor_temperature:
+  friendlyname: Current Temperature
+  
+climate.office_temperature:
+  friendlyname: Current Temperature
+  
+climate.master_temperature:
+  friendlyname: Current Temperature
+  
+scene.sexy_time:
+  friendlyname: "Party Time"
+
+switch.sexy_lights:
+  friendlyname: "Party Lights"
+  
+  
+automation.automation_8:
+  friendly_name: 'AwayMode'
+  
+automation.automation_3:
+  friendly_name: 'LeavingElm'
+  
+automation.automation_4:
+  friendly_name: 'ArrivingMill'
+  
+automation.automation_5:
+  friendly_name: 'CellaLeaveMill'
+  
+automation.automation_6:
+  friendly_name: 'ArriveHomeLights'
+  
+automation.automation_7:
+  friendly_name: 'JorArriveOpenGarage'
