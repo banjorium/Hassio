@@ -5,48 +5,54 @@ device_tracker.cella_gpslogger:
   entity_picture: https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/560976_10152133368280245_380104743_n.jpg?oh=5bd015a3cfd72e762e1a81f8d0c21b9e&oe=5B19DB18
 device_tracker.galaxynote8:
   entity_picture: https://rocketdock.com/images/screenshots/Galaxy.png
-  
-#Naming Customizations
+group.security:
+  icon: mdi:security-lock
+group.climate:
+  icon: mdi:oil-temperature
 light.jors_side:
   friendlyname: Jor's Side
-  icon: mdi.lamp
-
+  icon: mdi:lamp
 light.office_top:
   friendlyname: Office Light
-  
 climate.reading_room_temperature:
   friendlyname: Current Temperature
-  
 climate.main_floor_temperature:
   friendlyname: Current Temperature
-  
 climate.office_temperature:
   friendlyname: Current Temperature
-  
 climate.master_temperature:
   friendlyname: Current Temperature
-  
 scene.sexy_time:
-  friendlyname: "Party Time"
-
+  friendlyname: Party Time
 switch.sexy_lights:
-  friendlyname: "Party Lights"
-  
-  
+  friendlyname: Party Lights
 automation.automation_8:
-  friendly_name: 'AwayMode'
-  
+  friendly_name: AwayMode
 automation.automation_3:
-  friendly_name: 'LeavingElm'
-  
+  friendly_name: LeavingElm
 automation.automation_4:
-  friendly_name: 'ArrivingMill'
-  
+  friendly_name: ArrivingMill
 automation.automation_5:
-  friendly_name: 'CellaLeaveMill'
-  
+  friendly_name: CellaLeaveMill
 automation.automation_6:
-  friendly_name: 'ArriveHomeLights'
-  
+  friendly_name: ArriveHomeLights
 automation.automation_7:
-  friendly_name: 'JorArriveOpenGarage'
+  friendly_name: JorArriveOpenGarage
+sensor.motion_sensor_2_temperature:
+  friendly_name: Craft Temperature
+sensor.motion_sensor_3_temperature:
+  friendly_name: Mudroom Temperature
+sensor.motion_sensor_4_temperature:
+  friendly_name: Guest Bathroom Temperature
+sensor.motion_sensor_5_temperature:
+  friendly_name: Master Bedroom Temperature
+sensor.motion_sensor_7_temperature:
+  friendly_name: Office Temperature
+sensor.motion_sensor_8_temperature:
+  friendly_name: Master Bathroom Temperature
+group.lighting:
+  icon: mdi:lightbulb
+group.people:
+  icon: mdi:account-multiple
+group.media:
+  icon: mdi:filmstrip
