@@ -84,7 +84,7 @@ joaoapps_join:
   - name: 'Galaxy Note8'
     device_id: group.android
     api_key: !secret join_api_key
-
+    
 # Track the sun
 sun:
 
@@ -118,6 +118,8 @@ camera:
 #usps:
  #   username: !secret uspsusername
   #  password: !secret uspspassword
+
+recorder:
   
 
 #coinbase:
@@ -144,12 +146,6 @@ panel_iframe:
     title: Terminal
     icon: mdi:console-line
     url: https://kangabros.duckdns.org:7681
-    
-    
-  happybubbles:
-    title: Happy Bubbles
-    icon: mdi:bluetooth
-    url: https://kangabros.duckdns.org:5555
     
 # Cloud
 cloud:
@@ -182,21 +178,9 @@ device_tracker:
     interval_seconds: 5
     track_new_devices: no
     
-  - platform: nmap_tracker
-    hosts:
-    - 192.168.1.2/255
-    track_new_devices: yes
-    interval_seconds: 5
-    consider_home: 5
-    
 notify:
   - platform: pushbullet
     api_key: !secret pushbulletkey
-    
-  - platform: joaoapps_join
-    device_id: !secret join_api_key
-    name: join_all
-    api_key: !secret join_device_ID
     
 light:
   platform: mqtt_json
@@ -265,7 +249,7 @@ remote:
   - platform: harmony
     name: HarmonyHub2
     activity: 'Watch TV'
-    host: !secret harmony2_ip
+    host: !secret harmony2_ip    
 
 zone: !include zones.yaml
   
@@ -285,13 +269,8 @@ input_boolean:
     name: Send Notifications - To Cella
     icon: mdi:message-alert
 
-input_select:
-  center_map_on:
-      name: Center Map On
-      icon: mdi:account-multiple
-      options:
-        - Jor
-        - Cella
+input_select: !include input_select.yaml
+
 input_number:
   map_zoom:
     name: Zoom Map
@@ -299,6 +278,7 @@ input_number:
     min: 1
     max: 21
     step: 1
+  
 scene: !include scenes.yaml
 group: !include groups.yaml
 automation: !include automations.yaml
