@@ -1,0 +1,26 @@
+harmony1:
+  name: Living Room Harmony Control
+  options:
+    - Select Input
+    - Power Off
+    - TV
+    - PS4
+  initial: Select Input
+  icon: mdi:monitor  
+  
+  
+harmony2:
+  name: Master Bedroom Harmony Control
+  options:
+    - Select Input
+    - Power Off
+    - TV
+  initial: Select Input
+  icon: mdi:monitor  
+  
+center_map_on:
+  name: Center Map On
+  icon: mdi:account-multiple
+  options:
+    - Jor
+    - Cella
