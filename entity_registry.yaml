@@ -1,0 +1,105 @@
+light.cellas_side:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name: Cella's Side
+  platform: hue
+  unique_id: 00:17:88:01:03:63:60:e3-0b
+light.counter_right:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name: Counter
+  platform: hue
+  unique_id: 00:17:88:01:02:af:4c:31-0b
+light.office_top:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name: Office
+  platform: hue
+  unique_id: 00:17:88:01:03:57:eb:76-0b
+light.bar:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:02:af:bd:98-0b
+light.bathroom:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:00:1e:40:f7-0b
+light.jors_side:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name: Jor's Side
+  platform: hue
+  unique_id: 00:17:88:01:03:62:6e:c9-0b
+media_player.chrome:
+  config_entry_id:
+  name:
+  platform: plex
+  unique_id: jizd0r0r5yppa5o5oyl7u3nt
+light.master_bath_toilet:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:02:80:56:79-0b
+light.computer_lamp:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:03:1a:63-0b
+light.basement_landing:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:14:7f:f4-0b
+light.master_bathroom_shower:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:02:80:56:85-0b
+light.laundry_light:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:02:82:12:5f-0b
+media_player.neil_degrasse_tycast:
+  config_entry_id: 8f0814ab8020495a86017b93c89c5444
+  name:
+  platform: cast
+  unique_id: 2fb33a7b-dfaf-5cd1-b879-60efe87f6568
+switch.wemo_insight:
+  config_entry_id:
+  name:
+  platform: wemo
+  unique_id: 231702K1200957
+light.fridge_light:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:50:f2:15-0b
+light.living_room_main:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:dd:9f:61-0b
+light.living_room_front:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:03:fc:1d-0b
+light.guest_bathroom_toilet:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:02:f0:87:a1-0b
+light.living_room_table:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:d9:00:43-0b
+light.front_deck_light:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:62:6f:25-0b
+light.living_room_ambiance:
+  config_entry_id: 84516d3eebc64ab1beaf099126fb2417
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:84:a1:61-0b
