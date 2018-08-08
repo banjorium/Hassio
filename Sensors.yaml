@@ -12,6 +12,16 @@
 - platform: template
   sensors:
 # If either "device" reports as home, this sensor returns 'on' #
+      current_activity:
+        friendly_name: 'Current Activity'
+        value_template: '{{ states.remote.harmonyhub.attributes.current_activity }}'
+        
+      current_activity2:
+        friendly_name: 'Current Activity'
+        value_template: '{{ states.remote.harmonyhub2.attributes.current_activity2 }}'
+
+
+
       jor_home:
         entity_id:
           - device_tracker.galaxy_note8
@@ -25,29 +35,21 @@
         entity_id:
           - device_tracker.cella_gpslogger
           - device_tracker.mossella
-          - device_tracker.mossella_2
-          
         value_template: >-
           {{ is_state('device_tracker.cella_gpslogger', 'home')
-             or is_state('device_tracker.mossella', 'home')
-             or is_state('device_tracker.mossella_2', 'home')}}
+             or is_state('device_tracker.mossell', 'home') }}
       everyone_home:
         entity_id:
           - device_tracker.galaxy_note8
           - device_tracker.galaxynote8
           - device_tracker.cella_gpslogger
-          - device_tracker.jphone
           - device_tracker.mossella
-          - device_tracker.mossella_2
         value_template: >-
            {{ is_state('device_tracker.galaxy_note8', 'home')
              or is_state('device_tracker.jphone', 'home')
              or is_state('device_tracker.galaxynote8', 'home')
              or is_state('device_tracker.mossella', 'home')
-             or is_state('device_tracker.cellas_gpslogger', 'home')
-             or is_state('device_tracker.mossella_2', 'home')
-             or is_state('device_tracker.jphone', 'home')
-           }}
+             or is_state('device_tracker.cellas_gpslogger', 'home') }}
       jor_not_home:
         entity_id:
           - device_tracker.galaxy_note8
@@ -55,7 +57,7 @@
         value_template: >-
           {{ is_state('device_tracker.galaxy_note8', 'not_home')
              or is_state('device_tracker.galaxynote8', 'not_home') }}
-             
+
       moss_not_home:
         entity_id:
           - device_tracker.cella_gpslogger
@@ -82,17 +84,17 @@
           {{ [lat,long]|join(',') }}
       
 - platform: google_travel_time
-  api_key: YOUR_GOOGLE_API_KEY
-  name: google_travel_time_anja_to_jeremy
-  origin: device_tracker.anjas_iphone
-  destination: device_tracker.jeremys_iphone
+  api_key: AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
+  name: google_travel_time_jor_to_cella
+  origin: device_tracker.galaxy_note8
+  destination: device_tracker.cella_gpslogger
   
 - platform: google_travel_time
-  api_key: YOUR_GOOGLE_API_KEY
-  name: google_travel_time_jeremy_to_anja
-  origin: device_tracker.jeremys_iphone
-  destination: device_tracker.anjas_iphone
-             
+  api_key: AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
+  name: google_travel_time_cella_to_jor
+  origin: device_tracker.cella_gpslogger
+  destination: device_tracker.galaxy_note8
+  
 - platform: etherscan
   address: !secret etherscan_add
   token: APPC
