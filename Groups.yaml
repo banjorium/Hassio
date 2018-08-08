@@ -4,20 +4,37 @@
 #                            #
 ##############################
 
+
+harmony1:
+  name: "Living Room TV"
+  view: false
+  icon: mdi:remote
+  entities:
+    - remote.harmonyhub  
+    - sensor.current_activity
+    - input_select.harmony1
+
+harmony2:
+  name: "Master Bedroom TV"
+  view: false
+  icon: mdi:remote
+  entities:
+    - remote.harmonyhub2  
+    - sensor.current_activity2
+    - input_select.harmony2
+
+
 default_view:
   view: yes
   icon: mdi:home
   entities:
-    - group.whole_house_scenes
     - group.sensors
-    - group.have_i_been_pwned
-    - device_tracker.cella_gpslogger
-    - device_tracker.jphone
-    
+
 #Whole House Scenes
 whole_house_scenes:
   name: Whole House Scenes
   entities:
+    - scene.colorloop__living_area
     - scene.color_loop__whole_house
 #   - scene.sexy_time
     - scene.turn_off_everything
@@ -51,15 +68,122 @@ have_i_been_pwned:
     - sensor.breaches_marcellalafontainegmailcom
     - sensor.breaches_mmuscategmailcom
     
+    
+#EXPERIMENTAL!
+
+#Lighting
+Lighting:
+  view: yes
+  name: Lights
+  entities: 
+    - group.garage_lights
+    - group.mudroom_lights
+    - group.kitchen_lights
+    - group.computer_lights
+    - group.living_room_lights
+    - group.sunroom_lights
+    - group.entryway_lights
+    - group.guest_bath_lights
+    - group.office_lights
+    - group.den_lights
+    - group.master_bed_lights
+    - group.master_bath_lights
+    - group.stairwell_lights
+    - group.gym_lights
+    - group.hydro_lights
+    - group.craft_lights
+    - group.drums_lights
+    - group.workshop_lights
+    
+#Climate and Temperature
+Climate:
+  view: yes
+  name: 'Climate and Temperature'
+  entities:
+    - group.garage_climate
+    - group.mudroom_climate
+    - group.kitchen_climate
+    - group.computer_area_climate
+    - group.living_room_climate
+    - group.sunroom_climate
+    - group.entryway_climate
+    - group.guest_bath_climate
+    - group.office_climate
+    - group.den_climate
+    - group.master_bed_climate
+    - group.master_bath_climate
+    - group.craft_climate
+
+People:
+  name: People
+  view: yes
+  entities:
+    - sensor.everyone_home
+    - group.status
+    - group.map
+    - group.location_map
+    - group.device_tracker_street_view
+    - group.send_push_updates
+    
+Media:
+  name: 'Media'
+  view: yes
+  entities:
+    - group.harmony1
+    - group.harmony2
+    - group.downstairs_media
+    
+Security:
+  name: 'Security'
+  view: yes
+  entities:
+    - group.locks
+    - group.door_states
+    - group.motion_states
+    - group.cameras
+    - group.have_i_been_pwned
+    
+All_Scenes:
+  name: 'Scenes'
+  view: yes
+  entities:
+    - scene.colorloop__living_area
+    - scene.color_loop__whole_house
+    - scene.turn_off_everything
+    - scene.wind_down 
+    
+downstairs_media:
+  name: 'Downstairs Media'
+  entities:
+    - media_player.neil_degrasse_tycast
+    
+locks:
+  name: 'Locks'
+  entities:
+    - lock.front_door
+    
+Motion_States:
+  name: 'Motion States'
+  entities:
+    - sensor.ring_front_door_last_motion
+    - binary_sensor.motion_sensor__motion
+    - binary_sensor.motion_sensor_2_motion
+    - binary_sensor.motion_sensor_3_motion
+    - binary_sensor.motion_sensor_4_motion
+    - binary_sensor.motion_sensor_7_motion
+    - binary_sensor.motion_sensor_8_motion
+    
 ##############################
 #                            #
 #    Upstairs Rooms/Groups   #
 #                            #
 ##############################
 
+
+
 #Upstairs Primary View
 Upstairs:
-  view: yes
+  view: no
   name: "Upstairs"
   entities:
     - group.entire_upstairs_scenes
@@ -75,6 +199,15 @@ Upstairs:
     - group.kitchen
     - group.mudroom
     - group.computer_area
+    
+Door_States:
+  name: Door States
+  entities:
+    - binary_sensor.master_bedroom_door_opened
+    - binary_sensor.front_door_sensor_opened
+    - binary_sensor.basement_door_opened
+    - binary_sensor.sunroom_slider_opened
+    - binary_sensor.mudroom_door_opened
 
 #Entire Upstairs Scenes Only
 Entire_Upstairs_Scenes:
@@ -88,18 +221,28 @@ Entire_Upstairs_Scenes:
 All_Upstairs_Lights:
   name: "all upstairs lights"
   entities:
-    - light.sink
     - light.counter_right
     - light.bar
     - light.living_room_table
     - light.living_room_front
     - light.living_room_main
     - light.living_room_ambiance
+    - light.computer_lamp
     - light.bathroom
     - light.office_top
     - light.hue_color_lamp1
     - light.jors_side
     - light.cellas_side
+    - light.master_bathroom
+    - switch.guest_bathroom_fixture
+    - light.hallway_middle
+    - light.entry
+    - light.laundry_light
+    - switch.garage_lights
+    - switch.track_lighting
+    - light.master_bath_toilet
+    - light.master_bathroom_shower
+    - light.fridge_light
 
 #Master Bedroom
 Master_Bedroom:
@@ -115,46 +258,99 @@ Master_Bedroom:
     - scene.reading__bedroom
     - scene.relax__bedroom
     - climate.master_2
+    - sensor.motion_sensor_5_temperature
+    - binary_sensor.master_bedroom_door_opened
+    
+Master_Bed_Lights:
+  name: 'Master Bed Lights'
+  entities: 
+    - light.jors_side
+    - light.cellas_side
    
-   
-
+Master_Bed_Climate:
+  name: 'Master Bed Climate'
+  entities:
+    - climate.master_2
+    - sensor.motion_sensor_5_temperature
+    - sensor.master_temperature
+    
 #Master Bath
 Master_Bath:
   name: Master Bath
+  entities: 
+    - light.master_bath_toilet
+    - light.master_bathroom_shower
+    - switch.master_bathroom_fixture
+    - sensor.motion_sensor_8_temperature
+    
+Master_Bath_Lights:
+  name: 'Master Bath Lights'
+  entities: 
+    - light.master_bath_toilet
+    - light.master_bathroom_shower
+    - switch.master_bathroom_fixture
+    
+Master_Bath_Climate:
+  name: 'Master Bath Climate'
+  entities:
+    - sensor.motion_sensor_8_temperature
 
 #Den
 Den:
   name: Den
-  entities:
-    - sensor.reading_room_temperature
-    - scene.color_loop__den
-   #- scene.concentrate__den
-    - scene.energize__den
-    - scene.reading__den
-    - scene.relax__den
+  
+  
+Den_Lights:
+  name: 'Den Lights'
+ 
+ 
+Den_Climate:
+  name: 'Den Climate'
+  
 
 #Office
 Office:
   name: Office
   entities:
-    - sensor.office_temperature
     - light.office_top
+    - light.cellas_desk
     - scene.concentrate__office
     - scene.energize__office
-    - scene.reading__office
-    - scene.relax__office
+    - sensor.motion_sensor_7_temperature
     
+Office_Lights:
+  name: 'Office Lights'
+  entities:
+    - light.office_top
+    
+Office_Climate:
+  name: 'Office Climate'
+  entities:
+    - sensor.motion_sensor_7_temperature
+    - sensor.office_temperature_2
+
 
 #Guest Bathroom
 Guest_Bath:
   name: Guest Bath
   entities:
     - light.bathroom
-    - scene.color_loop__guest_bath
-    - scene.concentrate__guest_bath
-    - scene.energize__guest_bath
-    - scene.reading__guest_bath
-    - scene.relax__guest_bath
+    - switch.guest_bathroom_fixture
+    - light.hallway_middle
+    - sensor.motion_sensor_4_temperature
+    
+Guest_Bath_Lights:
+  name: 'Guest Bath Lights'
+  entities:
+    - light.guest_bathroom_toilet
+    - switch.guest_bathroom_fixture
+    - light.bathroom
+    
+    
+Guest_bath_climate:
+  name: 'Guest Bath Climate'
+  entities: 
+    - sensor.motion_sensor_4_temperature
     
 #Entryway
 Entryway:
@@ -164,8 +360,19 @@ Entryway:
     - lock.front_door
     - sensor.ring_front_door_last_motion
     - sensor.ring_front_door_last_activity
-    - sensor.ring_front_door_wifi_signal_category
     - sensor.ring_front_door_battery
+    - sensor.front_door_sensor_temperature
+    - binary_sensor.front_door_sensor_opened
+    
+Entryway_lights:
+  name: 'Entryway Lights'
+  entities:
+   - light.entry
+   
+Entryway_climate:
+  name: 'Entryway Climate'
+  entities:
+   - sensor.front_door_sensor_temperature
     
 #Living Room
 Living_Room:
@@ -176,19 +383,42 @@ Living_Room:
     - light.living_room_main
     - light.living_room_front
     - light.living_room_ambiance
+    - switch.track_lighting
     - light.bar
     - remote.harmonyhub
-    - scene.color_loop__living_room
-    - scene.concentrate__living_room
-    - scene.energize__living_room
-    - scene.reading__living_room
-    - scene.relax__living_room
-    - light.ailight_living_room
     - climate.air_conditioner
+    - sensor.sunroom_slider_temperature
+    
+    
+Living_Room_Lights:
+  name: 'Living Room Lights'
+  entities:
+    - light.living_room_main
+    - light.living_room_ambiance
+    - light.living_room_table
+    - light.living_room_front
+    - light.living_room
+    
+Living_room_climate:
+  name: 'Living Room Climate'
+  entities:
+    - climate.air_conditioner
+    - climate.main_floor_2
+    - sensor.main_floor_temperature
     
 #Sunroom
 Sunroom:
   name: Sunroom
+  entities:
+    - binary_sensor.sunroom_slider_opened
+    
+    
+Sunroom_Lights:
+  name: 'Sunroom Lights'
+  
+Sunroom_Climate:
+  name: 'Sunroom Climate'
+
   
 #Kitchen  
 Kitchen:
@@ -196,31 +426,66 @@ Kitchen:
   entities:
     - switch.kitchen_lights
     - light.counter_right
-    - light.sink
     - light.bar
-    - scene.color_loop__kitchen
-    - scene.concentrate__kitchen
-    - scene.energize__kitchen
-    - scene.reading__kitchen
-    - scene.relax__kitchen
+    - light.fridge_light
+    - sensor.motion_sensor__temperature
+
+
+Kitchen_Lights:
+  name: 'Kitchen Lights'
+  entities:
+    - switch.kitchen_lights
+    - light.bar
+    - light.fridge_light
+    - light.counter_right
+    
+Kitchen_Climate:
+  name: 'Kitchen Climate'
+  entities:
+    - sensor.motion_sensor__temperature
     
 #Mudroom
 Mudroom:
   name: Mudroom
+  entities:
+    - light.laundry_light
+    - sensor.mudroom_door_temperature
+    - sensor.motion_sensor_3_temperature
+    - binary_sensor.mudroom_door_opened
+    
+Mudroom_Lights:
+  name: 'Mudroom Lights'
+  entities:
+    - light.mudroom
   
-
+Mudroom_Climate:
+  name: 'Mudroom Climate'
+  entities:
+    - sensor.mudroom_door_temperature
+    - sensor.motion_sensor_3_temperature
+    
+    
 #ComputerArea
 Computer_Area:
   name: Computer Area
   entities:
     - light.bar
-    - scene.color_loop__computer_area
-    - scene.concentrate__computer_area
-    - scene.energize__computer_area
-    - scene.reading__comptuer_area
-    - scene.relax__computer_area
+    - light.computer_lamp
+    - switch.track_lighting
+    - sensor.sunroom_slider_temperature
+    - binary_sensor.sunroom_slider_opened
+    
+Computer_Lights:
+  name: 'Computer Area Lights'
+  entities:
+    - light.computer_lamp
+    - switch.track_lighting
 
-
+Computer_Area_Climate:
+  name: 'Computer Area Climate'
+  entities:
+    - sensor.sunroom_slider_temperature
+    
 ###########################
 #                         #
 # Downstairs Rooms/Groups #
@@ -229,7 +494,7 @@ Computer_Area:
 
 #Downstairs Primary View
 Downstairs:
-  view: yes
+  view: no
   name: Downstairs
   entities:
     - group.Craft
@@ -238,22 +503,66 @@ Downstairs:
     - group.gym
     - group.drums
     - group.stairwell
-     
+    - binary_sensor.basement_door_opened
+
+
+#Downstairs_Auto!
+Downstairs_Auto:
+  name: Downstairs_auto
+  entities:
+    - light.basement_landing
+    - light.workshop_light
+    - switch.workbench
+    - light.hydro_light
+    - light.gym
+    - switch.filter
+    - switch.craft
+    
 #Craft
 Craft:
   name: Craft Area
   entities:
     - switch.craft
+    - media_player.neil_degrasse_tycast
+    - sensor.motion_sensor_2_temperature
+    
+Craft_Lights:
+ name: 'Craft Lights'
+ entities:
+   - switch.craft
+    
+    
+Craft_Climate:
+  name: 'Craft Area Climate'
+  entities: 
+    - sensor.motion_sensor_2_temperature
     
 #Hydro
 Hydroponics:
   name: Hydroponics Area
+  entities:
+    - light.hydro_light
+    
+Hydro_Lights:
+  name: 'Hydro Lights'
+  entities:
+    - light.hydro_light
 
 #Workshop
 Workshop:
   name: Workshop Area
   entities:
     - light.workshop
+    - switch.workbench
+    - light.workshop_light
+    
+Workshop_Lights:
+  name: 'Workshop Lights'
+  entities:
+    - light.workshop
+    - switch.workbench
+    - light.workshop_light
+    
   
 #Gym
 Gym:
@@ -262,16 +571,34 @@ Gym:
     - light.gym
     - switch.filter
     
+Gym_Lights:
+  name: 'Gym Lights'
+  entities:
+    - light.gym
+    
 
 #Drums
 Drums:
   name: Drum Area
   entities:
     - light.drums
-  
+    
+Drums_Lights:
+  name: 'Drums Area Lights'
+  entities:
+    - light.drums
+    
+    
 #Stairwell
 Stairwell:
   name: Stairwell
+  entities: 
+    - light.basement_landing
+    
+Stairwell_Lights:
+  name: 'Stairwell Lights'
+  entities:
+    - light.basement_landing
 
 #Downstairs_Scenes
 
@@ -287,7 +614,17 @@ Garage:
   name: 'Garage'
   entities:
     - cover.garage_left
+    - switch.garage_lights
 
+Garage_Lights:
+  name: 'Garage Lights'
+  entities:
+    - switch.garage_lights
+    
+Garage_climate:
+  name: 'Garage Climate'
+  entities: 
+    - sensor.garage_motion_temperature
 
 Scenes:
   name: Home Scenes
@@ -325,13 +662,11 @@ imhome:
     - light.cellas_side
     - light.jors_side
     - switch.kitchen_lights
-    - light.living_room_front
-    - light.living_room_main
-    - light.living_room_table
-    - light.living_room_ambiance
+    - switch.track_lighting
     
 sensors:
   name: "System Sensors"
+  view: no
   entities:
     - sensor.cpu_temperature
     - sensor.disk_use_percent_
@@ -376,22 +711,31 @@ Everything:
     - light.living_room_table
     - light.living_room_ambiance
     - light.bar
-    - light.sink
     - switch.sexy_lights
     - light.gym
     - switch.filter
     - switch.craft
     - light.drums
-    - light.workshop
+    - light.workshop_light
+    - switch.workbench
     - remote.harmonyhub
-    
+    - light.master_bath_toilet
+    - light.master_bathroom_shower
+    - switch.guest_bathroom_fixture
+    - light.hallway_middle
+    - light.entry
+    - light.computer_lamp
+    - switch.track_lighting
+    - light.laundry
+    - light.cellas_desk
+    - light.fridge_light    
     
 #################################################################################################
 #                           MAPS                                                                #
 #################################################################################################
 
 map_view:
-  view: yes
+  view: no
   name: Location
   entities:
     - group.map
@@ -425,4 +769,3 @@ location_map:
     - sensor.google_travel_time_cella_to_jor
     - input_number.map_zoom
     - input_select.center_map_on
-    
