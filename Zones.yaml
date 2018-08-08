@@ -90,3 +90,30 @@
     latitude: 42.991574
     longitude: -71.462859 
     radius: 40
+    
+    
+  - name: 'Campus Dining Center'
+    latitude: 43.0396168
+    longitude: -71.45184749999999 
+    radius: 50
+    
+  - name: 'Campus LLC'
+    latitude: 43.03885616854719
+    longitude: -71.452029890213
+    radius: 50
+    
+    
+  - name: 'Campus Exeter Hall'
+    latitude: 43.039924989198354
+    longitude: -71.45465845504759
+    radius: 25
+    
+  - name: 'Campus Robert Frost'
+    latitude: 43.039156519995316
+    longitude: -71.45342463890074
+    radius: 25
+    
+  - name: 'Campus Student Center'
+    latitude: 43.0397838425155
+    longitude: -71.4539396230316
+    radius: 25
