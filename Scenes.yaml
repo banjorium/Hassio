@@ -34,6 +34,14 @@
         state: off
       light.office_lights:
         state: off
+        
+        
+#WatchTV
+
+  - name: WatchTV
+    entities:
+       remote.harmonyhub:
+         state: WatchTV
    
   #BEDROOM - Relax
   - name: 'Relax - Bedroom'
@@ -412,4 +420,43 @@
         brightness: 254
 
 
+#Living Room and Kitchen Colorloop
+  - name: 'Colorloop - Living Area'
+    entities:
+      light.counter_right:
+        state: on
+        effect: colorloop
+        brightness: 180
+      light.bar:
+        state: on
+        effect: colorloop
+        brightness: 180
+      light.living_room_table:
+        state: on
+        effect: colorloop
+        brightness: 180
+      light.living_room_ambiance:
+        state: on
+        effect: colorloop
+        brightness: 180
+      light.living_room_main:
+        state: on
+        effect: colorloop
+        brightness: 180
+      light.living_room_front:
+        state: on
+        effect: colorloop
+        brightness: 100
+      light.living_room:
+        state: on
+        effect: colorloop
+        brightness: 180
+      light.fridge_light:
+        state: on
+        effect: colorloop
+        brightness: 180
+      switch.track_lighting:
+        state: off
+      switch.kitchen_lights:
+        state: off
       
