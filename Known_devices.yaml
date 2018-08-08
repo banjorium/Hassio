@@ -364,3 +364,50 @@ wicollardold:
   name: WICOLLARD-OLD
   picture:
   track: true
+android_4:
+  hide_if_away: false
+  icon:
+  mac: 40:B4:CD:7D:69:1B
+  name: Android
+  picture:
+  track: true
+
+wemo_insight:
+  hide_if_away: false
+  icon:
+  mac: 14:91:82:B4:A7:79
+  name: WeMo Insight
+  picture:
+  track: true
+
+amazon9abc82cdf:
+  hide_if_away: false
+  icon:
+  mac: 6C:56:97:A9:09:7E
+  name: amazon-9abc82cdf
+  picture:
+  track: true
+
+2fb33a7bdfaf5cd1b87960efe87f6568:
+  hide_if_away: false
+  icon:
+  mac: 6C:AD:F8:4B:9E:7F
+  name: 2fb33a7b-dfaf-5cd1-b879-60efe87f6568
+  picture:
+  track: true
+
+android73fa1eff65de2462:
+  hide_if_away: false
+  icon:
+  mac: 5C:51:88:61:BF:FF
+  name: android-73fa1eff65de2462
+  picture:
+  track: true
+
+benjaminsiphone:
+  hide_if_away: false
+  icon:
+  mac: 98:CA:33:5E:58:B2
+  name: BenjaminsiPhone
+  picture:
+  track: true
