@@ -10,7 +10,7 @@ harmony1:
   view: false
   icon: mdi:remote
   entities:
-    - remote.harmonyhub  
+    - remote.living_room_harmony 
     - sensor.current_activity
     - input_select.harmony1
 
@@ -19,7 +19,7 @@ harmony2:
   view: false
   icon: mdi:remote
   entities:
-    - remote.harmonyhub2  
+    - remote.bedroom_harmony  
     - sensor.current_activity2
     - input_select.harmony2
 
@@ -29,6 +29,7 @@ default_view:
   icon: mdi:home
   entities:
     - group.sensors
+    - sensor.dehumidifier_watts
 
 #Whole House Scenes
 whole_house_scenes:
@@ -48,7 +49,6 @@ all_color_lights:
     - light.bar
     - light.living_room_front
     - light.living_room_main
-    - light.living_room_ambiance
     - light.living_room_table
     - light.bathroom
     - light.hue_color_lamp1
@@ -76,23 +76,23 @@ Lighting:
   view: yes
   name: Lights
   entities: 
-    - group.garage_lights
-    - group.mudroom_lights
-    - group.kitchen_lights
     - group.computer_lights
-    - group.living_room_lights
-    - group.sunroom_lights
-    - group.entryway_lights
-    - group.guest_bath_lights
-    - group.office_lights
+    - group.craft_lights
     - group.den_lights
-    - group.master_bed_lights
-    - group.master_bath_lights
-    - group.stairwell_lights
+    - group.drums_lights
+    - group.entryway_lights
+    - group.garage_lights
+    - group.guest_bath_lights
     - group.gym_lights
     - group.hydro_lights
-    - group.craft_lights
-    - group.drums_lights
+    - group.kitchen_lights
+    - group.living_room_lights
+    - group.master_bath_lights
+    - group.master_bed_lights
+    - group.mudroom_lights
+    - group.office_lights
+    - group.stairwell_lights
+    - group.sunroom_lights
     - group.workshop_lights
     
 #Climate and Temperature
@@ -113,6 +113,12 @@ Climate:
     - group.master_bed_climate
     - group.master_bath_climate
     - group.craft_climate
+    
+Appliances:
+  view: yes
+  name: 'Appliances'
+  entities:
+    - group.basement_dehumidifier
 
 People:
   name: People
@@ -142,6 +148,14 @@ Security:
     - group.motion_states
     - group.cameras
     - group.have_i_been_pwned
+    
+#Garage Primary View
+Garage:
+  view: yes
+  name: 'Garage'
+  entities:
+    - cover.garage_left
+    - switch.garage_lights
     
 All_Scenes:
   name: 'Scenes'
@@ -226,7 +240,6 @@ All_Upstairs_Lights:
     - light.living_room_table
     - light.living_room_front
     - light.living_room_main
-    - light.living_room_ambiance
     - light.computer_lamp
     - light.bathroom
     - light.office_top
@@ -243,6 +256,7 @@ All_Upstairs_Lights:
     - light.master_bath_toilet
     - light.master_bathroom_shower
     - light.fridge_light
+    - light.kitchen_sink
 
 #Master Bedroom
 Master_Bedroom:
@@ -307,7 +321,22 @@ Den_Lights:
 Den_Climate:
   name: 'Den Climate'
   
+##Water Softener
+#water_softener:
+#  name: 'Water Softener Status'
+#  entities:
+#    - sensor.softener_watts
+#    - binary_sensor.softener_running
+#    - binary_sensor.softener_not_running
+  
 
+Basement_Dehumidifier:
+  name: 'Basement Dehumidifier Status'
+  entities: 
+    - sensor.dehumidifier_watts
+    - binary_sensor.dehumidifier_full
+    - binary_sensor.dehumidifier_running
+  
 #Office
 Office:
   name: Office
@@ -322,6 +351,7 @@ Office_Lights:
   name: 'Office Lights'
   entities:
     - light.office_top
+    - light.cellas_desk
     
 Office_Climate:
   name: 'Office Climate'
@@ -382,7 +412,6 @@ Living_Room:
     - light.living_room_table
     - light.living_room_main
     - light.living_room_front
-    - light.living_room_ambiance
     - switch.track_lighting
     - light.bar
     - remote.harmonyhub
@@ -394,10 +423,8 @@ Living_Room_Lights:
   name: 'Living Room Lights'
   entities:
     - light.living_room_main
-    - light.living_room_ambiance
     - light.living_room_table
     - light.living_room_front
-    - light.living_room
     
 Living_room_climate:
   name: 'Living Room Climate'
@@ -415,7 +442,9 @@ Sunroom:
     
 Sunroom_Lights:
   name: 'Sunroom Lights'
-  
+  entities:
+    - light.sunroom_lamp
+    
 Sunroom_Climate:
   name: 'Sunroom Climate'
 
@@ -428,6 +457,7 @@ Kitchen:
     - light.counter_right
     - light.bar
     - light.fridge_light
+    - light.kitchen_sink
     - sensor.motion_sensor__temperature
 
 
@@ -438,6 +468,7 @@ Kitchen_Lights:
     - light.bar
     - light.fridge_light
     - light.counter_right
+    - light.kitchen_sink
     
 Kitchen_Climate:
   name: 'Kitchen Climate'
@@ -608,13 +639,6 @@ Stairwell_Lights:
 #                         #
 ###########################  
 
-#Garage Primary View
-Garage:
-  view: yes
-  name: 'Garage'
-  entities:
-    - cover.garage_left
-    - switch.garage_lights
 
 Garage_Lights:
   name: 'Garage Lights'
@@ -658,7 +682,7 @@ imhome:
     - light.bathroom
     - light.counter_right
     - light.bar
-    - light.sink
+    - light.kitchen_sink
     - light.cellas_side
     - light.jors_side
     - switch.kitchen_lights
@@ -709,7 +733,7 @@ Everything:
     - light.living_room_front
     - light.living_room_main
     - light.living_room_table
-    - light.living_room_ambiance
+    - light.kitchen_sink
     - light.bar
     - switch.sexy_lights
     - light.gym
