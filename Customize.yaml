@@ -56,3 +56,96 @@ group.people:
   icon: mdi:account-multiple
 group.media:
   icon: mdi:filmstrip
+group.garage:
+  icon: mdi:garage
+switch.kitchen_lights:
+  icon: mdi:light-switch
+switch.garage_lights:
+  icon: mdi:light-switch
+switch.track_lighting:
+  icon: mdi:light-switch
+switch.guest_bathroom_fixture:
+  icon: mdi:light-switch
+switch.master_bathroom_fixture:
+  icon: mdi:light-switch
+switch.workbench:
+  icon: mdi:power-socket-us
+switch.craft:
+  icon: mdi:power-socket-us
+light.cellas_desk:
+  icon: mdi:desk-lamp
+light.cellas_side:
+  icon: mdi:lamp
+binary_sensor.garage_motion_motion:
+  friendly_name: Garage Motion
+binary_sensor.motion_sensor__motion:
+  friendly_name: Kitchen Motion
+binary_sensor.motion_sensor_3_motion:
+  friendly_name: Mudroom Motion
+binary_sensor.motion_sensor_4_motion:
+  friendly_name: Guest Bathroom Motion
+binary_sensor.motion_sensor_5_motion:
+  friendly_name: Master Bedroom Motion
+binary_sensor.motion_sensor_7_motion:
+  friendly_name: Office Motion
+binary_sensor.motion_sensor_8_motion:
+  friendly_name: Master Bathroom Motion
+binary_sensor.motion_sensor_2_motion:
+  friendly_name: Craft Area Motion
+light.sunroom_lamp:
+  icon: mdi:lamp
+sensor.breaches_banjordiumgmailcom:
+  friendly_name: BANJORDIUM@GMAIL.COM
+  icon: mdi:email-secure
+sensor.breaches_jlafontainesnhuedu:
+  friendly_name: J.LAFONTAINE@SNHU.EDU
+  icon: mdi:email-secure
+sensor.breaches_jlafontaineitgmailcom:
+  friendly_name: JLAFONTAINE.IT@GMAIL.COM
+  icon: mdi:email-secure
+sensor.breaches_jordanlafontainegmailcom:
+  friendly_name: JORDAN.LAFONTAINE@GMAIL.COM
+  icon: mdi:email-secure
+sensor.breaches_jordanlafontainehotmailcom:
+  friendly_name: JORDAN.LAFONTAINE@HOTMAIL.COM
+  icon: mdi:email-secure
+sensor.breaches_jordanielafontainegmailcom:
+  friendly_name: JORDANIELAFONTAINE@GMAIL.COM
+  icon: mdi:email-secure
+sensor.breaches_jordanielafontainehotmailcom:
+  friendly_name: JORDANIELAFONTAINE@GMAIL.COM
+  icon: mdi:email-secure
+sensor.breaches_mlafontainesnhuedu:
+  friendly_name: M.LAFONTAINE@SNHU.EDU
+  icon: mdi:email-secure
+sensor.breaches_marcellalafontainegmailcom:
+  friendly_name: MARCELLALAFOTNAINE@GMAIL.COM
+  icon: mdi:email-secure
+sensor.breaches_mmuscategmailcom:
+  friendly_name: MMUSCATE@GMAIL.COM
+  icon: mdi:email-secure
+sensor.softener_watts:
+  friendly_name: Water Softener Current Watts
+  icon: mdi:water
+binary_sensor.threshold:
+  friendly_name: Regeneration Not Running
+group.appliances:
+  icon: mdi:washing-machine
+binary_sensor.softener_not_running:
+  friendly_name: Standby
+  icon: mdi:power-sleep
+binary_sensor.softener_running:
+  friendly_name: Regeneration Running
+  icon: mdi:power
+  
+sensor.dehumidifier_watts:
+  friendly_name: Dehumidifier - Current Watts
+  icon: mdi:flash-circle
+  
+binary_sensor.dehumidifier_full:
+  friendly_name: "Full"
+  icon: mdi:flask-empty
+  
+binary_sensor.dehumidifier_running:
+  friendly_name: Running
+  icon: mdi:flask-empty-outline
