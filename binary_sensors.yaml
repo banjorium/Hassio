@@ -1,0 +1,23 @@
+#- platform: threshold
+#  name: softener_not_running
+#  entity_id: sensor.softener_watts
+#  upper: 1.6
+#  lower: .001
+  
+#- platform: threshold
+#  name: softener_running
+#  entity_id: sensor.softener_watts
+#  upper: 100
+#  lower: 1.601
+
+- platform: threshold
+  name: dehumidifier_full
+  entity_id: sensor.dehumidifier_watts
+  upper: 50
+  lower: 1
+  
+- platform: threshold
+  name: dehumidifier_running
+  entity_id: sensor.dehumidifier_watts
+  upper: 750
+  lower: 51
