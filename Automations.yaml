@@ -1,4 +1,34 @@
+#Turn off Everything at Night!
+- id: Shutdown
+  initial_state: on
+  trigger:
+    platform: state
+    entity_id: binary_sensor.master_bedroom_door_opened
+    to: 'off'
+    from: 'on'
+  condition:
+    - condition: state
+      entity_id: remote.bedroom_harmony
+      state: 'Watch TV'
+  action:
+    - service: scene.turn_on
+      entity_id: scene.turn_off_everything_but_bedroom
+
+
 #https://community.home-assistant.io/t/logitech-harmony-integration-with-ianddays-component/6183/188
+
+- id: Basement_Dehumidifier_FULL
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.dehumidifier_watts
+    below: 100
+  action:
+    service: notify.notify
+    data_template:
+      title: "Basement Dehumidifier is FULL and Needs to be Emptied!"
+      message: "Dehumidifier stopped because it is full and using less than {{ states.sensor.dehumidifier_watts.state }} watts.  OR someone turned it off!"
+ 
+
 
 - id: 'Living Room Harmony'
   initial_state: on
@@ -9,7 +39,7 @@
     from: 'Select Input'
   action:
   - service: remote.turn_on
-    entity_id: remote.harmonyhub
+    entity_id: remote.living_room_harmony
     data_template:
       activity: >
         {% if is_state("input_select.harmony1", "TV") %}
@@ -32,7 +62,7 @@
     to: 'Power Off'
   action:
   - service: remote.turn_off
-    entity_id: remote.harmonyhub
+    entity_id: remote.living_room_harmony
   - service: input_select.select_option
     entity_id: input_select.harmony1
     data_template:
@@ -47,11 +77,11 @@
     from: 'Select Input'
   action:
   - service: remote.turn_on
-    entity_id: remote.harmonyhub2
+    entity_id: remote.bedroom_harmony
     data_template:
       activity: >
         {% if is_state("input_select.harmony2", "TV") %}
-        34237743
+        34961530
         {% else %}
         {% endif %}
   - service: input_select.select_option
@@ -68,7 +98,7 @@
     to: 'Power Off'
   action:
   - service: remote.turn_off
-    entity_id: remote.harmonyhub2
+    entity_id: remote.bedroom_harmony
   - service: input_select.select_option
     entity_id: input_select.harmony2
     data_template:
@@ -205,38 +235,56 @@
       message: "The left garage door has been open for 10 minutes"
       title: "Garage Open Alert"
 
-#Close the Garage after 2 minutes of being open
+#Close the Garage after 10 minutes of being open if no one inside
 - id: Garage_Open_Close
+  initial_state: on
   trigger:
     - platform: state
       entity_id: cover.garage_left
       to: open
-      for:
-        minutes: '2'
+      from: closed
+      for: 
+        minutes: '10'
   condition:
     - condition: state
-      entity_id: 'sensor.jor_home'
-      state: 'False'
+      entity_id: binary_sensor.garage_motion_motion
+      state: 'off'
   action:
     service: cover.close_cover
     entity_id: cover.garage_left
     
-    
-#Close the Garage after 15 minutes of being open if no motion in garage
-- id: Garage_Open_NoMotion
+#Close the Garage after 10 minutes of being open if no one inside2
+- id: Garage_Open_Close_no_motion_trigger
+  initial_state: on
   trigger:
     - platform: state
       entity_id: binary_sensor.garage_motion_motion
       to: 'off'
-      for:
-        minutes: '15'
+      for: 
+        minutes: '8'
   condition:
     - condition: state
       entity_id: cover.garage_left
-      state: open
+      state: 'open'
   action:
     service: cover.close_cover
     entity_id: cover.garage_left
+    
+- id: Garage_Lights_No_Motion
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.garage_motion_motion
+      to: 'off'
+      for: 
+        minutes: '8'
+  condition:
+    - condition: state
+      entity_id: switch.garage_lights
+      state: 'on'
+  action:
+    service: switch.turn_off
+    entity_id: switch.garage_lights
     
 #TEXT CELLA when JORDAN is LEAVING ELM
 - id: jor_leaving_elm_st
@@ -316,7 +364,7 @@
   condition:
     - condition: time
       after: '05:30:00'
-      before: '22:59:59'
+      before: '20:59:59'
     - condition: state
       entity_id: 'sensor.everyone_home'
       state: 'True'
@@ -335,7 +383,7 @@
   condition:
     - condition: time
       after: '05:30:00'
-      before: '22:59:59'
+      before: '20:59:59'
     - condition: state
       entity_id: 'sensor.everyone_home'
       state: 'True'
@@ -343,11 +391,13 @@
     - service: light.turn_on
       entity_id: 
         - light.counter_right
+        - light.fridge_light
+        - light.kitchen_sink
       data:
         brightness: 254
         rgb_color: [255, 255, 255]
       
-- id: 'Motion Kitchen - Turn on Lights - Night Time'
+- id: 'Motion Kitchen - Turn on Lights - Late Night Time'
   initial_state: 'on'
   trigger:
     - platform: state
@@ -357,23 +407,51 @@
       from: 'off'
   condition:
     - condition: time
-      after: '23:00:00'
+      after: '23:59:59'
       before: '05:29:59'
     - condition: state
       entity_id: 'sensor.everyone_home'
       state: 'True'
   action:
     - service: light.turn_on
-      entity_id: light.counter_right
+      entity_id: 
+        - light.counter_right
+        - light.fridge_light
+        - light.kitchen_sink
       data:
         brightness: 150
         rgb_color: [255, 0, 0]
+        
+- id: 'Motion Kitchen - Turn on Lights - Mid-Night Time'
+  initial_state: 'on'
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.motion_sensor__motion
+      to: 'on'
+      from: 'off'
+  condition:
+    - condition: time
+      after: '21:00:00'
+      before: '23:59:59'
+    - condition: state
+      entity_id: 'sensor.everyone_home'
+      state: 'True'
+  action:
+    - service: light.turn_on
+      entity_id: 
+        - light.counter_right
+        - light.fridge_light
+        - light.kitchen_sink
+      data:
+        brightness: 150
+        color_temp: 370
       
       
 - id: Motion Detection - Kitchen Light off - Switch
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_motion
+    entity_id: binary_sensor.motion_sensor__motion
     to: 'off'
     for: '00:05:00'
   action:
@@ -384,35 +462,36 @@
   initial_state: 'on'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_motion
+    entity_id: binary_sensor.motion_sensor__motion
     to: 'off'
     for: '00:05:00'
   action:
-   - service: light.turn_off
-     entity_id: light.counter_right
+   - service: homeassistant.turn_off
+     entity_id: 
+       - light.counter_right
+       - light.fridge_light
+       - light.kitchen_sink
      
 - id: NO Motion Detection - Kitchen Light on - Counter
   initial_state: 'on'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_motion
+    entity_id: binary_sensor.motion_sensor__motion
     to: 'off'
-    for: '00:05:02'
+    for: '00:05:03'
   condition:
     - condition: time
-      after: '05:30:00'
+      after: '17:00:00'
       before: '23:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
   action:
-   - service: light.turn_on
-     entity_id: light.counter_right
+   - service: homeassistant.turn_on
+     entity_id: 
+       - light.counter_right
+       - light.fridge_light
+       - light.kitchen_sink
      data:
        brightness: 200
        effect: random
-       
-       
       
     
 - id: 'Basement Door Opens - Turn on Lights'
@@ -628,7 +707,7 @@
       entity_id:
         - binary_sensor.motion_sensor_8_motion
       to: 'off'
-      for: '00:15:00'
+      for: '00:04:00'
   condition:
     - condition: time
       after: '06:45:00'
@@ -756,7 +835,7 @@
     - service: light.turn_on
       entity_id:
         - light.bathroom
-        - light.hallway_middle
+        - light.guest_bathroom_toilet
       data:
         brightness: 254
         
@@ -819,7 +898,8 @@
       state: 'True'
   action:
     - service: light.turn_on
-      entity_id: light.bathroom
+      entity_id: 
+        - light.bathroom
       data:
         brightness: 75
         color_temp: 130
@@ -843,7 +923,8 @@
       state: 'True'
   action:
     - service: light.turn_on
-      entity_id: light.hallway_middle
+      entity_id: 
+        - light.guest_bathroom_toilet
       data:
         brightness: 40
 
@@ -882,7 +963,7 @@
       entity_id: 
         - light.bathroom
         - switch.guest_bathroom_fixture
-        - light.hallway_middle
+        - light.guest_bathroom_toilet
 
 - id: 'Motion Guest Bathroom - Turn on colors with no motion'
   initial_state: 'on'
@@ -941,21 +1022,43 @@
     service: cover.close_cover
     entity_id: cover.garage_left
     
-
+####TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT!!!!!!!!!!!
 - id: 'Turn on Garage Lights When Opened'
   initial_state: 'on'
   trigger: 
     - platform: state
       entity_id: cover.garage_left
+      to: 'open'
+  condition:
+    - condition: state
+      entity_id: switch.garage_lights
+      state: 'off'
+  action:
+    - service: homeassistant.turn_on
+      entity_id: switch.garage_lights
+      
+- id: 'Mudroom Door Opens - Turn on Garage Lights'
+  initial_state: 'on'
+  trigger:
+      platform: state
+      entity_id:
+        - binary_sensor.mudroom_door_opened
       to: 'on'
       from: 'off'
-  action:
-    - service: switch.turn_on
+  condition:
+    - condition: state
       entity_id: switch.garage_lights
+      state: 'off'
+  action:
+    - service: homeassistant.turn_on
+      entity_id: 
+        - switch.garage_lights
     - delay: '00:15:00'
     - service: switch.turn_off
-      entity_id: switch.garage_lights
+      entity_id: 
+        - switch.garage_lights
     
+#Disabled because no way to tell if someone is still in garage (motion sensor is PIR so opening door to throw out trash won't trigger it)    
 #- id: 'Turn on Garage Lights When Mudroom Door Opened'
 #  initial_state: 'on'
 #  trigger: 
@@ -973,12 +1076,25 @@
     - platform: state
       entity_id: binary_sensor.garage_motion_motion
       to: 'off'
-      for: '00:09:00'
+      for:
+        minutes: '10'
   action:
     - service: switch.turn_off
       entity_id: switch.garage_lights
       
-- id: 'Turn on Garage Lights When No Motion Detected'
+- id: 'Close Garage Door When No Motion Detected for 10 minutes'
+  initial_state: 'on'
+  trigger: 
+    - platform: state
+      entity_id: binary_sensor.garage_motion_motion
+      to: 'off'
+      for:
+        minutes: '10'
+  action:
+    - service: cover.close_cover
+      entity_id: cover.garage_left
+      
+- id: 'Turn on Garage Lights When Motion Detected'
   initial_state: 'on'
   trigger: 
     - platform: state
@@ -986,7 +1102,7 @@
       to: 'on'
       from: 'off'
   action:
-    - service: switch.turn_on
+    - service: homeassistant.turn_on
       entity_id: switch.garage_lights
    
 
@@ -1291,12 +1407,12 @@
   initial_state: on
   trigger: 
     - platform: state
-      entity_id: remote.harmonyhub2
+      entity_id: remote.bedroom_harmony
       to: 'on'
       for: '01:30:00'
   action: 
     - service: remote.turn_off
-      entity_id: remote.harmonyhub2
+      entity_id: remote.bedroom_harmony
       data:
         activity: "34237743"
         
@@ -1304,7 +1420,7 @@
   initial_state: on
   trigger: 
     - platform: state
-      entity_id: remote.harmonyhub2
+      entity_id: remote.bedroom_harmony
       to: 'on'
       for: '00:45:00'
   action: 
