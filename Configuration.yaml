@@ -12,6 +12,14 @@ homeassistant:
   time_zone: America/New_York
   # Customization file
   customize: !include customize.yaml
+  
+#panel_custom:
+#  - name: 'Demo Floorplan'
+#    sidebar_title: Floorplan
+#    sidebar_icon: mdi:home
+#    url_path: floorplan
+#    config: /local/custom_ui/floorplan/floorplan.yaml
+   
 
 # Show links to resources in log and frontend
 #introduction:
@@ -50,6 +58,15 @@ discovery:
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
+recorder:
+  db_url: !secret dburl
+  purge_keep_days: 4
+  include:
+    domains:
+      - sensor
+      - switch
+      - media_player
+      
 cover:
   - platform: myq
     username: jordanielafontaine@gmail.com
@@ -58,24 +75,21 @@ cover:
     
 # Enables support for tracking state changes over time
 history:
-
+  include:
+    domains:
+      - sensor
+      - switch
+      - media_player
+      - light
+      
 # View all events in a logbook
 logbook:
-  exclude:
-    entities:
-      - sensor.cpu_use
-      - sensor.disk_use_
-      - sensor.disk_use_varlog
-      - sensor.ram_use
-      - sensor.ram_free
-      - sensor.swap_use
-      - sensor.swap_free
-      - sensor.last_boot
-      - sensor.since_last_boot
-      - sensor.received_wlan0
-      - sensor.sent_wlan0
-      - sensor.packets_received_wlan0
-      - sensor.packets_sent_wlan0
+  include:
+    domains:
+      - sensor
+      - switch
+      - media_player
+      - light
 
 # Enables a map showing the location of tracked devices
 map:
@@ -90,7 +104,7 @@ sun:
 
 # Weather prediction
 sensor: !include sensors.yaml
-  
+binary_sensor: !include binary_sensors.yaml
     
 # Text to speech
 tts:
@@ -119,9 +133,6 @@ camera:
  #   username: !secret uspsusername
   #  password: !secret uspspassword
 
-recorder:
-  
-
 #coinbase:
  # api_key: !secret coinbase_key
   #api_secret: !secret coinbase_secret
@@ -136,6 +147,12 @@ panel_iframe:
     title: Configurator
     icon: mdi:wrench
     url: https://kangabros.duckdns.org:3218
+    
+  floorplan:
+    title: Floorplan
+    icon: mdi:home
+    url: https://kangabros.duckdns.org:8123/local/custom_ui/floorplan/ha-floorplan.html
+   
     
   nodered:
     title: Node-Red
@@ -182,19 +199,19 @@ notify:
   - platform: pushbullet
     api_key: !secret pushbulletkey
     
-light:
-  platform: mqtt_json
-  name: 'AiLight Living Room'
-  command_topic: 'AiLight-3E2B09/set'
-  status_topic: 'AiLight-3E2B09/status'
-  state_topic: 'AiLight-3E2B09'
-  color_temp: true
-  brightness: true
-  rgb: true
-  white_value: true
-  effect: false
-  optimistic: false
-  retain: true
+#light:
+#  platform: mqtt_json
+#  name: 'AiLight Living Room'
+#  command_topic: 'AiLight-3E2B09/set'
+#  status_topic: 'AiLight-3E2B09/status'
+#  state_topic: 'AiLight-3E2B09'
+#  color_temp: true
+#  brightness: true
+#  rgb: true
+#  white_value: true
+#  effect: false
+#  optimistic: false
+#  retain: true
   
 #calendar:
 #  - platform: todoist
@@ -242,19 +259,14 @@ wink:
     
 remote:
   - platform: harmony
-    name: HarmonyHub
+    name: 'Living Room Harmony'
     activity: TV
     host: !secret harmony_ip
     
   - platform: harmony
-    name: HarmonyHub2
+    name: 'Bedroom Harmony'
     activity: 'Watch TV'
     host: !secret harmony2_ip    
-
-zone: !include zones.yaml
-  
-    
-ffmpeg:
   
 python_script:
 
@@ -283,3 +295,4 @@ scene: !include scenes.yaml
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
+zone: !include zones.yaml
