@@ -8,17 +8,45 @@
     - last_ding
     - wifi_signal_strength
     - wifi_signal_category
+    
+#- platform: template
+#  sensors:
+#    softener_watts:
+#      friendly_name: "Water Softener Watts"
+#      unit_of_measurement: "w"
+#      value_template: '{% if states.switch.wemo_insight %}{{ states.switch.wemo_insight.attributes.current_power_w }}{% else %}Off{% endif %}'
+
+- platform: template
+  sensors:
+    dehumidifier_watts:
+      friendly_name: "Dehumidifier Watts"
+      unit_of_measurement: "w"
+      value_template: '{% if states.switch.wemo_insight %}{{ states.switch.wemo_insight.attributes.current_power_w }}{% else %}Off{% endif %}'
+
+    
+- platform: template
+  sensors:
+    number_of_lights_on:
+      value_template: >-
+        {% for state in states if ( 'light' in state.entity_id and state.domain in ['light','switch'] and state.state == 'on' ) -%}
+              {% if loop.last -%}
+              {{ loop.index }}
+              {%- endif %}
+              {% else %}
+                  0
+        {%- endfor %}
+      entity_id: sensor.time
       
 - platform: template
   sensors:
 # If either "device" reports as home, this sensor returns 'on' #
       current_activity:
         friendly_name: 'Current Activity'
-        value_template: '{{ states.remote.harmonyhub.attributes.current_activity }}'
+        value_template: '{{ states.remote.living_room_harmony.attributes.current_activity }}'
         
       current_activity2:
         friendly_name: 'Current Activity'
-        value_template: '{{ states.remote.harmonyhub2.attributes.current_activity2 }}'
+        value_template: '{{ states.remote.bedroom_harmony.attributes.current_activity }}'
 
 
 
@@ -83,6 +111,14 @@
           {% endif %}
           {{ [lat,long]|join(',') }}
       
+      friends_home:
+        entity_id:
+          - device_tracker.android73fa1eff65de2462
+          - device_tracker.benjaminsiphone
+        value_template: >-
+           {{ is_state('device_tracker.benjaminsiphone', 'home')
+             or is_state('device_tracker.android73fa1eff65de2462', 'home') }}
+             
 - platform: google_travel_time
   api_key: AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
   name: google_travel_time_jor_to_cella
