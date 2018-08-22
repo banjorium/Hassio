@@ -40,8 +40,13 @@
 
   - name: WatchTV
     entities:
-       remote.harmonyhub:
-         state: WatchTV
+      remote.living_room_harmony:
+        state: on
+         
+  - name: Watch_TV_Bedroom
+    entities:
+      remote.bedroom_harmony:
+        state: on
    
   #BEDROOM - Relax
   - name: 'Relax - Bedroom'
@@ -401,13 +406,39 @@
         
   - name: "Turn Off Everything"
     entities:
-      switch.kitchen_lights:
+      group.office_lights:
+        state: off
+      group.guest_bath_lights:
+        state: off
+      group.entryway_lights:
+        state: off
+      group.living_room_lights:
+        state: off
+      group.sunroom_lights:
+        state: off
+      group.kitchen_lights:
+        state: off
+      group.mudroom_lights:
+        state: off
+      group.computer_lights:
+        state: off
+      group.craft_lights:
+        state: off
+      group.hydro_lights:
+        state: off
+      group.workshop_lights:
+        state: off
+      group.gym_lights:
+        state: off
+      group.drums_lights:
+        state: off
+      group.stairwell_lights:
+        state: off
+      group.garage_lights:
+        state: off
+      group.master_bed_lights:
         state: off
       switch.filter:
-        state: off
-      switch.craft:
-        state: off
-      group.all_lights:
         state: off
       
       
@@ -435,10 +466,10 @@
         state: on
         effect: colorloop
         brightness: 180
-      light.living_room_ambiance:
+      light.kitchen_sink:
         state: on
         effect: colorloop
-        brightness: 180
+        brightness: 220
       light.living_room_main:
         state: on
         effect: colorloop
@@ -447,16 +478,52 @@
         state: on
         effect: colorloop
         brightness: 100
-      light.living_room:
-        state: on
-        effect: colorloop
-        brightness: 180
       light.fridge_light:
         state: on
         effect: colorloop
-        brightness: 180
+        brightness: 200
       switch.track_lighting:
         state: off
       switch.kitchen_lights:
         state: off
-      
+      remote.living_room_harmony:
+        state: on
+
+
+#turn_off_everything_but_bedroom
+  - name: turn_off_everything_but_bedroom
+    entities:
+      group.office_lights:
+        state: off
+      group.guest_bath_lights:
+        state: off
+      group.entryway_lights:
+        state: off
+      group.living_room_lights:
+        state: off
+      group.sunroom_lights:
+        state: off
+      group.kitchen_lights:
+        state: off
+      group.mudroom_lights:
+        state: off
+      group.computer_lights:
+        state: off
+      group.craft_lights:
+        state: off
+      group.hydro_lights:
+        state: off
+      group.workshop_lights:
+        state: off
+      group.gym_lights:
+        state: off
+      group.drums_lights:
+        state: off
+      group.stairwell_lights:
+        state: off
+      group.garage_lights:
+        state: off
+      switch.filter:
+        state: off
+      lock.front_door:
+        state: locked
