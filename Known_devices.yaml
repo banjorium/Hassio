@@ -130,7 +130,7 @@ cella_gpslogger:
   mac:
   name: Cella
   picture:
-  track: true
+  track: false
   vendor:
 
 myqcf2:
@@ -211,7 +211,7 @@ desktop76o0drk:
   mac: 1C:87:2C:61:4C:BF
   name: DESKTOP-76O0DRK
   picture:
-  track: false
+  track: true
 
 hp_envy_4502:
   hide_if_away: false
@@ -243,7 +243,7 @@ jphone:
   mac:
   name: jphone_GPSTracker
   picture:
-  track: true
+  track: false
 
 ps4428895:
   hide_if_away: false
@@ -261,13 +261,13 @@ morrowind:
   picture:
   track: false
 
-galaxy_note8:
-  hide_if_away: false
-  icon:
-  mac: BT_B4:BF:F6:7E:BF:99
-  name: Galaxy Note8
-  picture:
-  track: true
+#galaxy_note8:
+#  hide_if_away: false
+#  icon:
+#  mac: BT_B4:BF:F6:7E:BF:99
+#  name: Galaxy Note8
+#  picture:
+#  track: true
 
 winc0000:
   hide_if_away: false
@@ -339,7 +339,7 @@ ba06badc164e4b35ac0cc353f2d10fee:
   mac: 0C:2A:69:08:02:24
   name: 41592136-4a15-4b59-85ec-b90fb5e18c14
   picture:
-  track: true
+  track: false
 
 android6feaee1b4a1f4818:
   hide_if_away: false
@@ -347,7 +347,7 @@ android6feaee1b4a1f4818:
   mac: 38:80:DF:F3:29:3E
   name: android-6feaee1b4a1f4818
   picture:
-  track: true
+  track: false
 
 malafontainlap_2:
   hide_if_away: false
@@ -355,7 +355,7 @@ malafontainlap_2:
   mac: D4:81:D7:59:1C:76
   name: MALAFONTAIN-LAP
   picture:
-  track: true
+  track: false
 
 wicollardold:
   hide_if_away: false
@@ -363,14 +363,14 @@ wicollardold:
   mac: F4:96:34:1A:3C:1D
   name: WICOLLARD-OLD
   picture:
-  track: true
+  track: false
 android_4:
   hide_if_away: false
   icon:
   mac: 40:B4:CD:7D:69:1B
   name: Android
   picture:
-  track: true
+  track: false
 
 wemo_insight:
   hide_if_away: false
@@ -378,7 +378,7 @@ wemo_insight:
   mac: 14:91:82:B4:A7:79
   name: WeMo Insight
   picture:
-  track: true
+  track: false
 
 amazon9abc82cdf:
   hide_if_away: false
@@ -386,7 +386,7 @@ amazon9abc82cdf:
   mac: 6C:56:97:A9:09:7E
   name: amazon-9abc82cdf
   picture:
-  track: true
+  track: false
 
 2fb33a7bdfaf5cd1b87960efe87f6568:
   hide_if_away: false
@@ -394,20 +394,396 @@ amazon9abc82cdf:
   mac: 6C:AD:F8:4B:9E:7F
   name: 2fb33a7b-dfaf-5cd1-b879-60efe87f6568
   picture:
-  track: true
+  track: false
 
 android73fa1eff65de2462:
   hide_if_away: false
   icon:
   mac: 5C:51:88:61:BF:FF
-  name: android-73fa1eff65de2462
+  name: 'Scotts Phone'
   picture:
-  track: true
+  track: false
 
 benjaminsiphone:
   hide_if_away: false
   icon:
   mac: 98:CA:33:5E:58:B2
   name: BenjaminsiPhone
+  picture:
+  track: true
+
+winc0000_2:
+  hide_if_away: false
+  icon:
+  mac: FC:A6:67:14:45:C8
+  name: WINC-00-00
+  picture:
+  track: false
+
+malafontainlap_3:
+  hide_if_away: false
+  icon:
+  mac: D4:81:D7:06:B2:F8
+  name: MALAFONTAIN-LAP
+  picture:
+  track: false
+
+androidae65cadc62f845d8:
+  hide_if_away: false
+  icon:
+  mac: 90:B6:86:77:F8:70
+  name: android-ae65cadc62f845d8
+  picture:
+  track: false
+
+android2939d09555d0c3aa:
+  hide_if_away: false
+  icon:
+  mac: 44:C3:46:4C:EC:21
+  name: android-2939d09555d0c3aa
+  picture:
+  track: false
+
+android7:
+  hide_if_away: false
+  icon:
+  mac: 44:91:60:6E:5A:90
+  name: Android-7
+  picture:
+  track: false
+
+lifxtile33709c:
+  hide_if_away: false
+  icon:
+  mac: D0:73:D5:33:70:9C
+  name: LIFX-Tile-33709C
+  picture:
+  track: false
+
+lifxtile336f14:
+  hide_if_away: false
+  icon:
+  mac: D0:73:D5:33:6F:14
+  name: LIFX-Tile-336F14
+  picture:
+  track: false
+
+android7be73424588db78d:
+  hide_if_away: false
+  icon:
+  mac: 5C:70:A3:64:80:C4
+  name: android-7be73424588db78d
+  picture:
+  track: false
+
+vizio_s4251w:
+  hide_if_away: false
+  icon:
+  mac: BT_00:6B:9E:5F:32:0F
+  name: VIZIO S4251w
+  picture:
+  track: false
+
+bt_003c7ff0f00a:
+  hide_if_away: false
+  icon:
+  mac: BT_00:3C:7F:F0:F0:0A
+  name: bt 003c7ff0f00a
+  picture:
+  track: false
+
+roomba3163060481835560:
+  hide_if_away: false
+  icon:
+  mac: 80:C5:F2:5D:5A:69
+  name: Roomba-3163060481835560
+  picture:
+  track: false
+
+desktop76o0drk_2:
+  hide_if_away: false
+  icon:
+  mac: 30:9C:23:E7:CA:86
+  name: DESKTOP-76O0DRK
+  picture:
+  track: true
+
+desktop87t3h6s:
+  hide_if_away: false
+  icon:
+  mac: C8:D7:19:C1:17:05
+  name: DESKTOP-87T3H6S
+  picture:
+  track: true
+
+edpt73902in1:
+  hide_if_away: false
+  icon:
+  mac: 38:BA:F8:E3:58:D2
+  name: edpt-7390-2in1
+  picture:
+  track: false
+
+ailight1:
+  hide_if_away: false
+  icon:
+  mac: 5C:CF:7F:3E:2B:09
+  name: AiLight1
+  picture:
+  track: false
+
+obdii:
+  hide_if_away: false
+  icon:
+  mac: BT_00:1D:A5:1C:DB:D2
+  name: OBDII
+  picture:
+  track: false
+
+edpt73902in1_2:
+  hide_if_away: false
+  icon:
+  mac: E4:B9:7A:B0:E5:6E
+  name: edpt-7390-2in1
+  picture:
+  track: false
+
+fb8e0c7a2ab74cdbbf719d3e721b242d:
+  hide_if_away: false
+  icon:
+  mac: F0:27:2D:39:B7:16
+  name: fb8e0c7a-2ab7-4cdb-bf71-9d3e721b242d
+  picture:
+  track: false
+
+morrowind_2:
+  hide_if_away: false
+  icon:
+  mac: BT_28:B2:BD:01:6C:0A
+  name: MORROWIND
+  picture:
+  track: false
+
+8ff596eaf7d14d8b88dfcd30d0f52b7d:
+  hide_if_away: false
+  icon:
+  mac: 3C:28:6D:CE:A2:30
+  name: 8ff596ea-f7d1-4d8b-88df-cd30d0f52b7d
+  picture:
+  track: false
+
+ec890a39a61a4338b876d5fcb7e93599:
+  hide_if_away: false
+  icon:
+  mac: 28:EF:01:A2:9A:F4
+  name: ec890a39-a61a-4338-b876-d5fcb7e93599
+  picture:
+  track: false
+
+se7:
+  hide_if_away: false
+  icon:
+  mac: BT_FC:58:FA:BB:0B:B1
+  name: SE7
+  picture:
+  track: false
+
+edpt73902in1_3:
+  hide_if_away: false
+  icon:
+  mac: BT_38:BA:F8:E3:58:D6
+  name: EDPT-7390-2IN1
+  picture:
+  track: false
+
+coadv8qmqrq2:
+  hide_if_away: false
+  icon:
+  mac: 3C:6A:A7:EC:92:94
+  name: COADV-8QMQRQ2
+  picture:
+  track: false
+
+morrowind_3:
+  hide_if_away: false
+  icon:
+  mac: 28:D2:44:AA:E9:F4
+  name: MORROWIND
+  picture:
+  track: false
+
+malafontain_lap:
+  hide_if_away: false
+  icon:
+  mac: BT_34:F3:9A:E2:05:D0
+  name: MALAFONTAIN-LAP
+  picture:
+  track: false
+
+android_aae893e692bf97a8:
+  hide_if_away: false
+  icon:
+  mac: D0:22:BE:F4:19:C7
+  name: android-aae893e692bf97a8
+  picture:
+  track: false
+
+st_24fd5b000001f150:
+  hide_if_away: false
+  icon:
+  mac: 24:FD:5B:01:F1:50
+  name: st-24FD5B000001F150
+  picture:
+  track: false
+
+esp_6e27e5:
+  hide_if_away: false
+  icon:
+  mac: 80:7D:3A:6E:27:E5
+  name: ESP 6E27E5
+  picture:
+  track: false
+
+esp_f1b4c6:
+  hide_if_away: false
+  icon:
+  mac: DC:4F:22:F1:B4:C6
+  name: ESP F1B4C6
+  picture:
+  track: false
+
+b63bjr2loan29:
+  hide_if_away: false
+  icon:
+  mac: DC:8B:28:A8:5F:B6
+  name: B63BJR2LOAN29
+  picture:
+  track: false
+
+esp_3b4363:
+  hide_if_away: false
+  icon:
+  mac: 80:7D:3A:3B:43:63
+  name: ESP 3B4363
+  picture:
+  track: false
+
+esp_8dd024:
+  hide_if_away: false
+  icon:
+  mac: 84:0D:8E:8D:D0:24
+  name: ESP 8DD024
+  picture:
+  track: false
+
+esp_30a2b1:
+  hide_if_away: false
+  icon:
+  mac: 84:F3:EB:30:A2:B1
+  name: ESP 30A2B1
+  picture:
+  track: false
+
+ce071717cb2aaf3a047e:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Jordan GPS Tracker
+  picture:
+  track: true
+
+ce0717174b4ca8900c7e:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Cella GPS Tracker
+  picture:
+  track: true
+
+esp_9b36d2:
+  hide_if_away: false
+  icon:
+  mac: 84:0D:8E:9B:36:D2
+  name: ESP 9B36D2
+  picture:
+  track: true
+
+esp_9b32ae:
+  hide_if_away: false
+  icon:
+  mac: 84:0D:8E:9B:32:AE
+  name: ESP 9B32AE
+  picture:
+  track: true
+
+galaxy_note8_2:
+  hide_if_away: false
+  icon:
+  mac: BT_B4:BF:F6:7E:BF:99
+  name: Galaxy Note8
+  picture:
+  track: true
+
+jbl_flip_4:
+  hide_if_away: false
+  icon:
+  mac: BT_30:C0:1B:2D:5E:77
+  name: JBL Flip 4
+  picture:
+  track: true
+
+garmin_drivesmart_3979204477:
+  hide_if_away: false
+  icon:
+  mac: BT_10:4E:89:87:39:AA
+  name: 'Garmin DriveSmart #3979204477'
+  picture:
+  track: true
+
+410ef3be_879b_4812_9f42_1669a26d3312:
+  hide_if_away: false
+  icon:
+  mac: A0:CC:2B:40:40:2E
+  name: 410ef3be-879b-4812-9f42-1669a26d3312
+  picture:
+  track: true
+
+esp_56b5cc:
+  hide_if_away: false
+  icon:
+  mac: 80:7D:3A:56:B5:CC
+  name: ESP 56B5CC
+  picture:
+  track: true
+
+esp_0aacdf:
+  hide_if_away: false
+  icon:
+  mac: CC:50:E3:0A:AC:DF
+  name: ESP 0AACDF
+  picture:
+  track: true
+
+harmony_keyboard:
+  hide_if_away: false
+  icon:
+  mac: BT_00:04:20:FF:AF:9C
+  name: Harmony Keyboard
+  picture:
+  track: true
+
+hassio_host:
+  hide_if_away: false
+  icon:
+  mac: 08:00:27:6F:D6:FA
+  name: hassio-host
+  picture:
+  track: true
+
+ce45b2f6_2f0c_442c_9bb0_fa216276445c:
+  hide_if_away: false
+  icon:
+  mac: 00:15:5D:CC:2E:00
+  name: ce45b2f6-2f0c-442c-9bb0-fa216276445c
   picture:
   track: true
