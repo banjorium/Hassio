@@ -1,7 +1,7 @@
   - name: Home
     latitude: 43.21198380000001
     longitude: -71.20487989999998
-    radius: 150
+    radius: 250
     icon: mdi:home
   
   - name: Gym
