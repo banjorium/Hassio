@@ -1,995 +1,950 @@
-#Turn off Everything at Night!
-- id: Shutdown
-  initial_state: on
+- id: The sun has set
   trigger:
-    platform: state
-    entity_id: binary_sensor.master_bedroom_door_opened
-    to: 'off'
-    from: 'on'
-  condition:
-    - condition: state
-      entity_id: remote.bedroom_harmony
-      state: 'Watch TV'
+    platform: sun
+    event: sunset
   action:
-    - service: scene.turn_on
-      entity_id: scene.turn_off_everything_but_bedroom
-
-
-#https://community.home-assistant.io/t/logitech-harmony-integration-with-ianddays-component/6183/188
-
-- id: Basement_Dehumidifier_FULL
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.dehumidifier_watts
-    below: 100
-  action:
-    service: notify.notify
-    data_template:
-      title: "Basement Dehumidifier is FULL and Needs to be Emptied!"
-      message: "Dehumidifier stopped because it is full and using less than {{ states.sensor.dehumidifier_watts.state }} watts.  OR someone turned it off!"
- 
-
-
-- id: 'Living Room Harmony'
-  initial_state: on
-  hide_entity: False
+    service: notify.sms
+    data:
+      message: The sun has set
+      target:
+      - '+16033181236'
+- id: Living Room Harmony
+  initial_state: 'on'
+  hide_entity: false
   trigger:
     platform: state
     entity_id: input_select.harmony1
-    from: 'Select Input'
+    from: Select Input
   action:
   - service: remote.turn_on
     entity_id: remote.living_room_harmony
     data_template:
-      activity: >
-        {% if is_state("input_select.harmony1", "TV") %}
-        31003729
-        {% elif is_state("input_select.harmony1", "PS4") %}
-        31004539
-        {% else %}
-        {% endif %}
+      activity: '{% if is_state("input_select.harmony1", "TV") %} 31003729 {% elif
+        is_state("input_select.harmony1", "PS4") %} 31004539 {% else %} {% endif %}
+
+        '
   - service: input_select.select_option
     entity_id: input_select.harmony1
     data_template:
-      option: "Select Input"
-
-- id: 'Living Room Harmony Off'
-  hide_entity: False
-  initial_state: on
+      option: Select Input
+- id: Living Room Harmony Off
+  hide_entity: false
+  initial_state: 'on'
   trigger:
     platform: state
     entity_id: input_select.harmony1
-    to: 'Power Off'
+    to: Power Off
   action:
   - service: remote.turn_off
     entity_id: remote.living_room_harmony
   - service: input_select.select_option
     entity_id: input_select.harmony1
     data_template:
-      option: "Select Input"
-
-- id: 'Master Bedroom Harmony'
-  initial_state: on
-  hide_entity: False
-  trigger:
-    platform: state
-    entity_id: input_select.harmony2
-    from: 'Select Input'
-  action:
-  - service: remote.turn_on
-    entity_id: remote.bedroom_harmony
-    data_template:
-      activity: >
-        {% if is_state("input_select.harmony2", "TV") %}
-        34961530
-        {% else %}
-        {% endif %}
-  - service: input_select.select_option
-    entity_id: input_select.harmony2
-    data_template:
-      option: "Select Input"
-
-- id: 'Master Bedroom Harmony Off'
-  hide_entity: False
-  initial_state: on
-  trigger:
-    platform: state
-    entity_id: input_select.harmony2
-    to: 'Power Off'
-  action:
-  - service: remote.turn_off
-    entity_id: remote.bedroom_harmony
-  - service: input_select.select_option
-    entity_id: input_select.harmony2
-    data_template:
-      option: "Select Input"
+      option: Select Input
       
+- id: startup
+  initial_state: 'on'
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    - delay: '00:00:30'
+    - service: cloud.remote_connect
+    
+- id: Master Bedroom Harmony
+  initial_state: 'on'
+  hide_entity: false
+  trigger:
+    platform: state
+    entity_id: input_select.harmony2
+    from: Select Input
+  action:
+  - service: remote.turn_on
+    entity_id: remote.bedroom_harmony
+    data_template:
+      activity: '{% if is_state("input_select.harmony2", "TV") %} 34961530 {% else
+        %} {% endif %}
+
+        '
+  - service: input_select.select_option
+    entity_id: input_select.harmony2
+    data_template:
+      option: Select Input
+- id: Master Bedroom Harmony Off
+  hide_entity: false
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id: input_select.harmony2
+    to: Power Off
+  action:
+  - service: remote.turn_off
+    entity_id: remote.bedroom_harmony
+  - service: input_select.select_option
+    entity_id: input_select.harmony2
+    data_template:
+      option: Select Input
 - id: Daily snapshot at 2 AM
-  initial_state: on
+  initial_state: 'on'
   trigger:
     platform: time
-    at: '02:00:00'
+    at: 02:00:00
   action:
   - service: hassio.snapshot_full
     data:
       name: automated backup {{ now().strftime('%Y-%m-%d') }}
-
-
 - id: Daily upload to dropbox at 8AM
-  initial_state: on
+  initial_state: 'on'
   trigger:
     platform: time
-    at: '08:00:00'
+    at: 08:00:00
   action:
   - service: hassio.addon_stdin
     data:
-      addon: "7be23ff5_dropbox_sync"
-      input: {"command":"upload"}
-
-# Text JOR when Update Available for Hassio
-- id: "Update_Update"
-  initial_state: on
-  trigger:
-    platform: state
-    entity_id: updater.updater
-  action:
-    service: notify.notify
-    data:
-      message: "There is a new HASS update available"
-      title: "HA Update Alert"
-      
+      addon: 7be23ff5_dropbox_sync
+      input:
+        command: upload
 - id: Entry Light on with Motion
-  initial_state: on
+  initial_state: 'on'
   trigger:
   - platform: state
     entity_id: binary_sensor.front_door_motion
-  condition: 
-    - condition: sun
-      after: sunset
-      before_offset: '1:00:00'
-    - condition: state
-      entity_id: light.entry
-      state: 'off'
+  condition:
+  - condition: sun
+    after: sunset
+    before_offset: '1:00:00'
+  - condition: state
+    entity_id: light.entry
+    state: 'off'
   action:
-    - service: light.turn_on
-      entity_id: light.entry
-    - delay: '00:05:00'
-    - service: light.turn_off
-      entity_id: light.entry
-
-- id: 'Turn on Entry Lights - Jor Home'
-  initial_state: on
+  - service: light.turn_on
+    entity_id: light.entry
+  - delay: 00:05:00
+  - service: light.turn_off
+    entity_id: light.entry
+- id: VR Switches on with Motion
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_11_motion
+  action:
+  - service: switch.turn_on
+    entity_id:
+    - group.vr_switches
+- id: VR Lights on with Motion
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_11_motion
+  action:
+  - service: light.turn_on
+    entity_id:
+    - group.den_lights
+- id: VR_Lights_No_Motion
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_11_motion
+    to: 'off'
+    for:
+      minutes: '2'
+  condition:
+  - condition: state
+    entity_id: light.hue_color_lamp_1_2
+    state: 'on'
+  action:
+    service: light.turn_off
+    entity_id:
+    - group.den_lights
+- id: VR_Switches_No_Motion
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sensor_11_motion
+    to: 'off'
+    for:
+      minutes: '2'
+  action:
+    service: switch.turn_off
+    entity_id:
+    - group.vr_switches
+- id: Turn on Entry Lights - Jor Home
+  initial_state: 'on'
   trigger:
     platform: state
     entity_id: sensor.jor_home
     to: 'True'
-  condition: 
-    - condition: sun
-      after: sunset
-      before_offset: '1:30:00'
-    - condition: state
-      entity_id: light.entry
-      state: 'off'
+  condition:
+  - condition: sun
+    after: sunset
+    before_offset: '1:30:00'
+  - condition: state
+    entity_id: light.entry
+    state: 'off'
   action:
-    - service: light.turn_on
-      entity_id: light.entry
-    - delay: '00:15:00'
-    - service: light.turn_off
-      entity_id: light.entry
-
-
-- id: 'Turn on Entry Lights - Cella Home'
-  initial_state: on
+  - service: light.turn_on
+    entity_id: light.entry
+  - delay: 00:15:00
+  - service: light.turn_off
+    entity_id: light.entry
+- id: Turn on Entry Lights - Cella Home
+  initial_state: 'on'
   trigger:
     platform: state
     entity_id: sensor.cella_home
     to: 'True'
-  condition: 
-    - condition: sun
-      after: sunset
-      before_offset: '1:30:00'
-    - condition: state
-      entity_id: light.entry
-      state: 'off'
+  condition:
+  - condition: sun
+    after: sunset
+    before_offset: '1:30:00'
+  - condition: state
+    entity_id: light.entry
+    state: 'off'
   action:
-    - service: light.turn_on
-      entity_id: light.entry
-    - delay: '00:15:00'
-    - service: light.turn_off
-      entity_id: light.entry
-      
-#Another Solution:
-#- id: Turn on kitchen light when movement
-  #trigger:
-   # platform: state
-    #entity_id: binary_sensor.pir_hall
-    #to: 'on'
-  #condition:
-  #- condition: state
-  #  entity_id: light.kitchen
-  #  state: 'off'
-  #- condition: or
-  #  conditions:
-  #  - condition: sun
-  #    after: sunset
-#      after_offset: "-1:00:00"
-#    - condition: sun
-#      before: sunrise
-#      before_offset: "1:00:00"
-#  action:
-#  - service: light.turn_on
-#    data:
-#      entity_id: light.kitchen
-
+  - service: light.turn_on
+    entity_id: light.entry
+  - delay: 00:10:00
+  - service: light.turn_off
+    entity_id: light.entry
+- id: Sunroom Door Opens - Turn on Lights
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id:
+    - binary_sensor.sunroom_slider_opened
+    to: 'on'
+    from: 'off'
+  condition:
+  - condition: sun
+    after: sunset
+    before_offset: '1:00:00'
+  - condition: state
+    entity_id: light.entry
+    state: 'off'
+  action:
+    service: light.turn_on
+    entity_id:
+    - light.sunroom_lamp
 - id: Garage_Open_Alert
-  initial_state: on
+  initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: cover.garage_left
-      to: open
-      for:
-        minutes: '10'
+  - platform: state
+    entity_id: cover.garage_left
+    to: open
+    for:
+      minutes: '10'
   action:
-    service: notify.notify
+    service: notify.informational
     data:
-      message: "The left garage door has been open for 10 minutes"
-      title: "Garage Open Alert"
-
-#Close the Garage after 10 minutes of being open if no one inside
+      message: The left garage door has been open for 10 minutes
 - id: Garage_Open_Close
-  initial_state: on
+  initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: cover.garage_left
-      to: open
-      from: closed
-      for: 
-        minutes: '10'
+  - platform: state
+    entity_id: cover.garage_left
+    to: open
+    from: closed
+    for:
+      minutes: '10'
   condition:
-    - condition: state
-      entity_id: binary_sensor.garage_motion_motion
-      state: 'off'
+  - condition: state
+    entity_id: binary_sensor.garage_motion_motion
+    state: 'off'
   action:
     service: cover.close_cover
     entity_id: cover.garage_left
-    
-#Close the Garage after 10 minutes of being open if no one inside2
+- id: Garage State Notification
+  trigger:
+    platform: state
+    entity_id: cover.garage_left
+  action:
+  - service: media_player.alexa_tts
+    data_template:
+      message: 'The {{ trigger.to_state.attributes.friendly_name }} is: {{ trigger.to_state.state
+        }}'
+      entity: media_player.kitchen_echo
+- id: Cella_Arrival_Announce
+  trigger:
+    platform: zone
+    entity_id: device_tracker.ce0717174b4ca8900c7e
+    event: enter
+    zone: zone.home
+  action:
+  - service: script.turn_on
+    entity_id: script.call_cella_arrival_announce_s
+- id: Jor_Arrival_Announce
+  trigger:
+    platform: zone
+    entity_id: device_tracker.ce071717cb2aaf3a047e
+    event: enter
+    zone: zone.home
+  action:
+  - service: script.turn_on
+    entity_id: script.call_jor_arrival_announce
 - id: Garage_Open_Close_no_motion_trigger
-  initial_state: on
+  initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.garage_motion_motion
-      to: 'off'
-      for: 
-        minutes: '8'
+  - platform: state
+    entity_id: binary_sensor.garage_motion_motion
+    to: 'off'
+    for:
+      minutes: '8'
   condition:
-    - condition: state
-      entity_id: cover.garage_left
-      state: 'open'
+  - condition: state
+    entity_id: cover.garage_left
+    state: open
   action:
     service: cover.close_cover
     entity_id: cover.garage_left
-    
 - id: Garage_Lights_No_Motion
-  initial_state: on
+  initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.garage_motion_motion
-      to: 'off'
-      for: 
-        minutes: '8'
+  - platform: state
+    entity_id: binary_sensor.garage_motion_motion
+    to: 'off'
+    for:
+      minutes: '8'
   condition:
-    - condition: state
-      entity_id: switch.garage_lights
-      state: 'on'
+  - condition: state
+    entity_id: switch.garage_lights
+    state: 'on'
   action:
     service: switch.turn_off
     entity_id: switch.garage_lights
-    
-#TEXT CELLA when JORDAN is LEAVING ELM
 - id: jor_leaving_elm_st
   trigger:
     platform: zone
-    entity_id: device_tracker.jphone
+    entity_id: device_tracker.ce071717cb2aaf3a047e
     event: leave
     zone: zone.elm_st
   action:
     service: ifttt.trigger
-    data: {"event": "Jor_Leaving_Elm_St", "value1": "Hello World"}
-    
-#TEXT CELLA when JORDAN ARRIVES MILLYARD
+    data:
+      event: Jor_Leaving_Elm_St
+      value1: Hello World
 - id: jor_arriving_millyard
   trigger:
     platform: zone
-    entity_id: device_tracker.jphone
+    entity_id: device_tracker.ce071717cb2aaf3a047e
     event: enter
     zone: zone.millyard
   action:
     service: ifttt.trigger
-    data: {"event":"jor_arriving_millyard", "value1": "Hello World"}
-    
-#TEXT JORDAN when CELLA is LEAVING MILLYARD
+    data:
+      event: jor_arriving_millyard
+      value1: Hello World
 - id: cella_leaving_millyard
   trigger:
     platform: zone
-    entity_id: device_tracker.cella_gpslogger
+    entity_id: device_tracker.ce0717174b4ca8900c7e
     event: leave
     zone: zone.millyard
   action:
     service: ifttt.trigger
-    data: {"event":"cella_leaving_millyard", "value1": "Hello World"}
-
-#TEXT CELLA When CELLA ARRIVES HOME
-#- id: cella_arriving_home
-#  trigger:
-#    platform: zone
-#    entity_id: device_tracker.cella_gpslogger
-#    event: enter
-#    zone: zone.home
-#  action:
-#    service: ifttt.trigger
-#    data: {"event":"cella_arriving_home", "value1": "Hello World"}
-    
-#Trigger VDay Stuff
-#- id: trigger_vday
-#  trigger:
-#    platform: zone
-#    entity_id: device_tracker.cellaphone_cellaphone
-#    event: enter
-#    zone: zone.home
-#  action:
-#    service: homeassistant.turn_on
-#    entity_id: scene.valentinesday
-    
-#- id: testing
-#  trigger:
-#    platform: time
-#    # Matches every hour at 5 minutes past whole
-#    minutes: /5
-#    seconds: 00
-#  action:
-#    service: notify.notify
-#    data:
-#      message: "5 Minutes have passed since the last message!"
-#      title: "It Lives!!!"
-
-- id: 'Motion Kitchen - Turn on Lights - Daytime'
-  initial_state: on
-  trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor__motion
-      to: 'on'
-      from: 'off'
-  condition:
-    - condition: time
-      after: '05:30:00'
-      before: '20:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
-  action:
-    - service: switch.turn_on
-      entity_id: switch.kitchen_lights
-      
-- id: 'Motion Kitchen - Turn on Lights - Daytime'
+    data:
+      event: cella_leaving_millyard
+      value1: Hello World
+- id: Motion Kitchen - Turn on Lights - Daytime
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor__motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '05:30:00'
-      before: '20:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 05:30:00
+    before: '20:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.counter_right
-        - light.fridge_light
-        - light.kitchen_sink
-      data:
-        brightness: 254
-        rgb_color: [255, 255, 255]
-      
-- id: 'Motion Kitchen - Turn on Lights - Late Night Time'
+  - service: switch.turn_on
+    entity_id: switch.kitchen_lights
+- id: Motion Kitchen - Turn on Lights - Daytime
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor__motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '23:59:59'
-      before: '05:29:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 05:30:00
+    before: '20:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.counter_right
-        - light.fridge_light
-        - light.kitchen_sink
-      data:
-        brightness: 150
-        rgb_color: [255, 0, 0]
-        
-- id: 'Motion Kitchen - Turn on Lights - Mid-Night Time'
+  - service: light.turn_on
+    entity_id:
+    - light.counter_right
+    - light.kitchenrefrigerator
+    data:
+      brightness: 254
+      kelvin: 5000
+- id: Motion Kitchen - Turn on Lights - Late Night Time
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor__motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '21:00:00'
-      before: '23:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: '23:59:59'
+    before: 05:29:59
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.counter_right
-        - light.fridge_light
-        - light.kitchen_sink
-      data:
-        brightness: 150
-        color_temp: 370
-      
-      
+  - service: light.turn_on
+    entity_id:
+    - light.counter_right
+    - light.kitchenrefrigerator
+    data:
+      brightness: 150
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      kelvin: 2600
+- id: Motion Kitchen - Turn on Lights - Mid-Night Time
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_motion
+    to: 'on'
+    from: 'off'
+  condition:
+  - condition: time
+    after: '21:00:00'
+    before: '23:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
+  action:
+  - service: light.turn_on
+    entity_id:
+    - light.counter_right
+    - light.kitchenrefrigerator
+    data:
+      brightness: 150
+      kelvin: 3500
 - id: Motion Detection - Kitchen Light off - Switch
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor__motion
+    entity_id: binary_sensor.motion_sensor_motion
     to: 'off'
-    for: '00:05:00'
+    for: 00:03:00
   action:
-   - service: switch.turn_off
-     entity_id: switch.kitchen_lights
-
+  - service: switch.turn_off
+    entity_id: switch.kitchen_lights
 - id: Motion Detection - Kitchen Light off - Counter
   initial_state: 'on'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor__motion
+    entity_id: binary_sensor.motion_sensor_motion
     to: 'off'
-    for: '00:05:00'
+    for: 00:03:00
   action:
-   - service: homeassistant.turn_off
-     entity_id: 
-       - light.counter_right
-       - light.fridge_light
-       - light.kitchen_sink
-     
+  - service: homeassistant.turn_off
+    entity_id:
+    - light.counter_right
+    - light.bar
+    - light.kitchenrefrigerator
 - id: NO Motion Detection - Kitchen Light on - Counter
   initial_state: 'on'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor__motion
+    entity_id: binary_sensor.motion_sensor_motion
     to: 'off'
-    for: '00:05:03'
+    for: 00:03:02
   condition:
-    - condition: time
-      after: '17:00:00'
-      before: '23:59:59'
+  - condition: time
+    after: '17:00:00'
+    before: '23:59:59'
   action:
-   - service: homeassistant.turn_on
-     entity_id: 
-       - light.counter_right
-       - light.fridge_light
-       - light.kitchen_sink
-     data:
-       brightness: 200
-       effect: random
-      
-    
-- id: 'Basement Door Opens - Turn on Lights'
+  - service: homeassistant.turn_on
+    entity_id:
+    - light.counter_right
+    - light.kitchenrefrigerator
+    data:
+      brightness: 200
+      effect: random
+- id: Basement Door Opens - Turn on Lights
   initial_state: 'on'
   trigger:
-      platform: state
-      entity_id:
-        - binary_sensor.basement_door_opened
-      to: 'on'
-      from: 'off'
+    platform: state
+    entity_id:
+    - binary_sensor.basement_door_opened
+    to: 'on'
+    from: 'off'
   action:
-      service: light.turn_on
-      entity_id: 
-        - light.basement_landing
-        - light.gym
-        - light.hydro_light
-        - light.workshop_light
-        - light.drums
-      
-- id: 'Basement Door Opens - Turn on Switches'
+    service: light.turn_on
+    entity_id:
+    - light.basement_landing
+    - light.gym
+    - light.hydro_light
+    - light.workshop_light
+    - light.drums
+- id: Basement Door Opens - Turn on Switches
   initial_state: 'on'
   trigger:
-      platform: state
-      entity_id:
-        - binary_sensor.basement_door_opened
-      to: 'on'
-      from: 'off'
+    platform: state
+    entity_id:
+    - binary_sensor.basement_door_opened
+    to: 'on'
+    from: 'off'
   action:
-      service: switch.turn_on
-      entity_id: 
-        - switch.workbench
-        - switch.filter
-        - switch.craft
-      
-- id: 'Motion Downstairs - Turn off with no motion and door closed'
+    service: switch.turn_on
+    entity_id:
+    - switch.workbench
+    - switch.filter
+    - switch.craft
+- id: Motion Downstairs - Turn off with no motion and door closed
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_2_motion
-      to: 'off'
-      for: '00:10:00'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_2_motion
+    to: 'off'
+    for: 00:10:00
   condition:
-    - condition: state
-      entity_id: binary_sensor.basement_door_opened
-      state: 'off'
+  - condition: state
+    entity_id: binary_sensor.basement_door_opened
+    state: 'off'
   action:
-    - service: homeassistant.turn_off
-      entity_id: group.downstairs_auto
-      
-- id: 'Mudroom Motion - Turn on Lights - Day Time'
+  - service: homeassistant.turn_off
+    entity_id: group.downstairs_auto
+- id: Mudroom Motion - Turn on Lights - Day Time
   initial_state: 'on'
   trigger:
-      platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_3_motion
-      to: 'on'
-      from: 'off'
+    platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_3_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '05:30:00'
-      before: '23:00:00'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 05:30:00
+    before: '23:00:00'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-      service: light.turn_on
-      entity_id: light.laundry_light
-      data:
-        brightness: 254
-        
-        
-- id: 'Mudroom Motion - Turn on Lights - Night Time'
+    service: light.turn_on
+    entity_id: light.laundry_light
+    data:
+      brightness: 254
+- id: Mudroom Motion - Turn on Lights - Night Time
   initial_state: 'on'
   trigger:
-      platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_3_motion
-      to: 'on'
-      from: 'off'
+    platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_3_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '23:00:10'
-      before: '05:29:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: '23:00:10'
+    before: 05:29:59
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-      service: light.turn_on
-      entity_id: light.laundry_light
-      data:
-        brightness: 45
-      
-- id: 'Motion Mudroom - Turn off with no motion'
+    service: light.turn_on
+    entity_id: light.laundry_light
+    data:
+      brightness: 45
+- id: Motion Mudroom - Turn off with no motion
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_3_motion
-      to: 'off'
-      for: '00:02:00'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_3_motion
+    to: 'off'
+    for: 00:01:00
   action:
-    - service: light.turn_off
-      entity_id: light.laundry_light
-
-- id: 'Motion Master Bathroom - Turn on Lights - Daytime'
+  - service: light.turn_off
+    entity_id: light.laundry_light
+- id: Motion Master Bathroom - Turn on Lights - Daytime
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_8_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_8_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '06:55:00'
-      before: '21:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 06:00:00
+    before: '21:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.master_bath_toilet
-        - light.master_bathroom_shower
-      data:
-        brightness: 254
-      
-      
-- id: 'Motion Master Bathroom - Turn on Switch - Daytime'
+  - service: light.turn_on
+    entity_id:
+    - light.master_bath_toilet
+    - light.master_bathroom_shower
+    data:
+      brightness: 254
+- id: Motion Master Bathroom - Turn on Switch - Daytime
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_8_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_8_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '06:45:00'
-      before: '21:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 06:00:00
+    before: '21:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: switch.turn_on
-      entity_id: 
-        - switch.master_bathroom_fixture
-        
-- id: 'Motion Master Bathroom - Turn on Lights - Nighttime'
+  - service: switch.turn_on
+    entity_id:
+    - switch.master_bathroom_fixture
+- id: Motion Master Bathroom - Turn on Lights - Nighttime
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_8_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_8_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '22:00:00'
-      before: '06:54:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: '22:00:00'
+    before: 06:00:00
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.master_bath_toilet
-        - light.master_bathroom_shower
-      data:
-        brightness: 40
-
-- id: 'Motion Master Bathroom - Turn off with no motion - Night'
+  - service: light.turn_on
+    entity_id:
+    - light.master_bath_toilet
+    - light.master_bathroom_shower
+    data:
+      brightness: 40
+- id: Motion Master Bathroom - Turn off with no motion - Night
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_8_motion
-      to: 'off'
-      for: '00:01:30'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_8_motion
+    to: 'off'
+    for: 00:01:00
   condition:
-    - condition: time
-      after: '22:00:00'
-      before: '06:54:59'
+  - condition: time
+    after: '22:00:00'
+    before: 06:00:00
   action:
-    - service: light.turn_off
-      entity_id: 
-        - light.master_bath_toilet
-        - light.master_bathroom_shower
-
-- id: 'Motion Master Bathroom - Turn off with no motion - DAY'
+  - service: light.turn_off
+    entity_id:
+    - light.master_bath_toilet
+    - light.master_bathroom_shower
+- id: Motion Master Bathroom - Turn off with no motion - DAY
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_8_motion
-      to: 'off'
-      for: '00:15:00'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_8_motion
+    to: 'off'
+    for: 00:15:00
   condition:
-    - condition: time
-      after: '06:55:00'
-      before: '21:59:59'
+  - condition: time
+    after: 06:00:00
+    before: '21:59:59'
   action:
-    - service: light.turn_off
-      entity_id: 
-        - light.master_bathroom_shower
-        - light.master_bath_toilet
-
-- id: 'Motion Master Bathroom - Turn off Switch with no motion - DAY'
+  - service: light.turn_off
+    entity_id:
+    - light.master_bathroom_shower
+    - light.master_bath_toilet
+- id: Motion Master Bathroom - Turn off Switch with no motion - DAY
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_8_motion
-      to: 'off'
-      for: '00:04:00'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_8_motion
+    to: 'off'
+    for: 00:04:00
   condition:
-    - condition: time
-      after: '06:45:00'
-      before: '21:59:59'
+  - condition: time
+    after: 06:00:00
+    before: '21:59:59'
   action:
-    - service: switch.turn_off
-      entity_id: 
-        - switch.master_bathroom_fixture
-        
-        
-- id: 'Motion Master Bedroom - Turn on Lights - Daytime - Normal Day'
+  - service: switch.turn_off
+    entity_id:
+    - switch.master_bathroom_fixture
+- id: Motion Master Bedroom - Turn on Lights - Daytime - Normal Day
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_5_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_5_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '06:59:00'
-      before: '21:59:59'
-    - condition: time
-      weekday:
-        - tue
-        - thu
-        - fri
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 06:59:00
+    before: '21:59:59'
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.jors_side
-        - light.cellas_side
-      data:
-        brightness: 254
-        
-        
-- id: 'Motion Master Bedroom - Turn off with no motion'
+  - service: light.turn_on
+    entity_id:
+    - light.jorsside
+    - light.cellasside
+    - light.master_bedroom_window
+    - light.master_bedroom_closet
+    data:
+      brightness: 254
+- id: Motion Master Bedroom - Turn off with no motion
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_5_motion
-      to: 'off'
-      for: '00:05:00'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_5_motion
+    to: 'off'
+    for: 00:05:00
   action:
-    - service: light.turn_off
-      entity_id: 
-        - light.jors_side
-        - light.cellas_side
-
-
-- id: 'Motion Master Bedroom - Turn on Lights - Daytime - WFH Day'
+  - service: light.turn_off
+    entity_id:
+    - light.jorsside
+    - light.cellasside
+    - light.master_bedroom_window
+    - light.master_bedroom_closet
+- id: Motion Master Bedroom - Turn on Lights - Daytime - Weekends
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_5_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_5_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '09:30:00'
-      before: '21:59:59'
-    - condition: time
-      weekday:
-        - mon
-        - wed
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 09:30:00
+    before: '21:59:59'
+  - condition: time
+    weekday:
+    - sat
+    - sun
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.jors_side
-        - light.cellas_side
-      data:
-        brightness: 254
-        
-- id: 'Motion Master Bedroom - Turn on Lights - Daytime - Weekends'
+  - service: light.turn_on
+    entity_id:
+    - light.jorsside
+    - light.cellasside
+    - light.master_bedroom_window
+    - light.master_bedroom_closet
+    data:
+      brightness: 254
+- id: Motion Guest Bathroom - Turn on Lights - Daytime
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_5_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_4_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '09:30:00'
-      before: '21:59:59'
-    - condition: time
-      weekday:
-        - sat
-        - sun
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 06:00:00
+    before: '21:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.jors_side
-        - light.cellas_side
-      data:
-        brightness: 254
-
-- id: 'Motion Guest Bathroom - Turn on Lights - Daytime'
+  - service: light.turn_on
+    entity_id:
+    - light.bathroom
+    - light.guestsink
+    - light.guestshower
+    data:
+      brightness: 254
+      kelvin: 5000
+- id: Motion Guest Bathroom - Turn on Switch - Daytime
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_4_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_4_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '06:55:00'
-      before: '21:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 06:00:00
+    before: '21:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id:
-        - light.bathroom
-        - light.guest_bathroom_toilet
-      data:
-        brightness: 254
-        
-- id: 'Motion Guest Bathroom - Turn on Switch - Daytime'
+  - service: homeassistant.turn_on
+    entity_id:
+    - switch.guest_bathroom_fixture
+- id: Motion Guest Bathroom - Turn on Lights - Day Time - Bloom
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_4_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_4_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '06:55:00'
-      before: '21:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 06:00:10
+    before: '21:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: homeassistant.turn_on
-      entity_id:
-        - switch.guest_bathroom_fixture
-
-- id: 'Motion Guest Bathroom - Turn on Lights - Day Time - Bloom'
+  - service: light.turn_on
+    entity_id: light.bathroom
+    data:
+      brightness: 254
+      rgb_color:
+      - 255
+      - 255
+      - 255
+- id: Motion Guest Bathroom - Turn on Lights - Late Night Time - Bloom
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_4_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_4_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '06:00:10'
-      before: '21:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: '22:00:00'
+    before: '23:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: light.bathroom
-      data:
-        brightness: 150
-        rgb_color: [255, 255 , 255]
-        
-- id: 'Motion Guest Bathroom - Turn on Lights - Late Night Time - Bloom'
+  - service: light.turn_on
+    entity_id:
+    - light.bathroom
+    data:
+      brightness: 75
+      rgb_color:
+      - 255
+      - 255
+      - 255
+- id: Motion Guest Bathroom - Turn on Lights - Nighttime - Downlights
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_4_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_4_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '22:00:00'
-      before: '23:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: '22:00:00'
+    before: 06:00:59
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.bathroom
-      data:
-        brightness: 75
-        color_temp: 130
-        rgb_color: [255, 255 , 255]
-        
-
-- id: 'Motion Guest Bathroom - Turn on Lights - Nighttime - Toilet'
+  - service: light.turn_on
+    entity_id:
+    - light.guestshower
+    - light.guestsink
+    data:
+      brightness: 40
+- id: Motion Guest Bathroom - Turn on Lights - Nighttime - Bloom
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_4_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_4_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '22:00:00'
-      before: '06:54:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: '22:00:00'
+    before: 06:00:00
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: 
-        - light.guest_bathroom_toilet
-      data:
-        brightness: 40
-
-- id: 'Motion Guest Bathroom - Turn on Lights - Nighttime - Bloom'
+  - service: light.turn_on
+    entity_id: light.bathroom
+    data:
+      brightness: 150
+      rgb_color:
+      - 255
+      - 0
+      - 0
+- id: Motion Guest Bathroom - Turn off switch with no motion
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_4_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_4_motion
+    to: 'off'
+    for: 00:01:30
+  action:
+  - service: homeassistant.turn_off
+    entity_id:
+    - switch.guest_bathroom_fixture
+- id: Motion Guest Bathroom - Turn off lights with no motion
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_4_motion
+    to: 'off'
+    for: 00:03:00
+  action:
+  - service: homeassistant.turn_off
+    entity_id:
+    - light.bathroom
+    - light.guestshower
+    - light.guestsink
+- id: Motion Guest Bathroom - Turn on colors with no motion
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_4_motion
+    to: 'off'
+    for: 00:03:02
   condition:
-    - condition: time
-      after: '22:00:00'
-      before: '06:00:00'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 06:00:00
+    before: '23:59:00'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id: light.bathroom
-      data:
-        brightness: 150
-        rgb_color: [255, 0 ,0]
-
-- id: 'Motion Guest Bathroom - Turn off with no motion'
-  initial_state: 'on'
-  trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_4_motion
-      to: 'off'
-      for: '00:05:00'
-  action:
-    - service: homeassistant.turn_off
-      entity_id: 
-        - light.bathroom
-        - switch.guest_bathroom_fixture
-        - light.guest_bathroom_toilet
-
-- id: 'Motion Guest Bathroom - Turn on colors with no motion'
-  initial_state: 'on'
-  trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.motion_sensor_4_motion
-      to: 'off'
-      for: '00:05:02'
-  condition:
-    - condition: time
-      after: '06:00:00'
-      before: '23:59:00'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
-  action:
-    - service: light.turn_on
-      entity_id: 
-        - light.bathroom
-      data: 
-        brightness: 254
-        effect: random
-        
-
-#TURN ON LIGHTS when Anyone ARRIVE HOME
+  - service: light.turn_on
+    entity_id:
+    - light.bathroom
+    data:
+      brightness: 254
+      effect: random
 - id: Anyone_Arrive_HOME_TURNONIMHOME
   initial_state: 'on'
   trigger:
@@ -999,143 +954,89 @@
   action:
     service: homeassistant.turn_on
     entity_id: group.imhome
-
-#Open GARAGE When Jor Arrive Home
 - id: JOR_Arrive_Home_Open_Garage
   trigger:
-    - platform: state
-      entity_id: sensor.jor_home
-      to: 'True'
+  - platform: state
+    entity_id: sensor.jor_home
+    to: 'True'
   action:
     service: cover.open_cover
     entity_id: cover.garage_left
-    
-    
-#Close GARAGE When Jor Leaves Home
 - id: JOR_Leave_Home_Close_Garage
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: sensor.jor_home
-      to: 'False'
+  - platform: state
+    entity_id: sensor.jor_home
+    to: 'False'
   action:
     service: cover.close_cover
     entity_id: cover.garage_left
-    
-####TESTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT!!!!!!!!!!!
-- id: 'Turn on Garage Lights When Opened'
-  initial_state: 'on'
-  trigger: 
-    - platform: state
-      entity_id: cover.garage_left
-      to: 'open'
-  condition:
-    - condition: state
-      entity_id: switch.garage_lights
-      state: 'off'
-  action:
-    - service: homeassistant.turn_on
-      entity_id: switch.garage_lights
-      
-- id: 'Mudroom Door Opens - Turn on Garage Lights'
+- id: Turn on Garage Lights When Opened
   initial_state: 'on'
   trigger:
-      platform: state
-      entity_id:
-        - binary_sensor.mudroom_door_opened
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id: cover.garage_left
+    to: open
   condition:
-    - condition: state
-      entity_id: switch.garage_lights
-      state: 'off'
+  - condition: state
+    entity_id: switch.garage_lights
+    state: 'off'
   action:
-    - service: homeassistant.turn_on
-      entity_id: 
-        - switch.garage_lights
-    - delay: '00:15:00'
-    - service: switch.turn_off
-      entity_id: 
-        - switch.garage_lights
-    
-#Disabled because no way to tell if someone is still in garage (motion sensor is PIR so opening door to throw out trash won't trigger it)    
-#- id: 'Turn on Garage Lights When Mudroom Door Opened'
-#  initial_state: 'on'
-#  trigger: 
-#    - platform: state
-#      entity_id: binary_sensor.mudroom_door_opened
-#      to: 'on'
-#      from: 'off'
-#  action:
-#    - service: switch.turn_on
-#      entity_id: switch.garage_lights
-
-- id: 'Turn off Garage Lights When No Motion Detected'
+  - service: homeassistant.turn_on
+    entity_id: switch.garage_lights
+- id: Mudroom Door Opens - Turn on Garage Lights
   initial_state: 'on'
-  trigger: 
-    - platform: state
-      entity_id: binary_sensor.garage_motion_motion
-      to: 'off'
-      for:
-        minutes: '10'
+  trigger:
+    platform: state
+    entity_id:
+    - binary_sensor.mudroom_door_opened
+    to: 'on'
+    from: 'off'
+  condition:
+  - condition: state
+    entity_id: switch.garage_lights
+    state: 'off'
   action:
-    - service: switch.turn_off
-      entity_id: switch.garage_lights
-      
-- id: 'Close Garage Door When No Motion Detected for 10 minutes'
+  - service: homeassistant.turn_on
+    entity_id:
+    - switch.garage_lights
+  - delay: 00:15:00
+  - service: switch.turn_off
+    entity_id:
+    - switch.garage_lights
+- id: Turn off Garage Lights When No Motion Detected
   initial_state: 'on'
-  trigger: 
-    - platform: state
-      entity_id: binary_sensor.garage_motion_motion
-      to: 'off'
-      for:
-        minutes: '10'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.garage_motion_motion
+    to: 'off'
+    for:
+      minutes: '10'
   action:
-    - service: cover.close_cover
-      entity_id: cover.garage_left
-      
-- id: 'Turn on Garage Lights When Motion Detected'
+  - service: switch.turn_off
+    entity_id: switch.garage_lights
+- id: Close Garage Door When No Motion Detected for 10 minutes
   initial_state: 'on'
-  trigger: 
-    - platform: state
-      entity_id: binary_sensor.garage_motion_motion
-      to: 'on'
-      from: 'off'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.garage_motion_motion
+    to: 'off'
+    for:
+      minutes: '10'
   action:
-    - service: homeassistant.turn_on
-      entity_id: switch.garage_lights
-   
-
-#Close GARAGE When Jor Leaves Home
-#- id: JOR_Leave_Home_ Close_Garage
-#  trigger:
-#    - platform: state
-#      entity_id: sensor.jor_not_home
-#      from: 'off'
-#      to: 'on'
-#  action:
-#    service: cover.close_cover
-#    entity_id: cover.garage_left
-    
-    
-# Close Garage if it has been open for more than an hour after dark.
-#- id: CLOSE_Garage_AfterDark
-#  trigger: 
-#    - platform: state
-#      entity_id: cover.garage_left
-#      state: 'On'
-#      for:
-#        minutes: '60'
-#  condition:
-#    condition: sun
-#    after: sunset
-#    after_offset: "-0:15:00"
-#  action:
-#    service: cover.close_cover
-#    entity_id: cover.garage_left
-        
-    
-- id: 'Unlock when jor get home'
+  - service: cover.close_cover
+    entity_id: cover.garage_left
+- id: Turn on Garage Lights When Motion Detected
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.garage_motion_motion
+    to: 'on'
+    from: 'off'
+  action:
+  - service: homeassistant.turn_on
+    entity_id: switch.garage_lights
+- id: Unlock when jor get home
   initial_state: 'on'
   trigger:
     platform: state
@@ -1144,9 +1045,7 @@
   action:
     service: lock.unlock
     entity_id: lock.front_door
-    
-    
-- id: 'Unlock when cella get home'
+- id: Unlock when cella get home
   initial_state: 'on'
   trigger:
     platform: state
@@ -1155,9 +1054,7 @@
   action:
     service: lock.unlock
     entity_id: lock.front_door
-    
-    
-- id: 'Lock up when Cella leave'
+- id: Lock up when Cella leave
   initial_state: 'on'
   trigger:
     platform: state
@@ -1166,9 +1063,7 @@
   action:
     service: lock.lock
     entity_id: lock.front_door
-    
-    
-- id: 'Lock up when Jor leave'
+- id: Lock up when Jor leave
   initial_state: 'on'
   trigger:
     platform: state
@@ -1177,19 +1072,6 @@
   action:
     service: lock.lock
     entity_id: lock.front_door
-    
-    
-#TURN ON VDAY LIGHTS when CELLA ARRIVE HOME
-#- id: CELLA_Arrive_HOME_TURNONVDAY
-#  trigger:
-#    platform: state
-#    entity_id: sensor.cella_home
-#    to: 'on'
-#  action:
-#    service: homeassistant.turn_on
-#    entity_id:  
-
-#TEST - Turn on AWAY MODE
 - id: Lights_Out
   initial_state: 'on'
   trigger:
@@ -1199,230 +1081,241 @@
   action:
     service: homeassistant.turn_off
     entity_id: group.everything
-    
-#Turn OFF office lights after no motion Cella WFH minutes
-
-- id: Office_NoMotion_TurnOff_WFH
+- id: Office_NoMotion_TurnOffLights_NormalDay
   initial_state: 'on'
   trigger:
     platform: state
     entity_id: binary_sensor.motion_sensor_7_motion
     to: 'off'
-    for: '00:20:00'
-  condition:
-    - condition: time
-      weekday:
-        - mon
-        - wed
+    for: 00:05:00
   action:
-    service: homeassistant.turn_off
-    entity_id: group.office
-    
-- id: Office_NoMotion_TurnOff_NormalDay
+    service: light.turn_off
+    entity_id: light.cellas_desk
+- id: Office_NoMotion_TurnOffSwitch_NormalDay
   initial_state: 'on'
   trigger:
     platform: state
     entity_id: binary_sensor.motion_sensor_7_motion
     to: 'off'
-    for: '00:05:00'
-  condition:
-    - condition: time
-      weekday: 
-        - tue
-        - thu
-        - fri
-        - sat
-        - sun
+    for: 00:05:00
   action:
-    service: homeassistant.turn_off
-    entity_id: group.office
-
-- id: 'Motion Office - Turn on Lights Day Time'
+    service: switch.turn_off
+    entity_id: switch.workbench
+- id: Motion Office - Turn on Lights Day Time
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_7_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_7_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '06:00:10'
-      before: '23:59:59'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 06:00:10
+    before: '23:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id:
-        - light.cellas_desk
-        - light.office_top
-      data:
-        brightness: 254
-        
-- id: 'Motion Office - Turn on Lights Night Time'
+  - service: light.turn_on
+    entity_id:
+    - light.cellas_desk
+    data:
+      brightness: 254
+- id: Motion Office - Turn on Switch Day Time
   initial_state: 'on'
   trigger:
-    - platform: state
-      entity_id: 
-      - binary_sensor.motion_sensor_7_motion
-      to: 'on'
-      from: 'off'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_7_motion
+    to: 'on'
+    from: 'off'
   condition:
-    - condition: time
-      after: '00:00:05'
-      before: '06:00:05'
-    - condition: state
-      entity_id: 'sensor.everyone_home'
-      state: 'True'
+  - condition: time
+    after: 06:00:10
+    before: '23:59:59'
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
   action:
-    - service: light.turn_on
-      entity_id:
-        - light.cellas_desk
-        - light.office_top
-      data:
-        brightness: 45
-
-- id: 'Push Travel Time From Jor to Cella'
-  initial_state: on
+  - service: switch.turn_on
+    entity_id:
+    - switch.workbench
+- id: Motion Office - Turn on Lights Night Time
+  initial_state: 'on'
   trigger:
-    - platform: time
-      minutes: '/5'
-      seconds: '0'
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_7_motion
+    to: 'on'
+    from: 'off'
+  condition:
+  - condition: time
+    after: 00:00:05
+    before: 06:00:05
+  - condition: state
+    entity_id: sensor.everyone_home
+    state: 'True'
+  action:
+  - service: homeassistant.turn_on
+    entity_id:
+    - light.cellas_desk
+    - switch.workbench
+    data:
+      brightness: 45
+- id: Push Travel Time From Jor to Cella
+  initial_state: 'on'
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+    seconds: '0'
   condition:
     condition: and
     conditions:
-      - condition: template
-        value_template: '{{ is_state("input_boolean.push_notification_distance_jor_to_cella", "on") }}'
-      - condition: numeric_state
-        entity_id: sensor.google_travel_time_jor_to_cella
-        above: 1
-  action:
-    - service: notify.notify
-      data:
-        title: "Jordan is {{states.sensor.google_travel_time_jor_to_cella.state}} minutes away"
-        message: "Approximate ETA based on current traffic conditions and last known location"
-        data:
-          push:
-            badge: 1
-            category: camera
-            entity_id: camera.street_view_jor_gps
-
-- id: 'Push Travel Time From Cella to Jor'
-  initial_state: on
-  trigger:
-    - platform: time
-      minutes: '/5'
-      seconds: '0'
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: '{{ is_state("input_boolean.push_notification_distance_cella_to_jor", "on") }}'
-      - condition: numeric_state
-        entity_id: sensor.google_travel_time_cella_to_jor
-        above: 1
-  action:
-    - service: notify.notify
-      data:
-        title: "Cella is {{states.sensor.google_travel_time_cella_to_jor.state}} minutes away"
-        message: "Approximate ETA based on current traffic conditions and last known location"
-        data:
-          push:
-            badge: 1
-            category: camera
-            entity_id: camera.street_view_cella_gps
-
-- id: 'Jor Has Arrived'
-  initial_state: on
-  trigger:
-    - platform: numeric_state
+    - condition: template
+      value_template: '{{ is_state("input_boolean.push_notification_distance_jor_to_cella",
+        "on") }}'
+    - condition: numeric_state
       entity_id: sensor.google_travel_time_jor_to_cella
-      below: 2
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: '{{ is_state("input_boolean.push_notification_distance_jor_to_cella", "on") }}'
+      above: 1
   action:
-    - service: notify.all_cella
+  - service: notify.notify
+    data:
+      title: Jordan is {{states.sensor.google_travel_time_jor_to_cella.state}} minutes
+        away
+      message: Approximate ETA based on current traffic conditions and last known
+        location
       data:
-        title: "Jordan has arrived!"
-        message: "Jordan is here."
-        data:
-          push:
-            badge: 1
-            category: camera
-            entity_id: camera.street_view_jor_gps
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.push_notification_distance_jor_to_cella
-
-- id: 'Cella Has Arrived'
-  initial_state: on
+        push:
+          badge: 1
+          category: camera
+          entity_id: camera.street_view_jor_gps
+- id: Push Travel Time From Cella to Jor
+  initial_state: 'on'
   trigger:
-    - platform: numeric_state
-      entity_id: sensor.google_travel_time_cella_to_jor
-      below: 2
+  - platform: time_pattern
+    minutes: /5
+    seconds: '0'
   condition:
     condition: and
     conditions:
-      - condition: template
-        value_template: '{{ is_state("input_boolean.push_notification_distance_cella_to_jor", "on") }}'
+    - condition: template
+      value_template: '{{ is_state("input_boolean.push_notification_distance_cella_to_jor",
+        "on") }}'
+    - condition: numeric_state
+      entity_id: sensor.google_travel_time_cella_to_jor
+      above: 1
   action:
-    - service: notify.notify
+  - service: notify.notify
+    data:
+      title: Cella is {{states.sensor.google_travel_time_cella_to_jor.state}} minutes
+        away
+      message: Approximate ETA based on current traffic conditions and last known
+        location
       data:
-        title: "Cella has arrived"
-        message: "Cella is here."
-        data:
-          push:
-            badge: 1
-            category: camera
-            entity_id: camera.street_view_cella_gps
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.push_notification_distance_cella_to_jor
-      
-###Turn on AC when Humidity above 60%
-#- id: Turn Living Room Air conditioner Upon High Humidity
-#   value_template: >-
- #       {% if states.sensor.main_floor_humidity %}
-  #          {% if states.sensor.main_floor_humidity.state | int > 40 %}
-   #           true
-    #        {% endif %}
-     #   {% endif %}
-  #action:
-  #- service: climate.set_temperature
-  #  data:
-  #    entity_id: climate.air_conditioner
-# # - delay: '00:15:00'
-  #- service: climate.set_temperature
-  #  data:
-  #    entity_id: climate.air_conditioner
-  #    temperature: 68
-  #    operation_mode: Cool
-  #    fan_mode: 'On High'
-      
-      
-      
-- id: "2345566435"
-  initial_state: on
-  trigger: 
-    - platform: state
-      entity_id: remote.bedroom_harmony
-      to: 'on'
-      for: '01:30:00'
-  action: 
-    - service: remote.turn_off
-      entity_id: remote.bedroom_harmony
+        push:
+          badge: 1
+          category: camera
+          entity_id: camera.street_view_cella_gps
+- id: Jor Has Arrived
+  initial_state: 'on'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.google_travel_time_jor_to_cella
+    below: 2
+  condition:
+    condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ is_state("input_boolean.push_notification_distance_jor_to_cella",
+        "on") }}'
+  action:
+  - service: notify.all_cella
+    data:
+      title: Jordan has arrived!
+      message: Jordan is here.
       data:
-        activity: "34237743"
-        
-- id: "Turn off Bedroom Lights at Night"
-  initial_state: on
-  trigger: 
-    - platform: state
-      entity_id: remote.bedroom_harmony
-      to: 'on'
-      for: '00:45:00'
-  action: 
-    - service: homeassistant.turn_off
-      entity_id: group.master_bedroom
+        push:
+          badge: 1
+          category: camera
+          entity_id: camera.street_view_jor_gps
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.push_notification_distance_jor_to_cella
+- id: Cella Has Arrived
+  initial_state: 'on'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.google_travel_time_cella_to_jor
+    below: 2
+  condition:
+    condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ is_state("input_boolean.push_notification_distance_cella_to_jor",
+        "on") }}'
+  action:
+  - service: notify.notify
+    data:
+      title: Cella has arrived
+      message: Cella is here.
+      data:
+        push:
+          badge: 1
+          category: camera
+          entity_id: camera.street_view_cella_gps
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.push_notification_distance_cella_to_jor
+- id: Turn off Bedroom Lights at Night
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: remote.bedroom_harmony
+    to: 'on'
+    for: 00:45:00
+  action:
+  - service: homeassistant.turn_off
+    entity_id: group.master_bedroom
+- id: '1552068927774'
+  alias: Wink Alert
+  trigger:
+  - entity_id: binary_sensor.wink_hub
+    for: 00:00:05
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      message: Wink Hub has been Offline for 5 Minutes
+      target:
+      - '+16033181236'
+    service: notify.sms
+- id: '1552069205280'
+  alias: Kitchen Echo Alert
+  trigger:
+  - entity_id: media_player.kitchen_echo
+    for: 00:00:05
+    from: standby
+    platform: state
+    to: unavailable
+  condition: []
+  action:
+  - data:
+      message: Kitchen Echo has been Offline for 5 Minutes
+      target:
+      - '+16033181236'
+    service: notify.sms
+- id: '1553024434541'
+  alias: sugar_snacktime_over
+  trigger:
+  - at: '16:00:00'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: sensor.friends_home
+    state: 'false'
+  action:
+  - data:
+      entity: media_player.kitchen_echo
+      message: Stop fucking stuffing your faces, no more sugar for anyone!
+    service: media_player.alexa_tts
