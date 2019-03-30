@@ -1,6 +1,6 @@
 device_tracker.jphone:
   entity_picture: https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/32086679_1772210016159060_5434641162960896_n.jpg?_nc_cat=0&oh=35bacf9e04973da9dc158297e4dc6236&oe=5B9206B7
-  friendlyname: Jor
+  friendlyname: Jors Phone
 device_tracker.cella_gpslogger:
   entity_picture: https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/560976_10152133368280245_380104743_n.jpg?oh=5bd015a3cfd72e762e1a81f8d0c21b9e&oe=5B19DB18
 device_tracker.galaxynote8:
@@ -10,7 +10,8 @@ group.security:
 group.climate:
   icon: mdi:oil-temperature
 light.jors_side:
-  friendlyname: Jor's Side
+  friendly_name: Master Bedroom Window
+  friendlyname: Master Bedroom Window
   icon: mdi:lamp
 light.office_top:
   friendlyname: Office Light
@@ -78,7 +79,7 @@ light.cellas_side:
   icon: mdi:lamp
 binary_sensor.garage_motion_motion:
   friendly_name: Garage Motion
-binary_sensor.motion_sensor__motion:
+binary_sensor.motion_sensor_motion:
   friendly_name: Kitchen Motion
 binary_sensor.motion_sensor_3_motion:
   friendly_name: Mudroom Motion
@@ -137,15 +138,72 @@ binary_sensor.softener_not_running:
 binary_sensor.softener_running:
   friendly_name: Regeneration Running
   icon: mdi:power
-  
 sensor.dehumidifier_watts:
   friendly_name: Dehumidifier - Current Watts
   icon: mdi:flash-circle
-  
 binary_sensor.dehumidifier_full:
-  friendly_name: "Full"
+  friendly_name: Full
   icon: mdi:flask-empty
-  
 binary_sensor.dehumidifier_running:
   friendly_name: Running
   icon: mdi:flask-empty-outline
+sensor.jordan_location:
+  friendly_name: Where is Jordan?
+  icon: mdi:crosshairs
+sensor.jor_location:
+  friendly_name: Where's Jor?
+  icon: mdi:crosshairs
+sensor.zestimate:
+  friendly_name: 47 Harmony Rd
+switch.den_lamp:
+  friendly_name: Rock Light
+sensor.pollen_index:
+  icon: mdi:flower
+sensor.pollen_level:
+  icon: mdi:flower
+sensor.top_allergen_1:
+  icon: mdi:flower
+sensor.top_allergen_2:
+  icon: mdi:flower
+sensor.top_allergen_3:
+  icon: mdi:flower
+sensor.pollen_trend:
+  icon: mdi:flower
+sensor.pollen_outlook:
+  icon: mdi:flower
+sensor.pollen_season:
+  icon: mdi:flower
+sensor.pollen_index_forecast:
+  icon: mdi:flower
+sensor.pollen_level_forecast:
+  icon: mdi:flower
+sensor.cold_flu_percentage:
+  icon: mdi:snowflake
+sensor.cold_flu_risk:
+  icon: mdi:snowflake
+light.gym:
+  friendly_name: Hangout
+binary_sensor.motion_sensor_11_motion:
+  friendly_name: VR Room Motion
+sensor.motion_sensor_11_temperature:
+  friendly_name: VR Room Temperature
+remote.harmony_hub:
+  friendly_name: living_room_harmony
+remote.harmony_hub_2:
+  friendly_name: bedroom_harmony
+scene.color_loop_whole_house:
+  friendly_name: Color Loop Whole House
+sensor.disk_use_percent_var_log:
+  friendly_name: Disk use (percent)/var/log
+sensor.disk_use_percent:
+  friendly_name: Disk use (percent)/
+light.computerlighting:
+  friendly_name: Computer Light
+device_tracker.ce071717cb2aaf3a047e:
+  friendly_name: Jordan GPS Tracker
+device_tracker.ce0717174b4ca8900c7e:
+  friendly_name: Cella_GPS_Tracker
+sensor.fast_com_download:
+  friendly_name: Download Speed
+zone.home:
+  radius: 500
