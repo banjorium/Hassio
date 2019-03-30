@@ -1,43 +1,38 @@
 homeassistant:
   # Name of the location where Home Assistant is running
-  name: Home
+  name: !secret haname
   # Location required to calculate the time the sun rises and sets
-  latitude: 43.5389
-  longitude: -71.3864
+  latitude: !secret latitude
+  longitude: !secret longitude
   # Impacts weather/sunrise data (altitude above sea level in meters)
   elevation: 354
   # metric for Metric, imperial for Imperial
   unit_system: imperial
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  time_zone: America/New_York
+  time_zone: !secret timezone
   # Customization file
   customize: !include customize.yaml
-  
-#panel_custom:
-#  - name: 'Demo Floorplan'
-#    sidebar_title: Floorplan
-#    sidebar_icon: mdi:home
-#    url_path: floorplan
-#    config: /local/custom_ui/floorplan/floorplan.yaml
-   
-
-# Show links to resources in log and frontend
-#introduction:
+  packages: !include_dir_named packages
+ 
 
 # Enables the frontend
 frontend: !include frontend.yaml
   
+system_health:
 
+logger:
+  default: info
+  
 # Enables configuration UI
 config:
 
 http:
-  base_url: https://kangabros.duckdns.org:8123
+  base_url: !secret baseurl
   ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
-  api_password: !secret kangabros
+#  api_password: !secret kangabros
   cors_allowed_origins:
-    - https://kangabros.duckdns.org:7080
+    - !secret origins
   # Secrets are defined in the file secrets.yaml
   # api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
@@ -54,24 +49,69 @@ updater:
 
 # Discover some devices automatically
 discovery:
+#  ignore:
+#    - harmony
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
+#influxdb:
+#  host: a0d7b954-influxdb
+#  port: 8086
+#  database: home_assistant
+#  username: homeassistant
+#  password: !secret influxpass
+#  max_retries: 3
+#  default_measurement: state
+
 recorder:
   db_url: !secret dburl
-  purge_keep_days: 4
-  include:
-    domains:
-      - sensor
-      - switch
-      - media_player
+  purge_interval: 7
+  purge_keep_days: 14
       
+#android_ip_webcam:
+#  - host: 192.168.1.116
+#    name: 'Living Room Android Sensor'
+#    sensors:
+#      - audio_connections
+#      - battery_level
+#      - battery_temp
+#      - battery_voltage
+#      - light
+#      - motion
+#      - pressure
+#      - proximity
+#      - sound
+#      - video_connections
+#    switches:
+#      - exposure_lock
+#      - ffc
+#      - focus
+#      - gps_active
+#      - night_vision
+#      - overlay
+#      - torch
+#      - whitebalance_lock
+#      - video_recording
+
+#SpeedTest Alternative!
+fastdotcom:
+  scan_interval:
+      minutes: 60
+
 cover:
   - platform: myq
-    username: jordanielafontaine@gmail.com
+    username: !secret MYQUser
     password: !secret MYQ
     type: chamberlain
+    
+#image_processing:
+#  - platform: dlib_face_identify
+#    source:
+#     - entity_id: camera.front_door
+#    faces:
+#      Jordan: /config/test.jpg
+   
     
 # Enables support for tracking state changes over time
 history:
@@ -80,16 +120,14 @@ history:
       - sensor
       - switch
       - media_player
-      - light
+    entities:
+      - sensor.fast_com_download
       
 # View all events in a logbook
 logbook:
   include:
     domains:
       - sensor
-      - switch
-      - media_player
-      - light
 
 # Enables a map showing the location of tracked devices
 map:
@@ -103,8 +141,9 @@ joaoapps_join:
 sun:
 
 # Weather prediction
-sensor: !include sensors.yaml
-binary_sensor: !include binary_sensors.yaml
+weather:
+#  - platform: darksky
+#    api_key: !secret darksky_key
     
 # Text to speech
 tts:
@@ -112,21 +151,10 @@ tts:
   
 camera:
   - platform: ring
-  
-  - platform: generic
-    name: street_view_jor_gps
-    still_image_url: https://maps.googleapis.com/maps/api/streetview?size=600x300&location={{states.device_tracker.jphone.attributes.latitude}},{{states.device_tracker.jphone.attributes.longitude}}&key=AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
-    limit_refetch_to_url_change: true
-    
-  - platform: generic
-    name: street_view_cella_gps
-    still_image_url: https://maps.googleapis.com/maps/api/streetview?size=600x300&location={{states.device_tracker.cella_gpslogger.attributes.latitude}},{{states.device_tracker.cella_gpslogger.attributes.longitude}}&key=AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
-
-    limit_refetch_to_url_change: true
     
   - platform: generic
     name: location_map
-    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{states.sensor.center_map_on.state}}&zoom={{states.input_number.map_zoom.state|int}}&size=600x300&maptype=roadmap&markers=icon:https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/560976_10152133368280245_380104743_n.jpg?oh=5bd015a3cfd72e762e1a81f8d0c21b9e&oe=5B19DB18|{{states.device_tracker.cella_gpslogger.attributes.latitude}},{{states.device_tracker.cella_gpslogger.attributes.longitude}}&markers=icon:https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/32086679_1772210016159060_5434641162960896_n.jpg?_nc_cat=0&oh=35bacf9e04973da9dc158297e4dc6236&oe=5B9206B7|{{states.device_tracker.jphone.attributes.latitude}},{{states.device_tracker.jphone.attributes.longitude}}&key=AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
+    still_image_url: !secret locationurl
     limit_refetch_to_url_change: true
 
 #usps:
@@ -143,36 +171,93 @@ camera:
   #  - BCH
 
 panel_iframe:
+
+  ide:
+    title: Cloud9-IDE
+    icon: mdi:cloud
+    url: !secret cloud9url
+    
   configurator:
     title: Configurator
     icon: mdi:wrench
-    url: https://kangabros.duckdns.org:3218
-    
-  floorplan:
-    title: Floorplan
-    icon: mdi:home
-    url: https://kangabros.duckdns.org:8123/local/custom_ui/floorplan/ha-floorplan.html
-   
-    
-  nodered:
-    title: Node-Red
-    icon: mdi:shuffle-variant
-    url: "https://kangabros.duckdns.org:1880/"
+    url: !secret configuratorurl
+  
+#  influxdb:
+#    title: InfluxDB
+#    icon: mdi:chart-areaspline
+#    url: https://kangabros.duckdns.org:8888
+  
+  logviewer:
+    title: Log Viewer
+    icon: mdi:android-debug-bridge
+    url: !secret logviewerurl
+  
+#  nodered:
+#    title: Node-Red
+#    icon: mdi:shuffle-variant
+#    url: !secret noderedurl
     
   terminal:
     title: Terminal
     icon: mdi:console-line
-    url: https://kangabros.duckdns.org:7681
+    url: !secret terminalurl
     
+
+google:
+  client_id: !secret googleclientid
+  client_secret: !secret googleclientsecret
+  
 # Cloud
 cloud:
+  alexa:
+    filter:
+      include_entities:
+        - group.automation_motion
+      include_domains:
+        - scene
+        - cover
+        
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegramapi
+    allowed_chat_ids:
+      - 310787393
+      - 397445973
+      - 628374043
+      
+lovelace:
+  mode: storage
+
+custom_updater:
+  show_installable: True
+  track:
+    - components
+    - cards
+    - python_scripts
+  component_urls:
+    - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/custom_components.json
+    - https://raw.githubusercontent.com/keatontaylor/custom_components/master/custom_components.json
+  card_urls:
+    - https://raw.githubusercontent.com/rdehuyss/homeassistant-lovelace-google-calendar-card/master/custom_updater.json
+    - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
+    - https://raw.githubusercontent.com/ljmerza/waze-card/master/custom_updater.json
+    - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
+#    - https://raw.githubusercontent.com/ciotlosm/custom-lovelace/master/thermostat-card/thermostat-card.js
+#    - https://raw.githubusercontent.com/custom-cards/username-element/master/username-element.js
+#    - https://raw.githubusercontent.com/custom-cards/surveillance-card/master/surveillance-card.js
+#    - https://raw.githubusercontent.com/thomasloven/lovelace-player/master/lovelace-player.js
+#    - https://raw.githubusercontent.com/thomasloven/lovelace-player/master/lovelace-player-config.js
+#    - https://raw.githubusercontent.com/custom-cards/canvas-gauge-card/master/canvas-gauge-card.js
+#    - https://raw.githubusercontent.com/custom-cards/canvas-gauge-card/master/gauge.min.js
+#   - https://raw.githubusercontent.com/custom-cards/tracker-card/master/tracker-card.js
 
 mqtt:
-  broker: m13.cloudmqtt.com
-  port: 26720
+  broker: !secret mqttbroker
+  port: !secret mqttport
   username: hassio
   password: !secret cloudmqtt
   discovery: true
+  certificate: auto
   
   #port: 1883
   #client_id: home-assistant-1
@@ -185,21 +270,50 @@ device_tracker:
     password: !secret gpsloggerpassword
     
   - platform: linksys_smart
-    host: 192.168.1.1
-    interval_seconds: '00:00:05'
+    host: !secret linksysip
+    interval_seconds: '00:00:15'
     consider_home: 5
     track_new_devices: no
     
   - platform: bluetooth_tracker
     consider_home: 5
-    interval_seconds: 5
-    track_new_devices: no
+    interval_seconds: 15
+    track_new_devices: yes
+
+  - platform: ping
+    hosts:
+      VR_Rig: 192.168.1.10
+
+#  - platform: traccar
+#    host: 192.168.1.136
+#    port: 8072
+#    username: !secret traccar_user
+#    password: !secret traccar_pass
+#    ssl: true
+#    verify_ssl: false
+      
+tuya:
+  username: !secret tuyaname
+  password: !secret tuyapass
+  country_code: !secret tuyacode
     
 notify:
-  - platform: pushbullet
-    api_key: !secret pushbulletkey
+#  - platform: pushbullet
+#    api_key: !secret pushbulletkey
     
-#light:
+#  - name: informational
+#    platform: telegram
+#    chat_id: !secret infotelegramid
+
+  - name: SMS
+    platform: twilio_sms
+    from_number: "+14123123432"
+
+
+twilio:
+  account_sid: !secret twilio_account_sid
+  auth_token: !secret twilio_auth_token
+  
 #  platform: mqtt_json
 #  name: 'AiLight Living Room'
 #  command_topic: 'AiLight-3E2B09/set'
@@ -225,54 +339,86 @@ ring:
   password: !secret ring_password
   
   
-switch:
-  - platform: tplink
-    host: !secret craft_ip
-    name: Craft
-  - platform: tplink
-    host: !secret filter_ip
-    name: Filter
-  - platform: tplink
-    host: !secret sexylights_ip
-    name: Sexy Lights
+#switch:
+#  - platform: tplink
+#    host: !secret craft_ip
+#    name: Craft
     
+  #- platform: tplink
+#    host: !secret filter_ip
+#    name: Filter
+    
+#  - platform: tplink
+#    host: !secret denlamp_ip
+#    name: 'Rock Light'
+    
+#  - platform: tplink
+#    host: !secret vrlamp_ip
+#    name: 'VR Closet Lamp'
 
 media_player:
-  - platform: spotify
-    client_id: !secret spotify_client_id
-    client_secret: !secret spotify_client_secret
 
-  - platform: firetv
-    host: 0.0.0.0
-    port: 5556
-    device: "FireTV"
-    name: "Fire TV"
+#  - platform: spotify
+#    client_id: !secret spotify_client_id
+#    client_secret: !secret spotify_client_secret
+
+#  - platform: alexa
+ # - platform: alexa
+ #   email: !secret amazonemail
+ #   password: !secret amazonapi
+ #   url: "amazon.com"
+  - platform: androidtv
+    name: "Fire TV Living Room"
+    host: 192.168.1.213
+    adb_server_ip: 127.0.0.1
+    adb_server_port: 5037
     
-#  - platform: firetv
-#    host: 192.168.1.105
- #   port: 5555
-  #  device: "LivingRoomFireTV"
-   # name: "Living Room Fire TV"
+  - platform: androidtv
+    name: "Fire TV Bedroom"
+    host: 192.168.1.242
+    adb_server_ip: 127.0.0.1
+    adb_server_port: 5037
     
+  - platform: floorplan_speaker
+    name: hallway_dashboard
+  
+alexa_media:
+  accounts:
+    - email: !secret amazonemail
+      password: !secret amazonapi
+      url: amazon.com
+      exclude_devices:
+        - "Marcella's Alexa Apps"
+        - "This Device"
+        - "My Dash"
+        - "Everywhere"
+        - " Jordan's Fire TV stick"
+        - "Jordan's 2nd Fire TV stick"
+        - "Jordan's Alexa Apps"
     
+
+
+#Wink Component.  Enables Wink Integration.
 wink:
     
 remote:
   - platform: harmony
     name: 'Living Room Harmony'
     activity: TV
-    host: !secret harmony_ip
+    host: !secret harmony_ip  
     
   - platform: harmony
     name: 'Bedroom Harmony'
     activity: 'Watch TV'
-    host: !secret harmony2_ip    
+    host: !secret harmony2_ip  
   
 python_script:
 
+#Enables IFTTT Integration.
 ifttt:
   key: !secret ifttt_key
-  
+
+#Toggle for Sending Location Updates  
 input_boolean:
   push_notification_distance_cella_to_jor:
     name: Send Notifications - To Jor
@@ -291,8 +437,16 @@ input_number:
     max: 21
     step: 1
   
+vacuum:
+  - platform: roomba
+    host: 192.168.1.117
+    username: !secret roomba_blid
+    password: !secret roomba_password
+    
 scene: !include scenes.yaml
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 zone: !include zones.yaml
+sensor: !include sensors.yaml
+binary_sensor: !include binary_sensors.yaml
