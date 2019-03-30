@@ -1,4 +1,117 @@
+#- platform: pi_hole
+#  monitored_conditions:
+#    - ads_blocked_today
+#    - ads_percentage_today
+#    - dns_queries_today
+#    - domains_being_blocked
+#    - queries_cached
+#    - queries_forwarded
+#    - unique_clients
+#    - unique_domains
+#    - clients_ever_seen
+
+# the original moon component
+- platform: moon
+  # the template for the moon phase pictures using the original moon component
+- platform: template
+  sensors:
+      moon_phases:
+        entity_id: sensor.moon
+        friendly_name: 'Moon Phase'
+        value_template: '{{ states.sensor.moon.state }}'
+        entity_picture_template: >-
+          {% if is_state('sensor.moon', 'new_moon') %}
+            /local/MoonPhases/NNewMoon.jpg
+          {% elif is_state('sensor.moon', 'waxing_crescent') %}
+            /local/MoonPhases/NWaxingCrescent.jpg
+          {% elif is_state('sensor.moon', 'first_quarter') %}
+            /local/MoonPhases/NFirstQuarter.jpg
+          {% elif is_state('sensor.moon', 'waxing_gibbous') %}
+            /local/MoonPhases/NWaxingGibbous.jpg
+          {% elif is_state('sensor.moon', 'full_moon') %}
+            /local/MoonPhases/NFullMoon.jpg
+          {% elif is_state('sensor.moon', 'waning_gibbous') %}
+            /local/MoonPhases/NWaningGibbous.jpg
+          {% elif is_state('sensor.moon', 'last_quarter') %}
+            /local/MoonPhases/NLastQuarter.jpg
+          {% elif is_state('sensor.moon', 'waning_crescent') %}
+            /local/MoonPhases/NWaningCrescent.jpg
+          {% endif %}
+
+
+- platform: rest
+  name: "HASS Current Version"
+  resource: https://pypi.python.org/pypi/homeassistant/json
+  value_template: '{{ value_json.info.version }}'
+  scan_interval: 3600
+
+- platform: command_line
+  name: "HASS Installed version"
+  command: "head -5 /config/.HA_VERSION"
+    
+- platform: coinmarketcap
+  currency_id: 1
+  
+- platform: coinmarketcap
+  currency_id: 1027
+  
+- platform: coinmarketcap
+  currency_id: 1376
+  
+- platform: coinmarketcap
+  currency_id: 512
+  display_currency_decimals: 4
+  
+- platform: coinmarketcap
+  currency_id: 2566
+  display_currency_decimals: 4
+  
+- platform: zestimate
+  api_key: !secret zestimate_api
+  zpid:
+    - 120336460
+    
+- platform: template
+  sensors: 
+    30daychange:
+      friendly_name: '30 Day Change' 
+      unit_of_measurement: "USD"
+      value_template: '{{ states.sensor.zestimate.attributes.amount_change_30_days.state }}'
+
+- platform: template
+  sensors: 
+    zillowlastupdated:
+      friendly_name: 'Last Updated'
+      value_template: '{{ states.sensor.zestimate.attributes.amount_last_updated.state }}'
+      
+- platform: alpha_vantage
+  api_key: !secret alphaadvantage_api
+  symbols:
+    - name: Aurora Cannabis
+      currency: USD
+      symbol: ACB
+    
+    - name: Cronos Group
+      currency: USD
+      symbol: CRON
+
+- platform: template
+  sensors:
+    last_alexa:
+      entity_id:
+        - media_player.kitchen_echo
+        - media_player.office_dot
+        - media_player.master_bedroom_dot
+        - media_player.living_room_dot
+        - media_player.craft_dot
+        - media_player.reading_room_dot
+        - media_player.master_bathroom_dot
+        - media_player.jordan_s_garmin_speak
+      value_template: >
+        {{ states.media_player | selectattr('attributes.last_called','eq',True) | map(attribute='entity_id') | first }}
+        
 - platform: yr
+
 - platform: ring
   monitored_conditions:
     - battery
@@ -9,6 +122,237 @@
     - wifi_signal_strength
     - wifi_signal_category
     
+ # Today's Pollen Index
+- platform: rest
+  name: 'Pollen Index'
+  resource: https://www.pollen.com/api/forecast/current/pollen/03261
+  value_template: "{{value_json.Location.periods[1].Index}}"
+  scan_interval: 21600
+  headers:
+    Referer: "https://www.pollen.com"
+
+  # Today's Pollen Level
+- platform: template
+  sensors:
+    pollen_level:
+      friendly_name: 'Pollen Level'
+      entity_id: sensor.pollen_index
+      value_template: >-
+        {%- if states.sensor.pollen_index.state|float <= 2.4 %}
+            Low
+        {%- elif states.sensor.pollen_index.state|float <= 4.8 %}
+            Med/Low
+        {%- elif states.sensor.pollen_index.state|float <= 7.2 %}
+            Med
+        {%- elif states.sensor.pollen_index.state|float <= 9.6 %}
+            Med/High
+        {%- elif states.sensor.pollen_index.state|float <= 12.0 %}
+            High
+        {% else %}
+            Unknown
+        {%- endif %}
+
+  # Tomorrow's Pollen Index Forecast
+- platform: rest
+  name: 'Pollen Index Forecast'
+  resource: https://www.pollen.com/api/forecast/current/pollen/03261
+  value_template: "{{value_json.Location.periods[2].Index}}"
+  scan_interval: 21600
+  headers:
+    Referer: "https://www.pollen.com"
+
+  # Tomorrow's Pollen Level Forecast
+- platform: template
+  sensors:
+    pollen_level_forecast:
+      friendly_name: 'Pollen Level Forecast'
+      entity_id: sensor.pollen_index
+      value_template: >-
+        {%- if states.sensor.pollen_index_forecast.state|float <= 2.4 %}
+            Low
+        {%- elif states.sensor.pollen_index_forecast.state|float <= 4.8 %}
+            Med/Low
+        {%- elif states.sensor.pollen_index_forecast.state|float <= 7.2 %}
+            Med
+        {%- elif states.sensor.pollen_index_forecast.state|float <= 9.6 %}
+            Med/High
+        {%- elif states.sensor.pollen_index_forecast.state|float <= 12.0 %}
+            High
+        {% else %}
+            Unknown
+        {%- endif %}
+
+  # Today's Top Allergen
+- platform: rest
+  name: 'Top Allergen 1'
+  resource: https://www.pollen.com/api/forecast/current/pollen/03261
+  value_template: >-
+    {% if value_json.Location.periods[1].Triggers[0] %}
+    {{ value_json.Location.periods[1].Triggers[0].PlantType }}
+    {% else %}
+    -
+    {% endif %}
+  scan_interval: 21600
+  headers:
+    Referer: "https://www.pollen.com"
+
+  # Today's Second Allergen
+- platform: rest
+  name: 'Top Allergen 2'
+  resource: https://www.pollen.com/api/forecast/current/pollen/03261
+  value_template: >-
+    {% if value_json.Location.periods[1].Triggers[1] %}
+    {{ value_json.Location.periods[1].Triggers[1].PlantType }}
+    {% else %}
+    -
+    {% endif %}
+  scan_interval: 21600
+  headers:
+    Referer: "https://www.pollen.com"
+
+  # Today's Third Allergen
+- platform: rest
+  name: 'Top Allergen 3'
+  resource: https://www.pollen.com/api/forecast/current/pollen/03261
+  value_template: >-
+    {% if value_json.Location.periods[1].Triggers[2] %}
+    {{ value_json.Location.periods[1].Triggers[2].PlantType }}
+    {% else %}
+    -
+    {% endif %}
+  scan_interval: 21600
+  headers:
+    Referer: "https://www.pollen.com"
+
+  # Pollen Trend
+- platform: rest
+  name: 'Pollen Trend'
+  resource: https://www.pollen.com/api/forecast/outlook/03261
+  value_template: "{{value_json.Trend}}"
+  scan_interval: 21600
+  headers:
+    Referer: "https://www.pollen.com"
+
+  # Pollen Outlook
+- platform: rest
+  name: 'Pollen Outlook'
+  resource: https://www.pollen.com/api/forecast/outlook/03261
+  value_template: "{{value_json.Outlook}}"
+  scan_interval: 21600
+  headers:
+    Referer: "https://www.pollen.com"
+
+  # Pollen Season
+- platform: rest
+  name: 'Pollen Season'
+  resource: https://www.pollen.com/api/forecast/outlook/03261
+  value_template: "{{value_json.Season}}"
+  scan_interval: 21600
+  headers:
+    Referer: "https://www.pollen.com"
+
+  # Today's Cold/Flu Percentage
+- platform: rest
+  name: 'Cold Flu Percentage'
+  resource: https://www.pollen.com/api/forecast/extended/cold/03261
+  value_template: "{{value_json.Location.periods[1].Index}}"
+  scan_interval: 21600
+  headers:
+    Referer: "https://www.pollen.com"
+    unit_of_measurement: "%"
+
+  # Today's Cold/Flu Risk
+- platform: template
+  sensors:
+    cold_flu_risk:
+      friendly_name: 'Cold & Flu Risk'
+      entity_id: sensor.cold_flu_percentage
+      value_template: >-
+        {%- if states.sensor.cold_flu_percentage.state|float <= 2.4 %}
+            Low
+        {%- elif states.sensor.cold_flu_percentage.state|float <= 4.8 %}
+            Med/Low
+        {%- elif states.sensor.cold_flu_percentage.state|float <= 7.2 %}
+            Med
+        {%- elif states.sensor.cold_flu_percentage.state|float <= 9.6 %}
+            Med/High
+        {%- elif states.sensor.cold_flu_percentage.state|float <= 12.0 %}
+            High
+        {% else %}
+            Unknown
+        {%- endif %}
+
+- platform: fitbit
+  clock_format: 12H
+  monitored_resources:
+#    - "activities/activityCalories"
+#    - "activities/calories"
+#    - "activities/caloriesBMR"
+#    - "activities/distance"
+#    - "activities/elevation"
+#    - "activities/floors"
+#    - "activities/heart"
+#    - "activities/minutesFairlyActive"
+#    - "activities/minutesLightlyActive"
+#    - "activities/minutesSedentary"
+#    - "activities/minutesVeryActive"
+#    - "activities/steps"
+#    - "activities/tracker/activityCalories"
+    - "activities/tracker/calories"
+    - "activities/tracker/distance"
+    - "activities/tracker/elevation"
+    - "activities/tracker/floors"
+    - "activities/tracker/minutesFairlyActive"
+    - "activities/tracker/minutesLightlyActive"
+    - "activities/tracker/minutesSedentary"
+    - "activities/tracker/minutesVeryActive"
+    - "activities/tracker/steps"
+#    - "body/bmi"
+#    - "body/fat"
+#    - "body/weight"
+    - "devices/battery"
+    #- "sleep/awakeningsCount"
+#    - "sleep/efficiency"
+#    - "sleep/minutesAfterWakeup"
+#    - "sleep/minutesAsleep"
+#    - "sleep/minutesAwake"
+#    - "sleep/minutesToFallAsleep"
+#    - "sleep/startTime"
+#    - "sleep/timeInBed"
+
+#Find3 Room Guesses Sensor
+#- platform: mqtt
+#  state_topic: 'location/jornote'
+#  name: jordan_location
+#  value_template: '{{ value_json.guesses[0].location }}'
+  
+#BETTER Room Guesses Sensor
+#- platform: template
+#  sensors:
+#    template_last_motion:
+#    friendly_name: 'Last Motion'
+#    value_template: >
+#      {%- set pirs = [states.binary_sensor.motion_sensor_motion, states.binary_sensor.motion_sensor_2_motion, states.binary_sensor.motion_sensor_3_motion, states.binary_sensor.sensor_4, states.binary_sensor.motion_sensor_5_motion, states.binary_sensor.motion_sensor_7_motion, states.binary_sensor.motion_sensor_8_motion, states.binary_sensor.garage_motion_motion, states.binary_sensor.front_door_motion] %}
+#      {% for pir in pirs %}
+#        {% if as_timestamp(pir.last_changed) == as_timestamp(pirs | map(attribute='last_changed') | max) %}
+#          {{ pir.name }}
+#        {% endif %}
+#      {% endfor %}
+  
+#- platform: mqtt
+#  name: Jor_Location
+#  state_topic: "location/jornote"
+#  value_template: '{{ value_json.loc1 }}'
+#  json_attributes: 
+#    - loc1prob
+#    - loc2
+##    - loc2prob
+#    - loc3
+#    - loc3prob
+#    - latitude
+#    - longitude
+#    - altitude
+
 #- platform: template
 #  sensors:
 #    softener_watts:
@@ -16,27 +360,102 @@
 #      unit_of_measurement: "w"
 #      value_template: '{% if states.switch.wemo_insight %}{{ states.switch.wemo_insight.attributes.current_power_w }}{% else %}Off{% endif %}'
 
+
+- platform: template
+  sensors:
+      jor_note8_battery:
+        value_template: '{{ states.device_tracker.ce071717cb2aaf3a047e.attributes.battery }}'
+        friendly_name: 'Jordans Battery'
+        unit_of_measurement: '%'
+        entity_id: device_tracker.ce071717cb2aaf3a047e
+        
+- platform: template
+  sensors:
+      cella_note8_battery:
+        value_template: '{{ states.device_tracker.ce0717174b4ca8900c7e.attributes.battery }}'
+        friendly_name: 'Cellas Battery'
+        unit_of_measurement: '%'
+        entity_id: device_tracker.ce0717174b4ca8900c7e
+        
 - platform: template
   sensors:
     dehumidifier_watts:
       friendly_name: "Dehumidifier Watts"
       unit_of_measurement: "w"
       value_template: '{% if states.switch.wemo_insight %}{{ states.switch.wemo_insight.attributes.current_power_w }}{% else %}Off{% endif %}'
-
+      
+- platform: template
+  sensors:
+    dehumidifier_status:
+      value_template: >-
+       {% if is_state("binary_sensor.dehumidifier_full", "off") %}
+         Empty
+       {% else %}
+         Full
+       {% endif %}
+      icon_template: >-
+       {% if is_state("binary_sensor.dehumidifier_full", "off") %}
+         mdi:checkbox-marked-circle
+       {% else %}
+         mdi:alert-outline
+       {% endif %}
+      friendly_name: 'Dehumidifier Status'
+      
     
 - platform: template
   sensors:
-    number_of_lights_on:
+    count_lights_on:
+      unit_of_measurement: 'Lights'
+      friendly_name: 'Lights on'
+      entity_id:
+        - light.reading_room
+        - light.hue_color_lamp_1
+        - light.attic_light
+        - light.bathroom
+        - light.counter_right
+        - light.living_room_front
+        - light.living_room_main
+        - light.living_room_table
+        - light.bar
+        - light.gym
+        - light.drums
+        - light.workshop_light
+        - light.master_bath_toilet
+        - light.master_bathroom_shower
+        - light.tiki_lamp
+        - light.hallway_middle
+        - light.entry
+        - light.entryway_lamp
+        - light.laundry
+        - light.cellas_desk
+        - light.jorsside
+        - light.cellasside
+        - light.kitchenrefrigerator
+        - light.guestshower
+        - light.guestsink
+        - light.tiles
+       
       value_template: >-
-        {% for state in states if ( 'light' in state.entity_id and state.domain in ['light','switch'] and state.state == 'on' ) -%}
-              {% if loop.last -%}
-              {{ loop.index }}
-              {%- endif %}
-              {% else %}
-                  0
-        {%- endfor %}
-      entity_id: sensor.time
-      
+          {%- for item in states.group.everything.attributes.entity_id  if states(item) == "on" %}
+            {% if loop.last %}
+              {{loop.index}}
+            {% endif %}
+          {% endfor %}
+
+- platform: history_stats
+  name: 'Living Room TV Today'
+  entity_id:  sensor.current_activity
+  state: 'TV'
+  start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+  end: '{{ now() }}'
+
+- platform: history_stats
+  name: 'Bed Room TV Today'
+  entity_id:  sensor.current_activity2
+  state: 'TV'
+  start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+  end: '{{ now() }}'
+
 - platform: template
   sensors:
 # If either "device" reports as home, this sensor returns 'on' #
@@ -53,28 +472,30 @@
       jor_home:
         entity_id:
           - device_tracker.galaxy_note8
-          - device_tracker.jphone
+          - device_tracker.ce071717cb2aaf3a047e
           - device_tracker.galaxynote8
         value_template: >-
           {{ is_state('device_tracker.galaxy_note8', 'home')
-             or is_state('device_tracker.jphone', 'home')
+             or is_state('device_tracker.ce071717cb2aaf3a047e', 'home')
+             or is_state('binary_sensor.pontiac_sensor_presence', 'home')
              or is_state('device_tracker.galaxynote8', 'home') }}
       cella_home:
         entity_id:
-          - device_tracker.cella_gpslogger
+          - device_tracker.ce0717174b4ca8900c7e
           - device_tracker.mossella
         value_template: >-
-          {{ is_state('device_tracker.cella_gpslogger', 'home')
+          {{ is_state('device_tracker.ce0717174b4ca8900c7e', 'home')
              or is_state('device_tracker.mossell', 'home') }}
       everyone_home:
         entity_id:
           - device_tracker.galaxy_note8
           - device_tracker.galaxynote8
-          - device_tracker.cella_gpslogger
+          - device_tracker.ce0717174b4ca8900c7e
           - device_tracker.mossella
         value_template: >-
            {{ is_state('device_tracker.galaxy_note8', 'home')
-             or is_state('device_tracker.jphone', 'home')
+             or is_state('binary_sensor.pontiac_sensor_presence', 'home')
+             or is_state('device_tracker.ce071717cb2aaf3a047e', 'home')
              or is_state('device_tracker.galaxynote8', 'home')
              or is_state('device_tracker.mossella', 'home')
              or is_state('device_tracker.cellas_gpslogger', 'home') }}
@@ -84,15 +505,16 @@
           - device_tracker.galaxynote8
         value_template: >-
           {{ is_state('device_tracker.galaxy_note8', 'not_home')
+             or is_state('binary_sensor.pontiac_sensor_presence', 'away')
              or is_state('device_tracker.galaxynote8', 'not_home') }}
 
       moss_not_home:
         entity_id:
-          - device_tracker.cella_gpslogger
+          - device_tracker.ce0717174b4ca8900c7e
           - device_tracker.mossella
           - device_tracker.mossella_2
         value_template: >-
-          {{ is_state('device_tracker.cella_gpslogger', 'not_home')
+          {{ is_state('device_tracker.ce0717174b4ca8900c7e', 'not_home')
              or is_state('device_tracker.mossella', 'not_home')
              or is_state('device_tracker.mossella_2', 'not_home')}}
              
@@ -100,14 +522,14 @@
         value_template: >-
           {% set center = states.input_select.center_map_on.state %}
           {% if center == "Jor"%}
-            {% set lat = states.device_tracker.jphone.attributes.latitude %}
-            {% set long = states.device_tracker.jphone.attributes.longitude %}
+            {% set lat = states.device_tracker.ce071717cb2aaf3a047e.attributes.latitude %}
+            {% set long = states.device_tracker.ce071717cb2aaf3a047e.attributes.longitude %}
           {% elif center == "Cella"%}
-            {% set lat = states.device_tracker.cella_gpslogger.attributes.latitude %}
-            {% set long = states.device_tracker.cella_gpslogger.attributes.longitude %}
+            {% set lat = states.device_tracker.ce0717174b4ca8900c7e.attributes.latitude %}
+            {% set long = states.device_tracker.ce0717174b4ca8900c7e.attributes.longitude %}
           {% else %}
-            {% set lat = states.device_tracker.jphone.attributes.latitude %}
-            {% set long = states.device_tracker.jphone.attributes.longitude %}
+            {% set lat = states.device_tracker.ce071717cb2aaf3a047e.attributes.latitude %}
+            {% set long = states.device_tracker.ce071717cb2aaf3a047e.attributes.longitude %}
           {% endif %}
           {{ [lat,long]|join(',') }}
       
@@ -122,14 +544,14 @@
 - platform: google_travel_time
   api_key: AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
   name: google_travel_time_jor_to_cella
-  origin: device_tracker.galaxy_note8
-  destination: device_tracker.cella_gpslogger
+  origin: device_tracker.ce071717cb2aaf3a047e
+  destination: device_tracker.ce0717174b4ca8900c7e
   
 - platform: google_travel_time
   api_key: AIzaSyCiFBtPHORegLgaUuzy4Cs8Dr2OyEbDjlw
   name: google_travel_time_cella_to_jor
-  origin: device_tracker.cella_gpslogger
-  destination: device_tracker.galaxy_note8
+  origin: device_tracker.ce0717174b4ca8900c7e
+  destination: device_tracker.ce071717cb2aaf3a047e
   
 - platform: etherscan
   address: !secret etherscan_add
@@ -164,7 +586,6 @@
     - type: swap_use
     - type: swap_free
     - type: last_boot
-    - type: since_last_boot
     - type: network_in
       arg: wlan0
     - type: network_out
@@ -178,20 +599,20 @@
     - type: ipv6_address
       arg: wlan0
       
-- platform: steam_online
-  api_key: !secret steamapi
-  accounts: 
-    - 76561198020748567
-    - 76561198028167709
-    - 76561198116371201
-    - 76561198055768726
-    - 76561198014880362
-    - 76561197960457718
-    - 76561197980544086
-    - 76561197976189854
-    - 76561198054144074
-    - 76561198030775146
-    - 76561198297273260
+#- platform: steam_online
+#  api_key: !secret steamapi
+#  accounts: 
+#    - 76561198020748567
+#    - 76561198028167709
+#    - 76561198116371201
+#    - 76561198055768726
+#    - 76561198014880362
+#    - 76561197960457718
+#    - 76561197980544086
+#    - 76561197976189854
+#    - 76561198054144074
+#    - 76561198030775146
+#    - 76561198297273260
     
     
 - platform: command_line
@@ -200,3 +621,214 @@
   # If errors occur, remove degree symbol below
   unit_of_measurement: "°C"
   value_template: '{{ value | multiply(0.001) }}'
+
+
+- platform: waze_travel_time
+  name: Time_Work_To_Home
+  origin: '1230 Elm Street Manchester NH'
+  destination: '47 Harmony Road Northwood NH'
+  region: 'US'
+  realtime: true
+  
+  
+- platform: darksky
+  api_key: !secret darksky_key
+  forecast:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+  monitored_conditions:
+    - summary
+    - precip_probability
+    - precip_type
+    - precip_probability
+    - precip_accumulation
+    - apparent_temperature
+    - dew_point
+    - ozone
+    - minutely_summary
+    - apparent_temperature_high
+    - apparent_temperature_low
+    - precip_intensity_max
+    - uv_index
+    - moon_phase
+    - wind_speed
+    - cloud_cover
+    - icon
+    - temperature_low
+    - temperature_high
+    - daily_summary
+    - hourly_summary
+      # - Added for weather card
+    - humidity
+    - temperature
+    - wind_bearing
+    - pressure
+    - visibility
+  scan_interval:
+    minutes: 5
+
+- platform: season
+- platform: template
+  sensors:
+      forecast_0:
+        friendly_name: "Today"
+        entity_id:
+          - sensor.dark_sky_daytime_high_temperature
+          - sensor.dark_sky_overnight_low_temperature
+          - sensor.dark_sky_precip_probability
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon.state ~ '.png'}}
+      forecast_1:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (1 * 86400 ) -%}
+          {{ date | timestamp_custom("Tomorrow (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        entity_id:
+          - sensor.dark_sky_daytime_high_temperature_1
+          - sensor.dark_sky_overnight_low_temperature_1
+          - sensor.dark_sky_precip_probability_1
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_1.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_1.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_1.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_1.state ~ '.png'}}
+      forecast_2:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (2 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        entity_id:
+          - sensor.dark_sky_daytime_high_temperature_2
+          - sensor.dark_sky_overnight_low_temperature_2
+          - sensor.dark_sky_precip_probability_2
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_2.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_2.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_2.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_2.state ~ '.png'}}
+      forecast_3:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (3 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        entity_id:
+          - sensor.dark_sky_daytime_high_temperature_3
+          - sensor.dark_sky_overnight_low_temperature_3
+          - sensor.dark_sky_precip_probability_3
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_3.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_3.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_3.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_3.state ~ '.png'}}
+      forecast_4:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (4 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        entity_id: 
+          - sensor.dark_sky_daytime_high_temperature_4
+          - sensor.dark_sky_overnight_low_temperature_4
+          - sensor.dark_sky_precip_probability_4
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_4.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_4.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_4.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_4.state ~ '.png'}}
+      forecast_5:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (5 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        entity_id:
+          - sensor.dark_sky_daytime_high_temperature_5
+          - sensor.dark_sky_overnight_low_temperature_5
+          - sensor.dark_sky_precip_probability_5
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_5.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_5.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_5.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_5.state ~ '.png'}}
+      forecast_6:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (6 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        entity_id:
+          - sensor.dark_sky_daytime_high_temperature_6
+          - sensor.dark_sky_overnight_low_temperature_6
+          - sensor.dark_sky_precip_probability_6
+        value_template: >
+            {{states.sensor.dark_sky_daytime_high_temperature_6.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_6.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_6.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_6.state ~ '.png'}}
+      forecast_7:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (7 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        entity_id:
+          - sensor.dark_sky_daytime_high_temperature_7
+          - sensor.dark_sky_overnight_low_temperature_7
+          - sensor.dark_sky_precip_probability_7
+        value_template: >
+            {{states.sensor.dark_sky_daytime_high_temperature_7.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_7.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_7.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_7.state ~ '.png'}}
+          
+          
+          
+          
+- platform: waze_travel_time
+  name: "Jor Location to Home"
+  origin: device_tracker.ce071717cb2aaf3a047e
+  destination: zone.home
+  region: 'US'
+ 
+- platform: waze_travel_time
+  name: "Jor Location to Work"
+  origin: device_tracker.ce071717cb2aaf3a047e
+  destination: zone.1230_elm_st
+  region: 'US'
+  
+- platform: waze_travel_time
+  name: 'Jor Location to ATC'
+  origin: device_tracker.ce071717cb2aaf3a047e
+  destination: '568 Tenney Mountain Hwy, Plymouth, NH 03264'
+  region: 'US'
+  
+- platform: waze_travel_time
+  name: "Jor Location to Therapist"
+  origin: device_tracker.ce071717cb2aaf3a047e
+  destination: zone.therapist
+  region: 'US'
+
+- platform: waze_travel_time
+  name: "Jor Location to Doctor"
+  origin: device_tracker.ce071717cb2aaf3a047e
+  destination: zone.doctor
+  region: 'US'
+ 
+- platform: waze_travel_time
+  name: 'Jor To Cella'
+  origin: device_tracker.ce071717cb2aaf3a047e
+  destination: device_tracker.ce0717174b4ca8900c7e
+  region: 'US'
+
+- platform: waze_travel_time
+  name: "Cella Location to Home"
+  origin: device_tracker.ce0717174b4ca8900c7e
+  destination: zone.home
+  region: 'US'
+  
+- platform: waze_travel_time
+  name: "Cella Location to Work"
+  origin: device_tracker.ce0717174b4ca8900c7e
+  destination: zone.millyard
+  region: 'US'
+  
+- platform: waze_travel_time
+  name: "Cella Location to Doctor"
+  origin: device_tracker.ce0717174b4ca8900c7e
+  destination: zone.doctor
+  region: 'US'
+  
+- platform: waze_travel_time
+  name: 'Cella to Jor'
+  origin: device_tracker.ce0717174b4ca8900c7e
+  destination: device_tracker.ce071717cb2aaf3a047e
+  region: 'US'
