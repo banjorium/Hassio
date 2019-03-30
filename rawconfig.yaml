@@ -1,0 +1,1104 @@
+background: >-
+  center / cover no-repeat url("/config/custom_css/backgrounds/background.jpg")
+  fixed
+resources:
+  - type: js
+    url: /local/gauge-card.js?v=0.2.0
+  - type: js
+    url: /local/tracker-card.js?v=0.1.5
+  - type: module
+    url: /local/thermostat-card.js?v=0.1.1
+  - type: js
+    url: /local/username-element.js?v=0.0.1
+  - type: module
+    url: /local/surveillance-card.js?v=0.0.1
+  - type: js
+    url: /local/lovelace-player.js
+  - type: js
+    url: /local/lovelace-player-config.js
+  - type: module
+    url: /local/canvas-gauge-card.js
+  - type: js
+    url: /local/monster-card.js?v=0.2.3
+  - type: js
+    url: /local/custom_ui/dark-sky-weather-card.js?v=6
+  - type: module
+    url: /local/mini-graph-card.js?v=0.0.6
+  - type: js
+    url: /local/plan-coordinates.js?v=0.1.0
+  - type: js
+    url: /local/waze-card/waze-card.js?v=2.0.0
+  - type: js
+    url: 'https://unpkg.com/moment@2.22.2/moment.js'
+  - type: module
+    url: /local/mini-media-player-bundle.js?v=1.0.2
+  - type: module
+    url: /local/calendar-card.js?v=1.0.1
+  - type: module
+    url: /local/mini-graph-card-bundle.js?v=0.3.1
+title: Home
+views:
+  - cards:
+      - entity: group.automation_motion
+        hold_action:
+          action: none
+        name: Toggle Motion Automations
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.everything
+        hold_action:
+          action: more-info
+        icon: 'mdi:sleep'
+        name: Shut Down
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: scene.sexy_time
+        hold_action:
+          action: more-info
+        icon: 'mdi:alien'
+        name: Party Time
+        tap_action:
+          action: more-info
+        type: entity-button
+      - entities:
+          - calendar.family_calendar
+          - calendar.jordanielafontainegmailcom
+        id: 722288d6782d4f1594973485f1d38a70
+        type: 'custom:calendar-card'
+      - entity: vacuum.roomba
+        hold_action:
+          action: none
+        tap_action:
+          action: more-info
+        type: entity-button
+      - cards:
+          - elements:
+              - entity: light.cellasside
+                style:
+                  left: 93%
+                  top: 5%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.jorsside
+                style:
+                  left: 71%
+                  top: 5%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.jor_closet
+                hold_action: more-info
+                style:
+                  left: 66%
+                  top: 14%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.cella_window
+                hold_action: more-info
+                style:
+                  left: 95%
+                  top: 14%
+                tap_action: toggle
+                type: state-icon
+              - entity: remote.bedroom_harmony
+                style:
+                  left: 93%
+                  top: 22%
+                tap_action: toggle
+                type: state-icon
+              - entity: switch.master_bathroom_fixture
+                style:
+                  left: 94%
+                  top: 34%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.master_bath_toilet
+                style:
+                  left: 86%
+                  top: 34%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.master_bathroom_shower
+                style:
+                  left: 79%
+                  top: 36%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.bathroom
+                style:
+                  left: 75%
+                  top: 44%
+                tap_action: toggle
+                type: state-icon
+              - entity: switch.guest_bathroom_fixture
+                style:
+                  left: 83%
+                  top: 44%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.guestsink
+                style:
+                  left: 81%
+                  top: 48%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.guestshower
+                style:
+                  left: 95%
+                  top: 45%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.entryway_lamp
+                style:
+                  left: 89%
+                  top: 55%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.entry
+                style:
+                  left: 98%
+                  top: 56%
+                tap_action: toggle
+                type: state-icon
+              - entity: lock.front_door
+                style:
+                  left: 94%
+                  top: 56%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.mudroom
+                style:
+                  left: 89%
+                  top: 71%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.living_room_front
+                style:
+                  left: 60%
+                  top: 58%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.living_room_table
+                style:
+                  left: 34%
+                  top: 79%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.tiki_lamp
+                style:
+                  left: 34%
+                  top: 96%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.living_room_main
+                style:
+                  left: 61%
+                  top: 76%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.kitchenrefrigerator
+                style:
+                  left: 80%
+                  top: 83%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.bar
+                style:
+                  left: 60%
+                  top: 92%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.counter_right
+                style:
+                  left: 72%
+                  top: 93%
+                tap_action: toggle
+                type: state-icon
+              - entity: switch.kitchen_lights
+                style:
+                  left: 84%
+                  top: 88%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.sunroom_lamp
+                style:
+                  left: 7%
+                  top: 88%
+                tap_action: toggle
+                type: state-icon
+              - entity: switch.den_lamp
+                style:
+                  left: 33%
+                  top: 25%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.hue_color_lamp_1
+                style:
+                  left: 48%
+                  top: 5%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.hue_color_lamp_1_2
+                style:
+                  left: 51%
+                  top: 25%
+                tap_action: toggle
+                type: state-icon
+              - entity: switch.office_jor_desk
+                style:
+                  left: 35%
+                  top: 32%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.cellas_desk
+                style:
+                  left: 53%
+                  top: 45%
+                tap_action: toggle
+                type: state-icon
+              - entity: remote.living_room_harmony
+                style:
+                  left: 42%
+                  top: 62%
+                tap_action: toggle
+                type: state-icon
+            image: /local/FloorPlan.png
+            title: First Floor
+            type: picture-elements
+          - elements:
+              - entity: light.drums
+                style:
+                  left: 74%
+                  top: 19%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.workshop_light
+                style:
+                  left: 29%
+                  top: 19%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.basement_landing
+                style:
+                  left: 12%
+                  top: 50%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.gym
+                style:
+                  left: 29%
+                  top: 82%
+                tap_action: toggle
+                type: state-icon
+              - entity: light.hydro_light
+                style:
+                  left: 74%
+                  top: 82%
+                tap_action: toggle
+                type: state-icon
+              - entity: switch.filter
+                style:
+                  left: 9%
+                  top: 95%
+                tap_action: toggle
+                type: state-icon
+              - entity: switch.craft
+                style:
+                  left: 78%
+                  top: 56%
+                tap_action: toggle
+                type: state-icon
+            image: /local/Basement.png
+            title: Basement
+            type: picture-elements
+          - elements:
+              - entity: sensor.garage_motion_temperature
+                style:
+                  left: 50%
+                  top: 50%
+                type: state-label
+              - entity: binary_sensor.garage_motion_motion
+                style:
+                  left: 50%
+                  top: 5%
+                type: state-label
+              - entity: cover.garage_left
+                hold_action: more-info
+                style:
+                  left: 30%
+                  top: 4%
+                tap_action: toggle
+                type: state-icon
+              - entity: switch.garage_lights
+                style:
+                  left: 52%
+                  top: 41%
+                tap_action: toggle
+                type: state-icon
+            image: /local/Garage.png
+            title: Garage
+            type: picture-elements
+        id: d73bd3d38d504cc6ac866165d2c7fb96
+        type: vertical-stack
+      - entities:
+          - group.living_room_lights
+          - climate.main_floor
+          - binary_sensor.living_room_occupancy
+          - remote.living_room_harmony
+        id: 48d5eb7e75cf4741826333170b6a4b39
+        image: /local/images/LR.png
+        title: Living room
+        type: picture-glance
+      - camera_image: camera.front_door
+        entities:
+          - light.entry
+          - light.entryway_lamp
+          - lock.front_door
+          - sensor.front_door_sensor_temperature
+          - sensor.ring_front_door_last_motion
+        id: 9b7d01df5cdc4e6e846aa9b927d1a1ff
+        title: Entry Way
+        type: picture-glance
+      - card:
+          entities: []
+          title: Who is Home?
+          type: glance
+        filter:
+          include:
+            - entity_id: device_tracker.jphone
+              state: Home
+            - entity_id: device_tracker.cella_gpslogger
+              state: Home
+        id: 2297123c024d4ca4bb0f5c3e306ce0bc
+        show_empty: false
+        type: 'custom:monster-card'
+      - card:
+          entities:
+            - entity: binary_sensor.front_door_button_pressed
+            - entity: binary_sensor.front_door_motion
+          title: Low Batteries
+          type: glance
+        filter:
+          include:
+            - attributes:
+                battery: < 30
+                source_type: gps
+              domain: device_tracker
+              options:
+                secondary_info: last-changed
+            - attributes:
+                battery_level: < 50
+              domain: binary_sensor
+            - attributes:
+                battery_level: < 35
+              domain: sensor
+        id: 04a33f0622ff4e2ca85ae21af107dfa9
+        show_empty: false
+        type: 'custom:monster-card'
+      - entities:
+          - entity: vacuum.roomba
+        show_header_toggle: false
+        title: Appliances
+        type: entities
+    icon: 'mdi:home'
+    id: 1
+    title: default_view
+  - cards:
+      - entities:
+          - entity: sensor.neo
+          - entity: sensor.bitcoin
+          - entity: sensor.ethereum
+          - entity: sensor.ontology
+          - entity: sensor.stellar
+        title: Cryptocurrency
+        type: glance
+      - entities:
+          - entity: sensor.zestimate
+        title: Home Values
+        type: glance
+      - entities:
+          - entity: sensor.aurora_cannabis
+          - entity: sensor.cronos_group
+        title: Stocks
+        type: glance
+      - align_icon: left
+        align_state: center
+        entities:
+          - sensor.aurora_cannabis
+        show:
+          fill: false
+        type: 'custom:mini-graph-card'
+    icon: 'mdi:currency-usd'
+    id: 2
+    title: Money
+  - badges: []
+    cards:
+      - entity: group.everything
+        hold_action:
+          action: more-info
+        icon: 'mdi:rhombus-split'
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.master_bed_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:bed-empty'
+        name: Master Bedroom
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.computer_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:silverware'
+        name: Dining Room
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.entryway_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:door'
+        name: Entryway Lights
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.kitchen_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:fridge-outline'
+        name: Kitchen
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.vr_everything
+        hold_action:
+          action: more-info
+        icon: 'mdi:virtual-reality'
+        name: Virtual Reality Room
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.garage_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:garage'
+        name: Garage
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.living_room_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:sofa'
+        name: Living Room
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.guest_bath_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:scale-bathroom'
+        name: Guest Bathroom
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.mudroom_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:washing-machine'
+        name: Laundry Room
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.office_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:laptop'
+        name: Office
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.master_bath_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:scale-bathroom'
+        name: Master Bathroom
+        tap_action:
+          action: toggle
+        type: entity-button
+      - entity: group.sunroom_lights
+        hold_action:
+          action: more-info
+        icon: 'mdi:white-balance-sunny'
+        name: Sunroom
+        tap_action:
+          action: toggle
+        type: entity-button
+    icon: 'mdi:flash-circle'
+    panel: false
+    title: Quick Panel
+  - cards:
+      - entities:
+          - entity: light.cella_bed
+          - entity: light.cella_window
+          - entity: light.cellasside
+          - entity: light.jor_bed
+          - entity: light.jor_closet
+          - entity: light.jorsside
+        title: Master Bedroom
+        type: entities
+      - entities:
+          - light.tiki_lamp
+          - switch.track_lighting
+        id: 56a0206623fd4522981d8058aa6b3209
+        show_header_toggle: true
+        title: Dining Room
+        type: entities
+      - entities:
+          - light.hue_color_lamp_1_2
+          - light.hue_color_lamp_1
+          - light.vr_room
+          - switch.wemo_insight_2
+          - switch.den_lamp
+          - light.computerlighting
+        id: 6f0102578a8b409e96fe4a01e12f81bc
+        show_header_toggle: true
+        title: VR Room
+        type: entities
+      - entities:
+          - switch.craft
+          - light.drums
+          - light.basement_landing
+          - light.hydro_light
+          - light.workshop_light
+          - light.gym
+        id: 7de09c09a7e3459d808fb1f695f2bd2f
+        show_header_toggle: true
+        title: Basement
+        type: entities
+      - entities:
+          - light.entry
+          - light.entryway_lamp
+        id: 50e335a034b2462ea5d5746fd3e8dc11
+        show_header_toggle: true
+        title: Entryway
+        type: entities
+      - entities:
+          - switch.garage_lights
+        id: 53d6181c4c9c476eabd517a33c9d5102
+        show_header_toggle: true
+        title: Garage
+        type: entities
+      - entities:
+          - light.guestsink
+          - light.guestshower
+          - switch.guest_bathroom_fixture
+          - light.bathroom
+        id: 94ea6558b09e4f4699ed9dcf7101a22c
+        show_header_toggle: true
+        title: Guest Bath
+        type: entities
+      - entities:
+          - switch.kitchen_lights
+          - light.kitchenrefrigerator
+          - light.bar
+          - light.counter_right
+        id: a8adc4082d0a45d5a9bbccca6f138284
+        show_header_toggle: true
+        title: Kitchen
+        type: entities
+      - entities:
+          - light.tiles
+          - light.living_room_main
+          - light.living_room_table
+          - light.living_room_front
+        id: 3f67d324bf66472899b8b955e85d110e
+        show_header_toggle: true
+        title: Living Room
+        type: entities
+      - entities:
+          - light.master_bath_toilet
+          - light.master_bathroom_shower
+          - switch.master_bathroom_fixture
+        id: cf0536384ab141d3b20da91f46591373
+        show_header_toggle: true
+        title: Master Bath
+        type: entities
+      - entities:
+          - light.mudroom
+        id: 8b6f08f67b27408bb6239d9fbe8b18c2
+        show_header_toggle: true
+        title: Mudroom
+        type: entities
+      - entities:
+          - light.cellas_desk
+          - switch.office_jor_desk
+        id: 18d21eb153024a1da1ada633702665ad
+        show_header_toggle: true
+        title: Office
+        type: entities
+      - entities:
+          - entity: light.sunroom_lamp
+          - entity: light.sunroom_beam_1
+          - entity: light.sunroom_beam_2
+          - entity: light.sunroom_craft
+        title: Sunroom
+        type: entities
+    icon: 'mdi:lightbulb'
+    id: 3
+    title: Lights
+  - cards:
+      - cameras:
+          - entity: camera.front_door
+            motion_entity: binary_sensor.front_door_motion
+        id: d082bfeb885c486b9b14d7bfc6969b68
+        thumb_interval: 15
+        type: 'custom:surveillance-card'
+        update_interval: 2
+    icon: 'mdi:cctv'
+    id: 0
+    panel: true
+    title: Surveillance
+  - cards:
+      - entity_current_conditions: sensor.dark_sky_icon
+        entity_daily_summary: sensor.dark_sky_daily_summary
+        entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1
+        entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2
+        entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3
+        entity_forecast_high_temp_4: sensor.dark_sky_daytime_high_temperature_4
+        entity_forecast_high_temp_5: sensor.dark_sky_daytime_high_temperature_5
+        entity_forecast_icon_1: sensor.dark_sky_icon_1
+        entity_forecast_icon_2: sensor.dark_sky_icon_2
+        entity_forecast_icon_3: sensor.dark_sky_icon_3
+        entity_forecast_icon_4: sensor.dark_sky_icon_4
+        entity_forecast_icon_5: sensor.dark_sky_icon_5
+        entity_forecast_low_temp_1: sensor.dark_sky_overnight_low_temperature_1
+        entity_forecast_low_temp_2: sensor.dark_sky_overnight_low_temperature_2
+        entity_forecast_low_temp_3: sensor.dark_sky_overnight_low_temperature_3
+        entity_forecast_low_temp_4: sensor.dark_sky_overnight_low_temperature_4
+        entity_forecast_low_temp_5: sensor.dark_sky_overnight_low_temperature_5
+        entity_humidity: sensor.dark_sky_humidity
+        entity_pressure: sensor.dark_sky_pressure
+        entity_sun: sun.sun
+        entity_temperature: sensor.dark_sky_temperature
+        entity_visibility: sensor.dark_sky_visibility
+        entity_wind_bearing: sensor.dark_sky_wind_bearing
+        entity_wind_speed: sensor.dark_sky_wind_speed
+        type: 'custom:dark-sky-weather-card'
+      - aspect_ratio: 50%
+        title: Wind Speed
+        type: iframe
+        url: 'https://embed.windy.com/embed2.html'
+      - entity: climate.main_floor_2
+        id: 9fc6c4fbd21d4e5b8843b3fe7144fc9e
+        name: Main Floor
+        title: Main Floor
+        type: thermostat
+      - entities:
+          - entity: sensor.garage_motion_temperature
+          - entity: sensor.mudroom_door_temperature
+          - entity: sensor.motion_sensor_temperature
+          - entity: sensor.sunroom_slider_temperature
+          - entity: sensor.front_door_sensor_temperature
+          - entity: sensor.motion_sensor_4_temperature
+          - entity: sensor.office_temperature_2
+          - entity: sensor.master_bedroom_door_temperature
+          - entity: sensor.motion_sensor_8_temperature
+          - entity: sensor.motion_sensor_2_temperature
+        title: House Temperature
+        type: glance
+      - entity: climate.master_2
+        id: ffac5cb5e9f34bef86029baab587ac86
+        name: Bedrooms
+        title: Master Bedroom
+        type: thermostat
+      - entities:
+          - entity: sensor.moon_phases
+        show_name: false
+        show_state: false
+        title: Current Moon Phase
+        type: glance
+    icon: 'mdi:oil-temperature'
+    id: 4
+    title: Climate and Temperature
+  - cards:
+      - card:
+          title: People at home
+          type: glance
+        entities:
+          - device_tracker.ce0717174b4ca8900c7e
+          - device_tracker.ce071717cb2aaf3a047e
+        state_filter:
+          - home
+        type: entity-filter
+      - entities:
+          - entity: binary_sensor.pontiac_sensor_presence
+          - entity: sensor.pontiac_sensor_battery
+        show_name: false
+        title: Pontiac Status
+        type: glance
+      - entities:
+          - entity: sensor.cella_note8_battery
+          - entity: sensor.jor_note8_battery
+        title: Phone Status
+        type: entities
+      - columns: 2
+        entities:
+          - entity: sensor.jor_location_to_home
+          - entity: sensor.jor_location_to_work
+          - entity: sensor.jor_location_to_atc
+          - entity: sensor.jor_location_to_doctor
+          - entity: sensor.jor_location_to_therapist
+          - entity: sensor.jor_to_cella
+        title: Jordan's Travel Times
+        type: glance
+      - columns: 2
+        entities:
+          - entity: sensor.cella_location_to_home
+          - entity: sensor.cella_location_to_work
+          - entity: sensor.cella_location_to_doctor
+          - entity: sensor.cella_to_jor
+        title: Cella's Travel Times
+        type: glance
+      - entities:
+          - entity: sensor.waze_home
+            name: Home
+            zone: zone.home
+          - entity: sensor.waze_work
+            name: Work
+            zone: zone.work
+        type: 'custom:waze-card'
+    icon: 'mdi:account-multiple'
+    id: 5
+    title: People
+  - cards:
+      - entities:
+          - remote.living_room_harmony
+          - sensor.current_activity
+          - input_select.harmony1
+        id: f64ed37306854b78895e8b1310d4e4df
+        show_header_toggle: true
+        title: Living Room TV
+        type: entities
+      - entities:
+          - remote.bedroom_harmony
+          - sensor.current_activity2
+          - input_select.harmony2
+        id: fd77fcaabbdc4cc5809276b1be1148e9
+        show_header_toggle: true
+        title: Master Bedroom TV
+        type: entities
+      - entities:
+          - entity: media_player.kitchen_echo
+            group: true
+            hide:
+              controls: true
+            icon: 'mdi:amazon-alexa'
+            icon_state: true
+            idle_view:
+              when_standby: true
+            tts:
+              platform: alexa
+            type: 'custom:mini-media-player'
+          - entity: media_player.living_room_dot
+            group: true
+            hide:
+              controls: true
+            icon: 'mdi:amazon-alexa'
+            icon_state: true
+            idle_view:
+              when_standby: true
+            tts:
+              platform: alexa
+            type: 'custom:mini-media-player'
+          - entity: media_player.master_bathroom_dot
+            group: true
+            hide:
+              controls: true
+            icon: 'mdi:amazon-alexa'
+            icon_state: true
+            tts:
+              platform: alexa
+            type: 'custom:mini-media-player'
+          - entity: media_player.master_bedroom_dot
+            group: true
+            hide:
+              controls: true
+            icon: 'mdi:amazon-alexa'
+            icon_state: true
+            tts:
+              platform: alexa
+            type: 'custom:mini-media-player'
+          - entity: media_player.reading_room_dot
+            group: true
+            hide:
+              controls: true
+            icon: 'mdi:amazon-alexa'
+            icon_state: true
+            tts:
+              platform: alexa
+            type: 'custom:mini-media-player'
+          - entity: media_player.office_dot
+            group: true
+            hide:
+              controls: true
+            icon: 'mdi:amazon-alexa'
+            icon_state: true
+            tts:
+              platform: alexa
+            type: 'custom:mini-media-player'
+          - entity: media_player.craft_dot
+            group: true
+            hide:
+              controls: true
+            icon: 'mdi:amazon-alexa'
+            icon_state: true
+            tts:
+              platform: alexa
+            type: 'custom:mini-media-player'
+        show_header_toggle: false
+        title: Alexa
+        type: entities
+      - entity: media_player.playstation_4
+        type: media-control
+      - entity: media_player.jordan_s_fire_tv_stick
+        type: media-control
+      - detail: 2
+        entity: sensor.bed_room_tv_today
+        graph: line
+        icon: 'mdi:television'
+        name: TV Watched in Bedroom Today
+        type: sensor
+        unit: Hours
+      - entity: sensor.living_room_tv_today
+        graph: line
+        icon: 'mdi:television'
+        name: TV Watched in Living Room Today
+        type: sensor
+        unit: Hours
+      - entity: media_player.fire_tv_bedroom
+        type: media-control
+    icon: 'mdi:filmstrip'
+    id: 6
+    title: Media
+  - badges: []
+    cards:
+      - entities:
+          - lock.front_door
+        id: d829ceb8fb6c40e3bbe783dae33f00d7
+        show_header_toggle: false
+        title: Locks
+        type: entities
+      - entities:
+          - binary_sensor.master_bedroom_door_opened
+          - binary_sensor.front_door_sensor_opened
+          - binary_sensor.basement_door_opened
+          - binary_sensor.sunroom_slider_opened
+          - binary_sensor.mudroom_door_opened
+        id: 74555e85af4b42eba60b20c58e2a1ce9
+        show_header_toggle: false
+        title: Door States
+        type: entities
+      - entities:
+          - sensor.ring_front_door_last_motion
+          - binary_sensor.motion_sensor_motion
+          - binary_sensor.motion_sensor_2_motion
+          - binary_sensor.motion_sensor_3_motion
+          - binary_sensor.motion_sensor_4_motion
+          - binary_sensor.motion_sensor_7_motion
+          - binary_sensor.motion_sensor_8_motion
+          - binary_sensor.motion_sensor_11_motion
+          - binary_sensor.garage_motion_motion
+        id: 4bd2afa0e2f144d3b2a38345da5d318a
+        show_header_toggle: false
+        title: Motion States
+        type: entities
+      - entities:
+          - sensor.breaches_banjordium_gmail_com
+          - sensor.breaches_j_lafontaine_snhu_edu
+          - sensor.breaches_jordanielafontaine_gmail_com
+          - sensor.breaches_jlafontaine_it_gmail_com
+          - sensor.breaches_jordan_lafontaine_gmail_com
+          - sensor.breaches_m_lafontaine_snhu_edu
+          - sensor.breaches_marcellalafontaine_gmail_com
+          - sensor.breaches_mmuscate_gmail_com
+        id: 8918104295134687b30e3bd2d02281db
+        show_header_toggle: false
+        title: Breach Detection
+        type: entities
+    icon: 'mdi:shield-home'
+    id: 7
+    title: Security
+  - cards:
+      - entity: cover.garage_left
+        hold_action:
+          action: none
+        tap_action:
+          action: more-info
+        theme: solarized
+        type: entity-button
+      - entity: group.garage_lights
+        hold_action:
+          action: more-info
+        tap_action:
+          action: toggle
+        theme: solarized
+        type: entity-button
+    icon: 'mdi:garage'
+    id: 8
+    title: Garage
+  - cards:
+      - entity: scene.colorloop_living_area
+        hold_action:
+          action: more-info
+        icon: 'mdi:movie'
+        name: Color Loop - Living Area
+        tap_action:
+          action: more-info
+        type: entity-button
+      - entity: scene.color_loop_whole_house
+        hold_action:
+          action: none
+        icon: 'mdi:movie'
+        tap_action:
+          action: more-info
+        type: entity-button
+      - entity: scene.turn_off_everything
+        hold_action:
+          action: none
+        tap_action:
+          action: more-info
+        type: entity-button
+      - entity: scene.turn_off_everything_but_bedroom
+        hold_action:
+          action: none
+        name: Turn Off - Everything But Bedroom
+        tap_action:
+          action: more-info
+        type: entity-button
+      - entity: scene.wind_down
+        hold_action:
+          action: none
+        tap_action:
+          action: more-info
+        type: entity-button
+    id: 9
+    title: Scenes
+  - badges: []
+    cards:
+      - id: a835b88f520440e58919e5e7dffd820c
+        title: Card Updates
+        trackers:
+          - sensor.custom_card_tracker
+          - sensor.custom_component_tracker
+        type: 'custom:tracker-card'
+      - card:
+          entities:
+            - entity: light.002003585ccf7f3e2b09
+            - entity: media_player.jordans_alexa_apps
+            - entity: media_player.jordans_garmin_speak
+            - entity: media_player.marcellas_alexa_apps
+            - entity: media_player.my_dash
+            - entity: sensor.office_temperature
+          title: Problems
+          type: glance
+        filter:
+          exclude:
+            - entity_id: climate.air_conditioner
+          include:
+            - state: unavailable
+        id: 8bd4668a66a2467e91821f2860e0d6bc
+        show_empty: false
+        type: 'custom:monster-card'
+      - entities:
+          - sensor.count_lights_on
+          - sensor.dehumidifier_watts
+          - sensor.dehumidifier_status
+        id: 98c3eeda4b274cf9a1694e8bf16575c7
+        show_header_toggle: true
+        title: House Statistics
+        type: entities
+      - card:
+          entities: []
+          title: Lights On
+          type: glance
+        filter:
+          exclude:
+            - state: 'off'
+            - state: unavailable
+            - domain: group
+          include:
+            - domain: light
+            - domain: switch
+        id: 3b7cbc5fec5147b09532b94c075d0f4f
+        show_empty: false
+        type: 'custom:monster-card'
+      - entities:
+          - entity: sensor.fast_com_download
+        show_name: true
+        show_state: true
+        title: WAN Statistics
+        type: glance
+      - entities:
+          - sensor.fast_com_download
+        title: WAN Download Speed
+        type: history-graph
+      - entity: sensor.last_alexa
+        icon: 'mdi:amazon-alexa'
+        name: Last Alexa Device Called
+        theme: Backend-selected
+        type: sensor
+      - entity: sensor.memory_use_percent
+        max: 100
+        min: 0
+        name: Memory Usage
+        severity:
+          green: 0
+          red: 80
+          yellow: 50
+        theme: default
+        type: gauge
+      - entity: sensor.cpu_temperature
+        max: 175
+        min: 65
+        name: 'CPU '
+        severity:
+          green: 0
+          red: 160
+          yellow: 138
+        theme: default
+        type: gauge
+      - entity: sensor.disk_use_percent
+        max: 100
+        min: 0
+        name: 'Disk: Used Space'
+        severity:
+          green: 45
+          red: 75
+          yellow: 60
+        theme: default
+        type: gauge
+      - entities:
+          - entity: sensor.disk_use_percent
+            name: DISK
+        hours_to_show: 160
+        points_per_hour: 0.25
+        type: 'custom:mini-graph-card'
+      - entities:
+          - entity: sensor.memory_use_percent
+            name: RAM
+        hours_to_show: 160
+        points_per_hour: 0.15
+        type: 'custom:mini-graph-card'
+      - entity: sensor.hass_current_version
+        icon: 'mdi:home-assistant'
+        name: Current HASS Version
+        type: sensor
+      - entity: sensor.hass_installed_version
+        icon: 'mdi:home-assistant'
+        name: Installed HASS Version
+        type: sensor
+    title: System
